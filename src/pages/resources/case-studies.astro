@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceHero from '../../components/ServiceHero.astro';
+import CaseStudyList from '../../components/CaseStudyList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { getHomeContent } from '../../content/home';
+import { getCaseStudiesContent } from '../../content/case-studies';
+
+const currentLang = 'en';
+const homeContent = getHomeContent(currentLang);
+const caseStudies = getCaseStudiesContent(currentLang);
+---
+
+<BaseLayout meta={caseStudies.meta} nav={homeContent.nav} footer={homeContent.footer} currentLang={currentLang}>
+  <ServiceHero hero={caseStudies.hero} />
+  <CaseStudyList items={caseStudies.items} />
+  <CtaBand
+    heading={caseStudies.cta.heading}
+    body={caseStudies.cta.body}
+    primaryLabel={caseStudies.cta.primaryLabel}
+    primaryHref={caseStudies.cta.primaryHref}
+    secondaryLabel={caseStudies.cta.secondaryLabel}
+    secondaryHref={caseStudies.cta.secondaryHref}
+  />
+</BaseLayout>

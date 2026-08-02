@@ -1,0 +1,50 @@
+---
+interface Props {
+  techStack: {
+    eyebrow: string;
+    heading: string;
+    tags: string[];
+  };
+}
+
+const { techStack } = Astro.props;
+---
+
+<section class="tech-stack section">
+  <div class="container">
+    <span class="eyebrow">{techStack.eyebrow}</span>
+    <h2>{techStack.heading}</h2>
+    <div class="tag-list">
+      {techStack.tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tech-stack {
+    background: var(--color-gray-50);
+  }
+
+  .tech-stack h2 {
+    margin: 0 0 24px;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tag {
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--color-gray-200);
+    color: var(--color-gray-600);
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AboutHero from '../components/AboutHero.astro';
+import ExecutiveProfile from '../components/ExecutiveProfile.astro';
+import ExpertiseGrid from '../components/ExpertiseGrid.astro';
+import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import FeaturedProject from '../components/FeaturedProject.astro';
+import Credentials from '../components/Credentials.astro';
+import Differentiators from '../components/Differentiators.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { getHomeContent } from '../content/home';
+import { getAboutContent } from '../content/about';
+
+const currentLang = 'en';
+const homeContent = getHomeContent(currentLang);
+const about = getAboutContent(currentLang);
+---
+
+<BaseLayout meta={about.meta} nav={homeContent.nav} footer={homeContent.footer} currentLang={currentLang}>
+  <AboutHero hero={about.hero} />
+  <ExecutiveProfile bio={about.bio} />
+  <ExpertiseGrid expertise={about.expertise} />
+  <ExperienceTimeline experience={about.experience} />
+  <FeaturedProject featuredProjects={about.featuredProjects} />
+  <Differentiators differentiators={about.differentiators} background="white" />
+  <Credentials credentials={about.credentials} quickFacts={about.quickFacts} />
+  <CtaBand
+    heading={about.cta.heading}
+    body={about.cta.body}
+    primaryLabel={about.cta.primaryLabel}
+    primaryHref={about.cta.primaryHref}
+    secondaryLabel={about.cta.secondaryLabel}
+    secondaryHref={about.cta.secondaryHref}
+  />
+</BaseLayout>

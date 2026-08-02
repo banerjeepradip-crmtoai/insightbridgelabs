@@ -1,0 +1,147 @@
+---
+import Icon from './Icon.astro';
+import type { AboutContent } from '../content/about/types';
+
+interface Props {
+  hero: AboutContent['hero'];
+}
+
+const { hero } = Astro.props;
+---
+
+<section class="about-hero">
+  <div class="container about-hero-inner">
+    <div class="about-hero-copy">
+      <span class="eyebrow eyebrow-light">{hero.eyebrow}</span>
+      <h1>{hero.name}</h1>
+      <p class="role">{hero.role}</p>
+      <p class="location">
+        <Icon name="location" class="location-icon" />
+        {hero.location}
+      </p>
+      <p class="intro">{hero.intro}</p>
+      <div class="hero-actions">
+        <a href={hero.linkedinHref} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          {hero.linkedinLabel}
+          <Icon name="external-link" class="btn-icon" />
+        </a>
+        <a href={`mailto:${hero.email}`} class="btn btn-outline-light">
+          <Icon name="mail" class="btn-icon" />
+          {hero.email}
+        </a>
+      </div>
+    </div>
+
+    <div class="about-hero-photo">
+      <div class="photo-frame">
+        <img src="/images/pb.jpg" alt={hero.name} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-hero {
+    background: radial-gradient(ellipse at 20% 15%, #171f52 0%, var(--color-navy-950) 55%);
+    color: #fff;
+  }
+
+  .about-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 48px;
+    padding: 80px 24px;
+  }
+
+  .eyebrow-light {
+    color: var(--color-purple-400);
+  }
+
+  .about-hero-copy h1 {
+    margin: 10px 0 4px;
+    font-size: clamp(2rem, 3.6vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .role {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #c4c8e6;
+  }
+
+  .location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 22px;
+    font-size: 0.92rem;
+    color: #9aa0c8;
+  }
+
+  .location-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .intro {
+    max-width: 620px;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: #c4c8e6;
+    margin: 0 0 32px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .btn-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .about-hero-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .photo-frame {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(135deg, #4f46e5 0%, #8b7cf6 100%);
+    box-shadow: 0 20px 50px -18px rgba(79, 70, 229, 0.6);
+    border: 3px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  @media (max-width: 900px) {
+    .about-hero-inner {
+      grid-template-columns: 1fr;
+      padding: 56px 24px;
+    }
+
+    .about-hero-photo {
+      order: -1;
+    }
+
+    .photo-frame {
+      width: 160px;
+      height: 160px;
+    }
+  }
+</style>

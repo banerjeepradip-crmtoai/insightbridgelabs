@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  disclaimer: {
+    heading: string;
+    items: string[];
+  };
+}
+
+const { disclaimer } = Astro.props;
+---
+
+<section class="disclaimer-section section">
+  <div class="container">
+    <div class="disclaimer-card">
+      <div class="disclaimer-icon">
+        <Icon name="info" />
+      </div>
+      <div>
+        <h2>{disclaimer.heading}</h2>
+        <ul>
+          {disclaimer.items.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .disclaimer-section {
+    padding-top: 0;
+    padding-bottom: 88px;
+  }
+
+  .disclaimer-card {
+    display: flex;
+    gap: 20px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    max-width: 900px;
+  }
+
+  .disclaimer-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #fef3c7;
+    color: #b45309;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .disclaimer-card h2 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #7c4a03;
+  }
+
+  .disclaimer-card ul {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .disclaimer-card li {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: #7c4a03;
+  }
+
+  @media (max-width: 700px) {
+    .disclaimer-card {
+      flex-direction: column;
+      padding: 24px;
+    }
+  }
+</style>

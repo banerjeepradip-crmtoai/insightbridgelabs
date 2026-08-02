@@ -1,0 +1,317 @@
+---
+// Stylized suspension-bridge / network illustration, built as plain SVG geometry
+// (no external image assets) so it can stand in for a hero photo until a real one is supplied.
+const width = 760;
+const height = 460;
+
+const deckY = 320;
+const towerTopY = 70;
+const towerX = [260, 500];
+const anchorX = [60, 700];
+const sagDepth = 150; // how far the main cable droops below the tower tops at midspan
+
+// Cable height at a given x: straight side-spans (anchor -> tower),
+// parabolic main span (tower -> tower) sagging between the two towers.
+function cableY(x: number): number {
+  const [tL, tR] = towerX;
+  const [aL, aR] = anchorX;
+  if (x <= tL) {
+    const t = (x - aL) / (tL - aL);
+    return deckY + t * (towerTopY - deckY);
+  }
+  if (x >= tR) {
+    const t = (x - tR) / (aR - tR);
+    return towerTopY + t * (deckY - towerTopY);
+  }
+  const t = (x - tL) / (tR - tL);
+  return towerTopY + 4 * sagDepth * t * (1 - t);
+}
+
+function pathThrough(points: number[][]): string {
+  return points.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+}
+
+const mainSpanPoints = Array.from({ length: 25 }, (_, i) => {
+  const x = towerX[0] + (i / 24) * (towerX[1] - towerX[0]);
+  return [x, cableY(x)];
+});
+
+const cablePath = [
+  `M${anchorX[0]},${deckY}`,
+  `L${towerX[0]},${towerTopY}`,
+  pathThrough(mainSpanPoints.slice(1)),
+  `L${anchorX[1]},${deckY}`,
+].join(' ');
+
+const suspenders: { x: number; y: number }[] = [];
+const step = 22;
+for (let x = anchorX[0] + step; x < anchorX[1]; x += step) {
+  if (towerX.includes(x)) continue;
+  const y = cableY(x);
+  if (y < deckY - 6) suspenders.push({ x, y });
+}
+
+const cableNodes = [anchorX[0], towerX[0], (towerX[0] + towerX[1]) / 2, towerX[1], anchorX[1]].map((x) => [
+  x,
+  cableY(x),
+]);
+
+// Twin-leg lattice tower geometry, modeled on the Art-Deco cross-braced look
+// of a classic suspension-bridge tower (e.g. the Golden Gate Bridge).
+const legOffsetBase = 22;
+const legOffsetTop = 7;
+const towerInnerTopY = towerTopY + 18;
+const strutFractions = [0.18, 0.52, 0.86];
+
+function legXAt(towerCx: number, side: number, y: number): number {
+  const t = (y - towerInnerTopY) / (deckY - towerInnerTopY);
+  const offset = legOffsetTop + t * (legOffsetBase - legOffsetTop);
+  return towerCx + side * offset;
+}
+
+const towers = towerX.map((x) => {
+  const levels = [towerInnerTopY, ...strutFractions.map((f) => towerInnerTopY + f * (deckY - towerInnerTopY)), deckY];
+  const lattice = [];
+  for (let i = 0; i < levels.length - 1; i++) {
+    const [yA, yB] = [levels[i], levels[i + 1]];
+    lattice.push({ x1: legXAt(x, -1, yA), y1: yA, x2: legXAt(x, 1, yB), y2: yB });
+    lattice.push({ x1: legXAt(x, 1, yA), y1: yA, x2: legXAt(x, -1, yB), y2: yB });
+  }
+  return {
+    x,
+    legs: [-1, 1].map((side) => ({
+      x1: x + side * legOffsetBase,
+      x2: x + side * legOffsetTop,
+    })),
+    struts: levels,
+    lattice,
+  };
+});
+
+// Distant coastline, echoing the far bank in the reference sketch.
+const hillPath = `M560,${deckY} C600,${deckY - 70} 650,${deckY - 100} 705,${deckY - 92} C740,${deckY - 87} ${width + 20},${deckY - 60} ${width + 20},${deckY - 40} L${width + 20},${deckY} Z`;
+
+const birds = [
+  { x: 350, y: 52, size: 7 },
+  { x: 372, y: 40, size: 5 },
+  { x: 430, y: 60, size: 6 },
+];
+
+const networkDots = [
+  [110, 150], [150, 210], [630, 150], [670, 205],
+];
+---
+
+<svg
+  class="bridge-illustration"
+  viewBox={`0 0 ${width} ${height}`}
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  role="presentation"
+  aria-hidden="true"
+>
+  <defs>
+    <linearGradient id="cableGradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6d7cf7" />
+      <stop offset="100%" stop-color="#9b7cf5" />
+    </linearGradient>
+    <linearGradient id="towerGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a597f6" />
+      <stop offset="100%" stop-color="#544ee8" />
+    </linearGradient>
+    <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a9b6ff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#a9b6ff" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="ambientGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7c8bf0" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#7c8bf0" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="reflectionFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+    </linearGradient>
+    <clipPath id="reflectionClip">
+      <rect x={anchorX[0]} y={deckY + 6} width={anchorX[1] - anchorX[0]} height="80" />
+    </clipPath>
+    <mask id="reflectionMask">
+      <rect x={anchorX[0]} y={deckY} width={anchorX[1] - anchorX[0]} height="90" fill="url(#reflectionFade)" />
+    </mask>
+  </defs>
+
+  <!-- ambient glow -->
+  <circle cx="600" cy="95" r="70" fill="url(#ambientGlow)" />
+
+  <!-- distant coastline -->
+  <path d={hillPath} fill="#151b48" opacity="0.6" />
+
+  <!-- birds -->
+  {
+    birds.map(({ x, y, size }) => (
+      <path
+        d={`M${x - size},${y} Q${x - size / 2},${y - size} ${x},${y} Q${x + size / 2},${y - size} ${x + size},${y}`}
+        stroke="#c3ccff"
+        stroke-width="1.3"
+        opacity="0.6"
+        stroke-linecap="round"
+      />
+    ))
+  }
+
+  <!-- ambient network dots -->
+  {
+    networkDots.map(([x, y], i) => (
+      <g opacity="0.4">
+        <circle cx={x} cy={y} r="14" fill="url(#nodeGlow)" />
+        <circle cx={x} cy={y} r="1.8" fill="#c3ccff" />
+        {i > 0 && (
+          <line
+            x1={x}
+            y1={y}
+            x2={networkDots[i - 1][0]}
+            y2={networkDots[i - 1][1]}
+            stroke="#4a5599"
+            stroke-width="1"
+            opacity="0.45"
+          />
+        )}
+      </g>
+    ))
+  }
+
+  <!-- water reflection (mirrored bridge, faded) -->
+  <g mask="url(#reflectionMask)" opacity="0.28">
+    <g transform={`translate(0, ${2 * deckY}) scale(1, -1)`} clip-path="url(#reflectionClip)">
+      <path d={cablePath} stroke="url(#cableGradient)" stroke-width="2" />
+      {towers.map((tower) =>
+        tower.legs.map((leg) => (
+          <line x1={leg.x1} y1={deckY} x2={leg.x2} y2={towerInnerTopY} stroke="url(#towerGradient)" stroke-width="3" />
+        )),
+      )}
+    </g>
+  </g>
+  <line x1={anchorX[0]} y1={deckY + 58} x2={anchorX[1]} y2={deckY + 58} stroke="#2a3470" stroke-width="1" opacity="0.4" />
+
+  <!-- suspender hangers -->
+  {
+    suspenders.map(({ x, y }) => (
+      <line x1={x} y1={y} x2={x} y2={deckY} stroke="#7c8bf0" stroke-width="1" opacity="0.5" />
+    ))
+  }
+
+  <!-- main + side span cable, with soft bloom -->
+  <path d={cablePath} stroke="#8b7cf6" stroke-width="6" opacity="0.18" stroke-linejoin="round" />
+  <path d={cablePath} stroke="url(#cableGradient)" stroke-width="2" opacity="0.95" stroke-linejoin="round" />
+
+  <!-- deck -->
+  <line x1={anchorX[0]} y1={deckY} x2={anchorX[1]} y2={deckY} stroke="#8b7cf6" stroke-width="7" opacity="0.15" />
+  <line x1={anchorX[0]} y1={deckY} x2={anchorX[1]} y2={deckY} stroke="url(#cableGradient)" stroke-width="3" />
+
+  <!-- towers: twin legs + lattice cross-bracing + pyramidal cap -->
+  {
+    towers.map((tower) => (
+      <g>
+        {tower.legs.map((leg) => (
+          <line x1={leg.x1} y1={deckY} x2={leg.x2} y2={towerInnerTopY} stroke="url(#towerGradient)" stroke-width="5" stroke-linecap="round" />
+        ))}
+        {tower.lattice.map((brace) => (
+          <line
+            x1={brace.x1}
+            y1={brace.y1}
+            x2={brace.x2}
+            y2={brace.y2}
+            stroke="url(#towerGradient)"
+            stroke-width="1.3"
+            opacity="0.55"
+          />
+        ))}
+        {tower.struts.slice(1, -1).map((y) => {
+          const halfWidth = legXAt(tower.x, 1, y) - tower.x;
+          return (
+            <line
+              x1={tower.x - halfWidth}
+              y1={y}
+              x2={tower.x + halfWidth}
+              y2={y}
+              stroke="url(#towerGradient)"
+              stroke-width="2.5"
+              opacity="0.8"
+            />
+          );
+        })}
+        <path
+          d={`M${tower.x - legOffsetTop},${towerInnerTopY} L${tower.x},${towerTopY} L${tower.x + legOffsetTop},${towerInnerTopY}`}
+          stroke="url(#towerGradient)"
+          stroke-width="4"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+        />
+        <circle cx={tower.x} cy={towerTopY} r="14" fill="url(#nodeGlow)" />
+        <circle cx={tower.x} cy={towerTopY} r="3.5" fill="#e4e8ff" />
+      </g>
+    ))
+  }
+
+  <!-- anchor + midspan nodes on the main cable -->
+  {
+    cableNodes.map(([x, y]) => (
+      <circle cx={x} cy={y} r="3" fill="#c3ccff" />
+    ))
+  }
+
+  <!-- slow-drifting data points along the main cable -->
+  <g class="data-flow">
+    <circle r="3" fill="#e4e8ff" style={`offset-path: path('${cablePath}')`} class="data-dot data-dot-1" />
+    <circle r="2.4" fill="#c3ccff" style={`offset-path: path('${cablePath}')`} class="data-dot data-dot-2" />
+    <circle r="2.4" fill="#c3ccff" style={`offset-path: path('${cablePath}')`} class="data-dot data-dot-3" />
+  </g>
+</svg>
+
+<style>
+  .bridge-illustration {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 24px rgba(109, 124, 247, 0.25));
+  }
+
+  .data-dot {
+    offset-rotate: 0deg;
+    animation: travel 9s linear infinite;
+  }
+
+  .data-dot-1 {
+    animation-delay: 0s;
+  }
+
+  .data-dot-2 {
+    animation-delay: 3s;
+  }
+
+  .data-dot-3 {
+    animation-delay: 6s;
+  }
+
+  @keyframes travel {
+    from {
+      offset-distance: 0%;
+      opacity: 0;
+    }
+    5% {
+      opacity: 1;
+    }
+    95% {
+      opacity: 1;
+    }
+    to {
+      offset-distance: 100%;
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .data-dot {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>

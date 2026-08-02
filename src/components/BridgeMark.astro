@@ -1,0 +1,39 @@
+---
+// Compact logo mark: a simplified version of BridgeIllustration.astro's
+// suspension-bridge silhouette, legible at small sizes. Uses currentColor
+// so it inherits its color from CSS wherever it's placed (light header,
+// dark footer, etc).
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 44 34"
+  fill="none"
+  stroke="currentColor"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label="InsightBridge Labs"
+>
+  <line x1="3" y1="30" x2="41" y2="30" stroke-width="2" stroke-linecap="round" />
+  <line x1="14" y1="5" x2="14" y2="30" stroke-width="2.4" stroke-linecap="round" />
+  <line x1="30" y1="5" x2="30" y2="30" stroke-width="2.4" stroke-linecap="round" />
+  <path d="M3,30 L14,5 Q18,13 22,19 Q26,13 30,5 L41,30" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" />
+  <circle cx="14" cy="5" r="2" fill="currentColor" stroke="none" />
+  <circle cx="30" cy="5" r="2" fill="currentColor" stroke="none" />
+</svg>
+
+<style>
+  /* Astro's scoped styles don't reach into a child component's own root
+     element, so the icon's size lives here rather than in the parent. */
+  svg {
+    width: 34px;
+    height: auto;
+    flex-shrink: 0;
+    display: block;
+  }
+</style>

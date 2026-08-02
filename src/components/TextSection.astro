@@ -1,0 +1,42 @@
+---
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  paragraphs: string[];
+}
+
+const { eyebrow, heading, paragraphs } = Astro.props;
+---
+
+<section class="text-section section">
+  <div class="container text-section-inner">
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h2>{heading}</h2>
+    <div class="text-section-body">
+      {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .text-section-inner {
+    max-width: 820px;
+  }
+
+  .text-section-inner h2 {
+    margin: 0 0 24px;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .text-section-body p {
+    color: var(--color-gray-600);
+    line-height: 1.8;
+    margin: 0 0 18px;
+  }
+
+  .text-section-body p:last-child {
+    margin-bottom: 0;
+  }
+</style>

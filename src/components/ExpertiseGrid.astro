@@ -1,0 +1,110 @@
+---
+import Icon from './Icon.astro';
+
+interface GridItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  expertise: {
+    eyebrow: string;
+    heading: string;
+    items: GridItem[];
+  };
+}
+
+const { expertise } = Astro.props;
+---
+
+<section class="expertise section">
+  <div class="container">
+    <div class="expertise-heading">
+      <span class="eyebrow">{expertise.eyebrow}</span>
+      <h2>{expertise.heading}</h2>
+    </div>
+    <div class="expertise-grid">
+      {
+        expertise.items.map((item) => (
+          <div class="expertise-card">
+            <div class="expertise-icon">
+              <Icon name={item.icon} />
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .expertise {
+    background: var(--color-gray-50);
+  }
+
+  .expertise-heading {
+    max-width: 620px;
+    margin: 0 0 40px;
+  }
+
+  .expertise-heading h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .expertise-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    border: 1px solid var(--color-gray-100);
+  }
+
+  .expertise-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--color-gray-100);
+    color: var(--color-indigo-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .expertise-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+  }
+
+  .expertise-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-gray-500);
+  }
+
+  @media (max-width: 900px) {
+    .expertise-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .expertise-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

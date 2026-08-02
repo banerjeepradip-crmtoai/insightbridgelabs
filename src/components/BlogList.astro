@@ -1,0 +1,119 @@
+---
+import Icon from './Icon.astro';
+import type { BlogContent } from '../content/blog/types';
+
+interface Props {
+  items: BlogContent['items'];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="blog-list-section section">
+  <div class="container">
+    <div class="blog-grid">
+      {
+        items.map((post) => (
+          <article class="post-card">
+            <span class="post-type">{post.type}</span>
+            <h2>{post.title}</h2>
+            <p>{post.excerpt}</p>
+            <div class="tags">
+              {post.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+            <a href={post.href} class="read-link" target="_blank" rel="noopener noreferrer">
+              Read on LinkedIn
+              <Icon name="external-link" class="read-icon" />
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 28px 26px;
+  }
+
+  .post-type {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-indigo-600);
+    background: var(--color-gray-100);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+
+  .post-card h2 {
+    margin: 0 0 10px;
+    font-size: 1.12rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-gray-900);
+  }
+
+  .post-card p {
+    margin: 0 0 18px;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--color-gray-500);
+    flex: 1;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--color-gray-50);
+    color: var(--color-gray-600);
+  }
+
+  .read-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-indigo-600);
+  }
+
+  .read-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  @media (max-width: 700px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

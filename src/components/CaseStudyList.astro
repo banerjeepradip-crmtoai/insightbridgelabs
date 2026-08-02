@@ -1,0 +1,124 @@
+---
+import type { CaseStudiesContent } from '../content/case-studies/types';
+
+interface Props {
+  items: CaseStudiesContent['items'];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="case-studies section">
+  <div class="container">
+    <div class="case-list">
+      {
+        items.map((item) => (
+          <article class="case-card">
+            <span class="case-category">{item.category}</span>
+            <h2>{item.title}</h2>
+
+            <div class="case-block">
+              <h3>Challenge</h3>
+              <p>{item.challenge}</p>
+            </div>
+            <div class="case-block">
+              <h3>Solution</h3>
+              <p>{item.solution}</p>
+            </div>
+            <div class="case-block">
+              <h3>Outcome</h3>
+              <p>{item.outcome}</p>
+            </div>
+
+            <div class="tags">
+              {item.tags.map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .case-list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    max-width: 860px;
+  }
+
+  .case-card {
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 36px 40px;
+  }
+
+  .case-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-indigo-600);
+    background: var(--color-gray-100);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+
+  .case-card h2 {
+    margin: 0 0 24px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .case-block {
+    margin-bottom: 20px;
+  }
+
+  .case-block h3 {
+    margin: 0 0 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-gray-400);
+  }
+
+  .case-block p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-gray-600);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-gray-100);
+  }
+
+  .tag {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--color-gray-50);
+    color: var(--color-gray-600);
+  }
+
+  @media (max-width: 700px) {
+    .case-card {
+      padding: 28px 24px;
+    }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  tagline: string;
+  intro: string;
+  statusLabel: string;
+}
+
+const { eyebrow, title, tagline, intro, statusLabel } = Astro.props;
+---
+
+<section class="product-hero">
+  <div class="container product-hero-inner">
+    <div class="badge-row">
+      <span class="eyebrow eyebrow-light">{eyebrow}</span>
+      <span class="status-badge">{statusLabel}</span>
+    </div>
+    <h1>{title}</h1>
+    <p class="tagline">{tagline}</p>
+    <p class="intro">{intro}</p>
+  </div>
+</section>
+
+<style>
+  .product-hero {
+    background: radial-gradient(ellipse at 80% 15%, #171f52 0%, var(--color-navy-950) 55%);
+    color: #fff;
+  }
+
+  .product-hero-inner {
+    padding: 80px 24px;
+    max-width: 800px;
+  }
+
+  .badge-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .eyebrow-light {
+    color: var(--color-purple-400);
+    margin-bottom: 0;
+  }
+
+  .status-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.35);
+  }
+
+  .product-hero-inner h1 {
+    margin: 10px 0 12px;
+    font-size: clamp(2.1rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .tagline {
+    margin: 0 0 22px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-purple-400);
+  }
+
+  .intro {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: #c4c8e6;
+  }
+
+  @media (max-width: 700px) {
+    .product-hero-inner {
+      padding: 56px 24px;
+    }
+  }
+</style>

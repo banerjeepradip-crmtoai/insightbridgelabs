@@ -1,0 +1,405 @@
+---
+import Icon from './Icon.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import BridgeMark from './BridgeMark.astro';
+import { languages } from '../i18n/languages';
+import type { HomeContent } from '../content/home/types';
+
+interface Props {
+  nav: HomeContent['nav'];
+  currentLang: string;
+}
+
+const { nav, currentLang } = Astro.props;
+const normalize = (path: string) => (path.length > 1 ? path.replace(/\/$/, '') : path);
+const currentPath = normalize(Astro.url.pathname);
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="brand">
+      <BridgeMark class="brand-mark" />
+      <span class="brand-text">
+        <span class="brand-main">InsightBridge</span>
+        <span class="brand-sub">LABS</span>
+      </span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        {
+          nav.links.map((link) => {
+            const hasActiveChild = link.children?.some((child) => normalize(child.href) === currentPath);
+            return (
+              <li class:list={['nav-item', { 'has-children': !!link.children }]}>
+                {link.children ? (
+                  <span class:list={['nav-link', { 'is-active': hasActiveChild }]}>
+                    {link.label}
+                    <Icon name="chevron-down" class="nav-chevron" />
+                  </span>
+                ) : (
+                  <a href={link.href} class:list={['nav-link', { 'is-active': normalize(link.href) === currentPath }]}>
+                    {link.label}
+                  </a>
+                )}
+                {link.children && (
+                  <ul class="nav-dropdown">
+                    {link.children.map((child) => (
+                      <li>
+                        <a href={child.href} class:list={{ 'is-active': normalize(child.href) === currentPath }}>
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <LanguageSwitcher currentLang={currentLang} />
+      <a href="/contact#contact-form" class="btn btn-primary btn-sm">{nav.requestDemo}</a>
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
+    <ul>
+      {
+        nav.links.map((link) => (
+          <li>
+            {link.children ? (
+              <span class="mobile-nav-label">{link.label}</span>
+            ) : (
+              <a href={link.href} class="mobile-nav-label">{link.label}</a>
+            )}
+            {link.children && (
+              <ul class="mobile-subnav">
+                {link.children.map((child) => (
+                  <li>
+                    <a href={child.href}>{child.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+      <li class="mobile-actions">
+        <a href="/contact#contact-form" class="btn btn-primary">{nav.requestDemo}</a>
+      </li>
+      <li class="mobile-lang">
+        <span class="mobile-lang-label">Language</span>
+        <div class="mobile-lang-options">
+          {
+            languages.map((lang) =>
+              lang.ready ? (
+                <a
+                  href={lang.code === 'en' ? '/' : `/${lang.code}/`}
+                  class:list={['mobile-lang-pill', { 'is-active': currentLang === lang.code }]}
+                >
+                  {lang.code.toUpperCase()}
+                </a>
+              ) : (
+                <span class="mobile-lang-pill is-disabled">{lang.code.toUpperCase()}</span>
+              ),
+            )
+          }
+        </div>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #fff;
+    border-bottom: 1px solid var(--color-gray-100);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 76px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    color: var(--color-indigo-600);
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+
+  .brand-main {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .brand-main::first-letter,
+  .brand-sub {
+    color: var(--color-indigo-600);
+  }
+
+  .brand-sub {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    margin-top: 2px;
+  }
+
+  .primary-nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .primary-nav > ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-gray-600);
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover,
+  .nav-link.is-active {
+    color: var(--color-indigo-600);
+  }
+
+  .nav-chevron {
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+  }
+
+  .nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, 6px);
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    min-width: 210px;
+    background: #fff;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-gray-100);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  }
+
+  .nav-item.has-children:hover .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+
+  .nav-dropdown a {
+    display: block;
+    padding: 9px 10px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--color-gray-600);
+  }
+
+  .nav-dropdown a:hover {
+    background: var(--color-gray-50);
+    color: var(--color-indigo-600);
+  }
+
+  .nav-dropdown a.is-active {
+    color: var(--color-indigo-600);
+    font-weight: 600;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .btn-sm {
+    padding: 9px 18px;
+    font-size: 0.88rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .menu-toggle span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--color-gray-900);
+    border-radius: 2px;
+  }
+
+  .mobile-nav {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    background: #fff;
+    border-top: 1px solid var(--color-gray-100);
+    transition: max-height 0.25s ease;
+  }
+
+  .mobile-nav.is-open {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .mobile-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px 24px 20px;
+  }
+
+  .mobile-nav-label {
+    display: block;
+    padding: 12px 0;
+    font-weight: 600;
+    color: var(--color-gray-900);
+    border-bottom: 1px solid var(--color-gray-100);
+  }
+
+  .mobile-subnav {
+    list-style: none;
+    margin: 0 0 8px;
+    padding: 0 0 0 14px;
+  }
+
+  .mobile-subnav a {
+    display: block;
+    padding: 8px 0;
+    color: var(--color-gray-500);
+    font-size: 0.9rem;
+  }
+
+  .mobile-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 16px;
+  }
+
+  .mobile-actions a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .mobile-lang {
+    padding-top: 18px;
+  }
+
+  .mobile-lang-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-gray-400);
+    margin-bottom: 10px;
+  }
+
+  .mobile-lang-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .mobile-lang-pill {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-gray-200);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-gray-500);
+  }
+
+  .mobile-lang-pill.is-active {
+    border-color: var(--color-indigo-600);
+    color: var(--color-indigo-600);
+  }
+
+  .mobile-lang-pill.is-disabled {
+    color: var(--color-gray-200);
+  }
+
+  @media (max-width: 1080px) {
+    .primary-nav,
+    .header-actions .btn,
+    .header-actions .lang-switcher {
+      display: none;
+    }
+
+    .menu-toggle {
+      display: flex;
+    }
+
+    .mobile-nav {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  if (toggle && mobileNav) {
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      toggle.classList.toggle('is-active', isOpen);
+    });
+  }
+</script>

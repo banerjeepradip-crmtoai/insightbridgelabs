@@ -1,0 +1,81 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  differentiators: {
+    heading: string;
+    items: string[];
+  };
+  background?: 'gray' | 'white';
+}
+
+const { differentiators, background = 'gray' } = Astro.props;
+---
+
+<section class:list={['differentiators', 'section', { 'bg-white': background === 'white' }]}>
+  <div class="container">
+    <h2>{differentiators.heading}</h2>
+    <ul class="diff-list">
+      {
+        differentiators.items.map((item) => (
+          <li>
+            <Icon name="check" class="diff-icon" />
+            <span>{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .differentiators {
+    background: var(--color-gray-50);
+  }
+
+  .differentiators.bg-white {
+    background: #fff;
+  }
+
+  .differentiators h2 {
+    margin: 0 0 32px;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .diff-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 32px;
+    max-width: 900px;
+  }
+
+  .diff-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-gray-600);
+  }
+
+  .diff-icon {
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    border-radius: 50%;
+    background: var(--color-gray-100);
+    color: var(--color-indigo-600);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 700px) {
+    .diff-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,98 @@
+---
+import BridgeIllustration from './BridgeIllustration.astro';
+import type { HomeContent } from '../content/home/types';
+
+interface Props {
+  hero: HomeContent['hero'];
+}
+
+const { hero } = Astro.props;
+const [line1, line2] = hero.heading.split('\n');
+---
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <h1>
+        {line1}<br />
+        {line2}<span class="accent">{hero.headingAccent}</span>
+      </h1>
+      <p>{hero.body}</p>
+      <div class="hero-actions">
+        <a href="/services/ai-governance" class="btn btn-primary">{hero.primaryCta}</a>
+        <a href="/contact#contact-form" class="btn btn-outline-light">{hero.secondaryCta}</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <BridgeIllustration />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: radial-gradient(ellipse at 75% 20%, #171f52 0%, var(--color-navy-950) 55%);
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: 40px;
+    padding: 96px 24px;
+    min-height: 620px;
+  }
+
+  .hero-copy h1 {
+    margin: 0 0 22px;
+    font-size: clamp(2.1rem, 4vw, 3.1rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .accent {
+    background: var(--color-accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero-copy p {
+    max-width: 480px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #c4c8e6;
+    margin: 0 0 34px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 900px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      padding: 64px 24px;
+      text-align: left;
+    }
+
+    .hero-copy p {
+      max-width: none;
+    }
+
+    .hero-visual {
+      order: -1;
+    }
+  }
+</style>

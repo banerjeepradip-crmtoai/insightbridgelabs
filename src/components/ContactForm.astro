@@ -1,0 +1,299 @@
+---
+import { countryDialCodes } from '../data/countryDialCodes';
+import type { ContactContent } from '../content/contact/types';
+
+interface Props {
+  form: ContactContent['form'];
+}
+
+const { form } = Astro.props;
+---
+
+<div class="contact-form-card">
+  <h2>{form.heading}</h2>
+  <form id="contact-form" data-email={form.email}>
+    <div class="field-row">
+      <label>
+        <span>Name</span>
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>Email</span>
+        <input type="email" name="email" required autocomplete="email" id="field-email" />
+      </label>
+    </div>
+
+    <label>
+      <span id="phone-label">Phone (optional)</span>
+      <div class="phone-row">
+        <select name="phone_country" id="field-phone-country" aria-label="Country code">
+          {
+            countryDialCodes.map((c) => (
+              <option value={c.dial} selected={c.iso === 'SE'}>
+                {c.dial} {c.name}
+              </option>
+            ))
+          }
+        </select>
+        <input type="tel" name="phone_number" id="field-phone-number" autocomplete="tel" placeholder="70 540 90 44" />
+      </div>
+      <span class="field-hint" id="phone-hint">Required if you use a personal email address (Gmail, Hotmail, etc.)</span>
+    </label>
+
+    <label>
+      <span>Company (optional)</span>
+      <input type="text" name="company" autocomplete="organization" />
+    </label>
+
+    <label>
+      <span>Time to Contact (optional)</span>
+      <select name="time_to_contact">
+        <option value="">No preference</option>
+        <option value="Weekday mornings (before 12:00 CET)">Weekday mornings (before 12:00 CET)</option>
+        <option value="Weekday afternoons (12:00–17:00 CET)">Weekday afternoons (12:00–17:00 CET)</option>
+        <option value="Weekday evenings (after 17:00 CET)">Weekday evenings (after 17:00 CET)</option>
+        <option value="Weekends">Weekends</option>
+      </select>
+      <span class="field-hint">A rough preference for when we call — for a confirmed, bookable slot, use "Schedule a Call" further down this page instead.</span>
+    </label>
+
+    <label>
+      <span>Message</span>
+      <textarea name="message" rows="5" required />
+    </label>
+    <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
+    <button type="submit" class="btn btn-primary">{form.submitLabel}</button>
+    <p class="form-note">{form.disclaimer}</p>
+    <p class="form-status" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+<style>
+  .contact-form-card {
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 36px;
+  }
+
+  .contact-form-card h2 {
+    margin: 0 0 22px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-600);
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--color-gray-900);
+    padding: 10px 12px;
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    resize: vertical;
+    background: #fff;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--color-indigo-600);
+  }
+
+  .phone-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .phone-row select {
+    flex: 0 0 140px;
+    max-width: 140px;
+  }
+
+  .phone-row input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .field-hint {
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: var(--color-gray-400);
+  }
+
+  #phone-label.is-required::after {
+    content: ' *';
+    color: #b91c1c;
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  button {
+    align-self: flex-start;
+  }
+
+  button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .form-note {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-gray-400);
+  }
+
+  .form-status {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-height: 1.2em;
+  }
+
+  .form-status.is-success {
+    color: #15803d;
+  }
+
+  .form-status.is-error {
+    color: #b91c1c;
+  }
+
+  @media (max-width: 560px) {
+    .field-row {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-form-card {
+      padding: 26px 22px;
+    }
+  }
+</style>
+
+<script>
+  const GENERIC_EMAIL_DOMAINS = new Set([
+    'gmail.com',
+    'googlemail.com',
+    'yahoo.com',
+    'yahoo.co.uk',
+    'hotmail.com',
+    'outlook.com',
+    'live.com',
+    'msn.com',
+    'aol.com',
+    'icloud.com',
+    'me.com',
+    'mac.com',
+    'protonmail.com',
+    'proton.me',
+    'gmx.com',
+    'gmx.net',
+    'mail.com',
+    'yandex.com',
+    'yandex.ru',
+    'zoho.com',
+    'hey.com',
+  ]);
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const statusEl = form?.querySelector('.form-status') as HTMLElement | null;
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  const emailField = document.getElementById('field-email') as HTMLInputElement | null;
+  const phoneNumberField = document.getElementById('field-phone-number') as HTMLInputElement | null;
+  const phoneLabel = document.getElementById('phone-label') as HTMLElement | null;
+  const phoneHint = document.getElementById('phone-hint') as HTMLElement | null;
+
+  function isGenericEmail(email: string): boolean {
+    const domain = email.split('@')[1]?.toLowerCase().trim();
+    return !!domain && GENERIC_EMAIL_DOMAINS.has(domain);
+  }
+
+  function syncPhoneRequirement() {
+    if (!emailField || !phoneNumberField || !phoneLabel || !phoneHint) return;
+    const required = isGenericEmail(emailField.value);
+    phoneNumberField.required = required;
+    phoneLabel.textContent = required ? 'Phone' : 'Phone (optional)';
+    phoneLabel.classList.toggle('is-required', required);
+    phoneHint.textContent = required
+      ? "You're using a personal email address, so a phone number helps us actually reach you."
+      : 'Required if you use a personal email address (Gmail, Hotmail, etc.)';
+  }
+
+  emailField?.addEventListener('input', syncPhoneRequirement);
+  emailField?.addEventListener('blur', syncPhoneRequirement);
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!statusEl || !submitBtn || !form) return;
+
+    syncPhoneRequirement();
+    if (!form.reportValidity()) return;
+
+    const email = form.dataset.email ?? '';
+    const formData = new FormData(form);
+
+    const phoneCountry = String(formData.get('phone_country') ?? '');
+    const phoneNumber = String(formData.get('phone_number') ?? '').trim();
+    formData.delete('phone_country');
+    formData.delete('phone_number');
+    if (phoneNumber) formData.set('phone', `${phoneCountry} ${phoneNumber}`);
+
+    formData.set('_subject', `New inquiry from ${String(formData.get('name') ?? 'website visitor')}`);
+    formData.set('_captcha', 'false');
+    formData.set('_template', 'table');
+
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Sending…';
+    statusEl.className = 'form-status';
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${email}`, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Request failed');
+
+      form.reset();
+      syncPhoneRequirement();
+      statusEl.textContent = "Thanks — your message is on its way. We'll get back to you soon.";
+      statusEl.className = 'form-status is-success';
+    } catch {
+      statusEl.textContent = `Something went wrong. Please email us directly at ${email}.`;
+      statusEl.className = 'form-status is-error';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>

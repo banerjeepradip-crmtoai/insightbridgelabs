@@ -1,0 +1,61 @@
+---
+import type { ServiceContent } from '../content/services/types';
+
+interface Props {
+  hero: ServiceContent['hero'];
+}
+
+const { hero } = Astro.props;
+---
+
+<section class="service-hero">
+  <div class="container service-hero-inner">
+    <span class="eyebrow eyebrow-light">{hero.eyebrow}</span>
+    <h1>{hero.title}</h1>
+    <p class="tagline">{hero.tagline}</p>
+    <p class="intro">{hero.intro}</p>
+  </div>
+</section>
+
+<style>
+  .service-hero {
+    background: radial-gradient(ellipse at 80% 15%, #171f52 0%, var(--color-navy-950) 55%);
+    color: #fff;
+  }
+
+  .service-hero-inner {
+    padding: 80px 24px;
+    max-width: 760px;
+  }
+
+  .eyebrow-light {
+    color: var(--color-purple-400);
+  }
+
+  .service-hero-inner h1 {
+    margin: 10px 0 12px;
+    font-size: clamp(2.1rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .tagline {
+    margin: 0 0 22px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-purple-400);
+  }
+
+  .intro {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: #c4c8e6;
+  }
+
+  @media (max-width: 700px) {
+    .service-hero-inner {
+      padding: 56px 24px;
+    }
+  }
+</style>

@@ -1,0 +1,102 @@
+---
+interface Step {
+  step: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  process: {
+    heading: string;
+    steps: Step[];
+  };
+  columns?: 3 | 4;
+}
+
+const { process, columns = 4 } = Astro.props;
+---
+
+<section class="process section">
+  <div class="container">
+    <h2>{process.heading}</h2>
+    <ol class:list={['process-steps', `cols-${columns}`]}>
+      {
+        process.steps.map((step) => (
+          <li class="process-step">
+            <span class="step-number">{step.step}</span>
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .process h2 {
+    margin: 0 0 32px;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .process-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 28px;
+  }
+
+  .process-steps.cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .process-steps.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .process-step {
+    position: relative;
+    padding-top: 8px;
+    border-top: 2px solid var(--color-indigo-600);
+  }
+
+  .step-number {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-indigo-600);
+    margin-bottom: 10px;
+  }
+
+  .process-step h3 {
+    margin: 0 0 8px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+  }
+
+  .process-step p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-gray-500);
+  }
+
+  @media (max-width: 900px) {
+    .process-steps.cols-4,
+    .process-steps.cols-3 {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 24px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .process-steps.cols-4,
+    .process-steps.cols-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

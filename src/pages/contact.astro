@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceHero from '../components/ServiceHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import ContactInfo from '../components/ContactInfo.astro';
+import ScheduleCallCard from '../components/ScheduleCallCard.astro';
+import GitHubAccessCard from '../components/GitHubAccessCard.astro';
+import { getHomeContent } from '../content/home';
+import { getContactContent } from '../content/contact';
+
+const currentLang = 'en';
+const homeContent = getHomeContent(currentLang);
+const contact = getContactContent(currentLang);
+---
+
+<BaseLayout meta={contact.meta} nav={homeContent.nav} footer={homeContent.footer} currentLang={currentLang}>
+  <ServiceHero hero={contact.hero} />
+
+  <section class="contact-main section">
+    <div class="container contact-grid">
+      <ContactForm form={contact.form} />
+      <ContactInfo info={contact.info} />
+    </div>
+  </section>
+
+  <ScheduleCallCard schedule={contact.schedule} />
+
+  <GitHubAccessCard github={contact.github} />
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,83 @@
+---
+import Icon from './Icon.astro';
+import type { ContactContent } from '../content/contact/types';
+
+interface Props {
+  info: ContactContent['info'];
+}
+
+const { info } = Astro.props;
+---
+
+<div class="contact-info-card">
+  <h2>{info.heading}</h2>
+  <ul>
+    <li>
+      <Icon name="mail" class="info-icon" />
+      <a href={`mailto:${info.email}`}>{info.email}</a>
+    </li>
+    <li>
+      <Icon name="phone" class="info-icon" />
+      <a href={`tel:${info.phone.replace(/\s+/g, '')}`}>{info.phone}</a>
+    </li>
+    <li>
+      <Icon name="location" class="info-icon" />
+      <span>{info.location}</span>
+    </li>
+    <li>
+      <Icon name="external-link" class="info-icon" />
+      <a href={info.linkedinHref} target="_blank" rel="noopener noreferrer">{info.linkedinLabel}</a>
+    </li>
+  </ul>
+</div>
+
+<style>
+  .contact-info-card {
+    background: var(--color-gray-50);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+  }
+
+  .contact-info-card h2 {
+    margin: 0 0 20px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.92rem;
+  }
+
+  .info-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--color-indigo-600);
+  }
+
+  li a {
+    color: var(--color-gray-600);
+    font-weight: 600;
+  }
+
+  li a:hover {
+    color: var(--color-indigo-600);
+  }
+
+  li span {
+    color: var(--color-gray-600);
+  }
+</style>

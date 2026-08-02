@@ -1,0 +1,87 @@
+---
+import Icon from './Icon.astro';
+import type { HomeContent } from '../content/home/types';
+
+interface Props {
+  stats: HomeContent['stats'];
+}
+
+const { stats } = Astro.props;
+---
+
+<section class="stats">
+  <div class="container stats-grid">
+    {
+      stats.map((stat) => (
+        <div class="stat-item">
+          <div class="stat-icon">
+            <Icon name={stat.icon} />
+          </div>
+          <div>
+            <p class="stat-value">{stat.value}</p>
+            <p class="stat-label">{stat.label}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .stats {
+    background: var(--color-gray-50);
+    padding: 48px 0;
+  }
+
+  .stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 28px 56px;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1 1 200px;
+    max-width: 260px;
+  }
+
+  .stat-icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--color-gray-100);
+    color: var(--color-indigo-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stat-icon .icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .stat-value {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .stat-label {
+    margin: 2px 0 0;
+    font-size: 0.88rem;
+    color: var(--color-gray-500);
+  }
+
+  @media (max-width: 480px) {
+    .stat-item {
+      flex: 1 1 100%;
+      max-width: none;
+    }
+  }
+</style>
