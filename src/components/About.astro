@@ -1,12 +1,15 @@
 ---
 import Icon from './Icon.astro';
+import { getUiStrings } from '../i18n/ui';
 import type { HomeContent } from '../content/home/types';
 
 interface Props {
   about: HomeContent['about'];
+  lang: string;
 }
 
-const { about } = Astro.props;
+const { about, lang } = Astro.props;
+const t = getUiStrings(lang);
 ---
 
 <section class="about section">
@@ -15,7 +18,7 @@ const { about } = Astro.props;
       <span class="eyebrow">{about.eyebrow}</span>
       <h2>{about.heading}</h2>
       <p>{about.body}</p>
-      <a href="/about" class="btn btn-primary">{about.cta}</a>
+      <a href={about.ctaHref} class="btn btn-primary">{about.cta}</a>
     </div>
 
     <div class="about-cards">
@@ -31,7 +34,7 @@ const { about } = Astro.props;
               <h3>{card.title}</h3>
               <p>{card.description}</p>
               <span class="card-link">
-                Learn More <Icon name="arrow-right" />
+                {t.learnMore} <Icon name="arrow-right" />
               </span>
             </div>
           </a>

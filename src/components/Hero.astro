@@ -19,8 +19,8 @@ const [line1, line2] = hero.heading.split('\n');
       </h1>
       <p>{hero.body}</p>
       <div class="hero-actions">
-        <a href="/services/ai-governance" class="btn btn-primary">{hero.primaryCta}</a>
-        <a href="/contact#contact-form" class="btn btn-outline-light">{hero.secondaryCta}</a>
+        <a href={hero.primaryCtaHref} class="btn btn-primary">{hero.primaryCta}</a>
+        <a href={hero.secondaryCtaHref} class="btn btn-outline-light">{hero.secondaryCta}</a>
       </div>
     </div>
     <div class="hero-visual">

@@ -10,7 +10,7 @@ export interface LanguageInfo {
 
 export const languages: LanguageInfo[] = [
   { code: 'en', label: 'English', nativeLabel: 'English', ready: true },
-  { code: 'sv', label: 'Swedish', nativeLabel: 'Svenska', ready: false },
+  { code: 'sv', label: 'Swedish', nativeLabel: 'Svenska', ready: true },
   { code: 'no', label: 'Norwegian', nativeLabel: 'Norsk', ready: false },
   { code: 'da', label: 'Danish', nativeLabel: 'Dansk', ready: false },
 ];

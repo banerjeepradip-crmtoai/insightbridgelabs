@@ -1,18 +1,18 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ServiceHero from '../../components/ServiceHero.astro';
-import ExpertiseGrid from '../../components/ExpertiseGrid.astro';
-import ServiceProcess from '../../components/ServiceProcess.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import { getHomeContent } from '../../content/home';
-import { getAllServiceSlugs, getServiceContent } from '../../content/services';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ServiceHero from '../../../components/ServiceHero.astro';
+import ExpertiseGrid from '../../../components/ExpertiseGrid.astro';
+import ServiceProcess from '../../../components/ServiceProcess.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import { getHomeContent } from '../../../content/home';
+import { getAllServiceSlugs, getServiceContent } from '../../../content/services';
 
 export function getStaticPaths() {
-  return getAllServiceSlugs('en').map((slug) => ({ params: { slug } }));
+  return getAllServiceSlugs('sv').map((slug) => ({ params: { slug } }));
 }
 
 const { slug } = Astro.params;
-const currentLang = 'en';
+const currentLang = 'sv';
 const homeContent = getHomeContent(currentLang);
 const service = getServiceContent(currentLang, slug!)!;
 ---

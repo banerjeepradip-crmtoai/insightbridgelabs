@@ -1,21 +1,21 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProductHero from '../../components/ProductHero.astro';
-import TextSection from '../../components/TextSection.astro';
-import ServiceProcess from '../../components/ServiceProcess.astro';
-import Differentiators from '../../components/Differentiators.astro';
-import TechStackTags from '../../components/TechStackTags.astro';
-import ProductDisclaimer from '../../components/ProductDisclaimer.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import { getHomeContent } from '../../content/home';
-import { getAllProductSlugs, getProductContent } from '../../content/products';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ProductHero from '../../../components/ProductHero.astro';
+import TextSection from '../../../components/TextSection.astro';
+import ServiceProcess from '../../../components/ServiceProcess.astro';
+import Differentiators from '../../../components/Differentiators.astro';
+import TechStackTags from '../../../components/TechStackTags.astro';
+import ProductDisclaimer from '../../../components/ProductDisclaimer.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import { getHomeContent } from '../../../content/home';
+import { getAllProductSlugs, getProductContent } from '../../../content/products';
 
 export function getStaticPaths() {
-  return getAllProductSlugs('en').map((slug) => ({ params: { slug } }));
+  return getAllProductSlugs('sv').map((slug) => ({ params: { slug } }));
 }
 
 const { slug } = Astro.params;
-const currentLang = 'en';
+const currentLang = 'sv';
 const homeContent = getHomeContent(currentLang);
 const product = getProductContent(currentLang, slug!)!;
 ---

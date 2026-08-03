@@ -1,12 +1,15 @@
 ---
 import { countryDialCodes } from '../data/countryDialCodes';
+import { getUiStrings } from '../i18n/ui';
 import type { ContactContent } from '../content/contact/types';
 
 interface Props {
   form: ContactContent['form'];
+  lang: string;
 }
 
-const { form } = Astro.props;
+const { form, lang } = Astro.props;
+const t = getUiStrings(lang);
 ---
 
 <div class="contact-form-card">
@@ -14,19 +17,19 @@ const { form } = Astro.props;
   <form id="contact-form" data-email={form.email}>
     <div class="field-row">
       <label>
-        <span>Name</span>
+        <span>{t.formName}</span>
         <input type="text" name="name" required autocomplete="name" />
       </label>
       <label>
-        <span>Email</span>
+        <span>{t.formEmail}</span>
         <input type="email" name="email" required autocomplete="email" id="field-email" />
       </label>
     </div>
 
     <label>
-      <span id="phone-label">Phone (optional)</span>
+      <span id="phone-label">{t.formPhoneOptional}</span>
       <div class="phone-row">
-        <select name="phone_country" id="field-phone-country" aria-label="Country code">
+        <select name="phone_country" id="field-phone-country" aria-label={t.formCountryCodeLabel}>
           {
             countryDialCodes.map((c) => (
               <option value={c.dial} selected={c.iso === 'SE'}>
@@ -35,30 +38,30 @@ const { form } = Astro.props;
             ))
           }
         </select>
-        <input type="tel" name="phone_number" id="field-phone-number" autocomplete="tel" placeholder="70 540 90 44" />
+        <input type="tel" name="phone_number" id="field-phone-number" autocomplete="tel" placeholder={t.formPhonePlaceholder} />
       </div>
-      <span class="field-hint" id="phone-hint">Required if you use a personal email address (Gmail, Hotmail, etc.)</span>
+      <span class="field-hint" id="phone-hint">{t.formPhoneHintOptional}</span>
     </label>
 
     <label>
-      <span>Company (optional)</span>
+      <span>{t.formCompanyOptional}</span>
       <input type="text" name="company" autocomplete="organization" />
     </label>
 
     <label>
-      <span>Time to Contact (optional)</span>
+      <span>{t.formTimeToContact}</span>
       <select name="time_to_contact">
-        <option value="">No preference</option>
-        <option value="Weekday mornings (before 12:00 CET)">Weekday mornings (before 12:00 CET)</option>
-        <option value="Weekday afternoons (12:00–17:00 CET)">Weekday afternoons (12:00–17:00 CET)</option>
-        <option value="Weekday evenings (after 17:00 CET)">Weekday evenings (after 17:00 CET)</option>
-        <option value="Weekends">Weekends</option>
+        <option value="">{t.formTimeNoPreference}</option>
+        <option value={t.formTimeMorning}>{t.formTimeMorning}</option>
+        <option value={t.formTimeAfternoon}>{t.formTimeAfternoon}</option>
+        <option value={t.formTimeEvening}>{t.formTimeEvening}</option>
+        <option value={t.formTimeWeekend}>{t.formTimeWeekend}</option>
       </select>
-      <span class="field-hint">A rough preference for when we call — for a confirmed, bookable slot, use "Schedule a Call" further down this page instead.</span>
+      <span class="field-hint">{t.formTimeHint}</span>
     </label>
 
     <label>
-      <span>Message</span>
+      <span>{t.formMessage}</span>
       <textarea name="message" rows="5" required />
     </label>
     <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
@@ -200,7 +203,17 @@ const { form } = Astro.props;
   }
 </style>
 
-<script>
+<script
+  define:vars={{
+    phoneOptionalLabel: t.formPhoneOptional,
+    phoneRequiredLabel: t.formPhoneRequired,
+    phoneHintOptional: t.formPhoneHintOptional,
+    phoneHintRequired: t.formPhoneHintRequired,
+    sendingText: t.formSending,
+    successText: t.formSuccess,
+    errorTemplate: t.formError,
+  }}
+>
   const GENERIC_EMAIL_DOMAINS = new Set([
     'gmail.com',
     'googlemail.com',
@@ -225,15 +238,15 @@ const { form } = Astro.props;
     'hey.com',
   ]);
 
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const statusEl = form?.querySelector('.form-status') as HTMLElement | null;
-  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
-  const emailField = document.getElementById('field-email') as HTMLInputElement | null;
-  const phoneNumberField = document.getElementById('field-phone-number') as HTMLInputElement | null;
-  const phoneLabel = document.getElementById('phone-label') as HTMLElement | null;
-  const phoneHint = document.getElementById('phone-hint') as HTMLElement | null;
+  const form = document.getElementById('contact-form');
+  const statusEl = form?.querySelector('.form-status');
+  const submitBtn = form?.querySelector('button[type="submit"]');
+  const emailField = document.getElementById('field-email');
+  const phoneNumberField = document.getElementById('field-phone-number');
+  const phoneLabel = document.getElementById('phone-label');
+  const phoneHint = document.getElementById('phone-hint');
 
-  function isGenericEmail(email: string): boolean {
+  function isGenericEmail(email) {
     const domain = email.split('@')[1]?.toLowerCase().trim();
     return !!domain && GENERIC_EMAIL_DOMAINS.has(domain);
   }
@@ -242,11 +255,9 @@ const { form } = Astro.props;
     if (!emailField || !phoneNumberField || !phoneLabel || !phoneHint) return;
     const required = isGenericEmail(emailField.value);
     phoneNumberField.required = required;
-    phoneLabel.textContent = required ? 'Phone' : 'Phone (optional)';
+    phoneLabel.textContent = required ? phoneRequiredLabel : phoneOptionalLabel;
     phoneLabel.classList.toggle('is-required', required);
-    phoneHint.textContent = required
-      ? "You're using a personal email address, so a phone number helps us actually reach you."
-      : 'Required if you use a personal email address (Gmail, Hotmail, etc.)';
+    phoneHint.textContent = required ? phoneHintRequired : phoneHintOptional;
   }
 
   emailField?.addEventListener('input', syncPhoneRequirement);
@@ -273,7 +284,7 @@ const { form } = Astro.props;
     formData.set('_template', 'table');
 
     submitBtn.disabled = true;
-    statusEl.textContent = 'Sending…';
+    statusEl.textContent = sendingText;
     statusEl.className = 'form-status';
 
     try {
@@ -287,10 +298,10 @@ const { form } = Astro.props;
 
       form.reset();
       syncPhoneRequirement();
-      statusEl.textContent = "Thanks — your message is on its way. We'll get back to you soon.";
+      statusEl.textContent = successText;
       statusEl.className = 'form-status is-success';
     } catch {
-      statusEl.textContent = `Something went wrong. Please email us directly at ${email}.`;
+      statusEl.textContent = errorTemplate.replace('{email}', email);
       statusEl.className = 'form-status is-error';
     } finally {
       submitBtn.disabled = false;

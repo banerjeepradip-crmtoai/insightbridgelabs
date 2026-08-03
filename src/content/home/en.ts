@@ -45,7 +45,9 @@ export const en: HomeContent = {
     headingAccent: 'Intelligent Futures.',
     body: 'InsightBridge Labs helps organizations transform data and AI into real business value with governance, strategy, and enterprise-grade solutions.',
     primaryCta: 'Explore Services',
+    primaryCtaHref: '/services/ai-governance',
     secondaryCta: 'Request Demo',
+    secondaryCtaHref: '/contact#contact-form',
   },
   features: [
     {
@@ -79,6 +81,7 @@ export const en: HomeContent = {
     heading: 'Your Bridge to AI-Powered Business Transformation',
     body: "At InsightBridge Labs, we combine deep industry expertise with cutting-edge AI to help businesses innovate, automate, and scale responsibly. From strategy to implementation, we're with you at every step.",
     cta: 'Learn More About Us',
+    ctaHref: '/about',
     cards: [
       {
         icon: 'shield-check',

@@ -1,12 +1,15 @@
 ---
 import Icon from './Icon.astro';
+import { getUiStrings } from '../i18n/ui';
 import type { ContactContent } from '../content/contact/types';
 
 interface Props {
   schedule: ContactContent['schedule'];
+  lang: string;
 }
 
-const { schedule } = Astro.props;
+const { schedule, lang } = Astro.props;
+const t = getUiStrings(lang);
 ---
 
 <section class="schedule section">
@@ -21,7 +24,7 @@ const { schedule } = Astro.props;
         </a>
       </div>
       <div class="schedule-embed">
-        <iframe src={schedule.embedSrc} title="Book a call" loading="eager" />
+        <iframe src={schedule.embedSrc} title={t.bookACall} loading="eager" />
       </div>
     </div>
   </div>

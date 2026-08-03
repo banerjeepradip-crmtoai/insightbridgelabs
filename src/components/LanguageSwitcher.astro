@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import { languages } from '../i18n/languages';
+import { getUiStrings } from '../i18n/ui';
 
 interface Props {
   currentLang: string;
@@ -8,6 +9,7 @@ interface Props {
 
 const { currentLang } = Astro.props;
 const current = languages.find((l) => l.code === currentLang) ?? languages[0];
+const t = getUiStrings(currentLang);
 ---
 
 <div class="lang-switcher">
@@ -31,7 +33,7 @@ const current = languages.find((l) => l.code === currentLang) ?? languages[0];
           ) : (
             <span role="menuitem" aria-disabled="true" class="lang-option is-disabled">
               <span>{lang.nativeLabel}</span>
-              <em>Soon</em>
+              <em>{t.langSoon}</em>
             </span>
           )}
         </li>

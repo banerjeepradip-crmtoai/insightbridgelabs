@@ -1,11 +1,14 @@
 ---
+import { getUiStrings } from '../i18n/ui';
 import type { CaseStudiesContent } from '../content/case-studies/types';
 
 interface Props {
   items: CaseStudiesContent['items'];
+  lang: string;
 }
 
-const { items } = Astro.props;
+const { items, lang } = Astro.props;
+const t = getUiStrings(lang);
 ---
 
 <section class="case-studies section">
@@ -18,15 +21,15 @@ const { items } = Astro.props;
             <h2>{item.title}</h2>
 
             <div class="case-block">
-              <h3>Challenge</h3>
+              <h3>{t.caseChallenge}</h3>
               <p>{item.challenge}</p>
             </div>
             <div class="case-block">
-              <h3>Solution</h3>
+              <h3>{t.caseSolution}</h3>
               <p>{item.solution}</p>
             </div>
             <div class="case-block">
-              <h3>Outcome</h3>
+              <h3>{t.caseOutcome}</h3>
               <p>{item.outcome}</p>
             </div>
 

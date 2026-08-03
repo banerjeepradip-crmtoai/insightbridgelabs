@@ -1,12 +1,15 @@
 ---
 import Icon from './Icon.astro';
+import { getUiStrings } from '../i18n/ui';
 import type { AboutContent } from '../content/about/types';
 
 interface Props {
   experience: AboutContent['experience'];
+  lang: string;
 }
 
-const { experience } = Astro.props;
+const { experience, lang } = Astro.props;
+const t = getUiStrings(lang);
 ---
 
 <section class="experience section">
@@ -17,7 +20,7 @@ const { experience } = Astro.props;
         <h2>{experience.heading}</h2>
       </div>
       <button type="button" class="timeline-toggle" id="experience-toggle" aria-expanded="false" aria-controls="experience-panel">
-        <span>Show Professional Experience</span>
+        <span>{t.showExperience}</span>
         <Icon name="chevron-down" class="toggle-icon" />
       </button>
     </div>
@@ -190,7 +193,7 @@ const { experience } = Astro.props;
   }
 </style>
 
-<script>
+<script define:vars={{ showLabel: t.showExperience, hideLabel: t.hideExperience }}>
   const toggle = document.getElementById('experience-toggle');
   const panel = document.getElementById('experience-panel');
   const label = toggle?.querySelector('span');
@@ -200,7 +203,7 @@ const { experience } = Astro.props;
       const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!isExpanded));
       panel.classList.toggle('is-collapsed', isExpanded);
-      label.textContent = isExpanded ? 'Show Professional Experience' : 'Hide Professional Experience';
+      label.textContent = isExpanded ? showLabel : hideLabel;
     });
   }
 </script>

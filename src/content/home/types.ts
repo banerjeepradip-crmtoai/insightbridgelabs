@@ -38,7 +38,9 @@ export interface HomeContent {
     headingAccent: string;
     body: string;
     primaryCta: string;
+    primaryCtaHref: string;
     secondaryCta: string;
+    secondaryCtaHref: string;
   };
   features: FeatureItem[];
   about: {
@@ -46,6 +48,7 @@ export interface HomeContent {
     heading: string;
     body: string;
     cta: string;
+    ctaHref: string;
     cards: ServiceCard[];
   };
   stats: StatItem[];

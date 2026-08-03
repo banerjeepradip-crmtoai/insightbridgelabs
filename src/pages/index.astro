@@ -13,6 +13,6 @@ const content = getHomeContent(currentLang);
 <BaseLayout meta={content.meta} nav={content.nav} footer={content.footer} currentLang={currentLang}>
   <Hero hero={content.hero} />
   <Features features={content.features} />
-  <About about={content.about} />
+  <About about={content.about} lang={currentLang} />
   <Stats stats={content.stats} />
 </BaseLayout>

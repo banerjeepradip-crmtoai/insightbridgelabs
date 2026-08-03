@@ -1,22 +1,36 @@
 import type { ProductContent } from './types';
 import { aiSolutionDevelopmentPlatform } from './ai-solution-development-platform';
 import { regulatoryIntelligencePlatform } from './regulatory-intelligence-platform';
+import { aiSolutionDevelopmentPlatform as aiSolutionDevelopmentPlatformSv } from './sv/ai-solution-development-platform';
+import { regulatoryIntelligencePlatform as regulatoryIntelligencePlatformSv } from './sv/regulatory-intelligence-platform';
+import { defaultLang } from '../../i18n/languages';
 
-// Add a new product by creating src/content/products/<slug>.ts (same shape as
-// the others) and registering it here — the [slug] route and nav both pick it up.
-const registry: Record<string, ProductContent> = {
-  'ai-solution-development-platform': aiSolutionDevelopmentPlatform,
-  'regulatory-intelligence-platform': regulatoryIntelligencePlatform,
+// Add a new product by creating src/content/products/<slug>.ts (English) and
+// src/content/products/sv/<slug>.ts (Swedish) with the same shape, then
+// registering both here — the [slug] routes and nav both pick them up.
+const registry: Record<string, Record<string, ProductContent>> = {
+  en: {
+    'ai-solution-development-platform': aiSolutionDevelopmentPlatform,
+    'regulatory-intelligence-platform': regulatoryIntelligencePlatform,
+  },
+  sv: {
+    'ai-solution-development-platform': aiSolutionDevelopmentPlatformSv,
+    'regulatory-intelligence-platform': regulatoryIntelligencePlatformSv,
+  },
 };
 
-export function getProductContent(slug: string): ProductContent | undefined {
-  return registry[slug];
+function langRegistry(lang: string): Record<string, ProductContent> {
+  return registry[lang] ?? registry[defaultLang];
 }
 
-export function getAllProductSlugs(): string[] {
-  return Object.keys(registry);
+export function getProductContent(lang: string, slug: string): ProductContent | undefined {
+  return langRegistry(lang)[slug];
 }
 
-export function getAllProducts(): ProductContent[] {
-  return Object.values(registry);
+export function getAllProductSlugs(lang: string): string[] {
+  return Object.keys(langRegistry(lang));
+}
+
+export function getAllProducts(lang: string): ProductContent[] {
+  return Object.values(langRegistry(lang));
 }

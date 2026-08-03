@@ -1,12 +1,15 @@
 ---
 import Icon from './Icon.astro';
+import { getUiStrings } from '../i18n/ui';
 import type { BlogContent } from '../content/blog/types';
 
 interface Props {
   items: BlogContent['items'];
+  lang: string;
 }
 
-const { items } = Astro.props;
+const { items, lang } = Astro.props;
+const t = getUiStrings(lang);
 ---
 
 <section class="blog-list-section section">
@@ -24,7 +27,7 @@ const { items } = Astro.props;
               ))}
             </div>
             <a href={post.href} class="read-link" target="_blank" rel="noopener noreferrer">
-              Read on LinkedIn
+              {t.readOnLinkedIn}
               <Icon name="external-link" class="read-icon" />
             </a>
           </article>
