@@ -54,6 +54,7 @@ export interface HomeContent {
   stats: StatItem[];
   footer: {
     tagline: string;
+    social: { icon: 'linkedin' | 'x' | 'instagram'; label: string; href: string | null }[];
     columns: { heading: string; links: { label: string; href: string }[] }[];
     copyright: string;
     orgNumber: string;

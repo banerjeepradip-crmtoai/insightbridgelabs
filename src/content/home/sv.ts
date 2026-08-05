@@ -113,6 +113,11 @@ export const sv: HomeContent = {
   ],
   footer: {
     tagline: 'Broar till insikt. Vi bygger intelligenta framtider.',
+    social: [
+      { icon: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/company/insight-bridge-consulting-ab/' },
+      { icon: 'x', label: 'X', href: null },
+      { icon: 'instagram', label: 'Instagram', href: null },
+    ],
     columns: [
       {
         heading: 'Företag',
