@@ -48,6 +48,37 @@ const GENERIC_EMAIL_DOMAINS = new Set([
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Same destination + service as the site's Contact form (ContactForm.astro),
+// so it reuses that address's existing formsubmit.co activation.
+const NOTIFY_EMAIL = 'banerjee.pradip@crmtoai.com';
+
+async function notifyRegistration({ name, email, company, phone, industry }) {
+  try {
+    await fetch(`https://formsubmit.co/ajax/${NOTIFY_EMAIL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        // formsubmit.co rejects requests with no Referer as non-browser spam —
+        // this must be a real, served page (any page on the site works).
+        Referer: 'https://www.insightbridgelabs.com/resources/prompt-library',
+      },
+      body: JSON.stringify({
+        _subject: `New Prompt Library registration: ${name} (${industry})`,
+        _template: 'table',
+        _captcha: 'false',
+        Name: name,
+        Email: email,
+        Company: company,
+        Phone: phone || '(not provided)',
+        Industry: industry,
+      }),
+    });
+  } catch {
+    // Best-effort only — a failed notification must never block the download.
+  }
+}
+
 function corsHeaders(origin) {
   const allow = ALLOWED_ORIGINS.has(origin) ? origin : '';
   return {
@@ -81,7 +112,7 @@ function isGenericEmail(email) {
   return !!domain && GENERIC_EMAIL_DOMAINS.has(domain);
 }
 
-async function handleRegister(request, env, origin) {
+async function handleRegister(request, env, ctx, origin) {
   let payload;
   try {
     payload = await request.json();
@@ -126,6 +157,8 @@ async function handleRegister(request, env, origin) {
     return jsonResponse({ error: 'server_error' }, 500, origin);
   }
 
+  ctx.waitUntil(notifyRegistration({ name, email, company, phone, industry }));
+
   const object = await env.DOWNLOADS.get(`${industry}.zip`);
   if (!object) {
     return jsonResponse({ error: 'file_missing' }, 500, origin);
@@ -140,7 +173,7 @@ async function handleRegister(request, env, origin) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get('Origin') ?? '';
     const url = new URL(request.url);
 
@@ -149,7 +182,7 @@ export default {
     }
 
     if (url.pathname === '/register' && request.method === 'POST') {
-      return handleRegister(request, env, origin);
+      return handleRegister(request, env, ctx, origin);
     }
 
     return jsonResponse({ error: 'not_found' }, 404, origin);
