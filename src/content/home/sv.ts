@@ -34,6 +34,7 @@ export const sv: HomeContent = {
         children: [
           { label: 'Blogg', href: '/sv/resources/blog' },
           { label: 'Fallstudier', href: '/sv/resources/case-studies' },
+          { label: 'Promptbibliotek', href: '/sv/resources/prompt-library' },
         ],
       },
       { label: 'Kontakt', href: '/sv/contact' },
@@ -147,10 +148,13 @@ export const sv: HomeContent = {
         links: [
           { label: 'Blogg', href: '/sv/resources/blog' },
           { label: 'Fallstudier', href: '/sv/resources/case-studies' },
+          { label: 'Promptbibliotek', href: '/sv/resources/prompt-library' },
         ],
       },
     ],
     copyright: `© ${new Date().getFullYear()} InsightBridge Labs. Alla rättigheter förbehållna.`,
     orgNumber: 'Org.nr: 559595-5419',
+    privacyLabel: 'Integritetspolicy',
+    privacyHref: '/sv/privacy',
   },
 };

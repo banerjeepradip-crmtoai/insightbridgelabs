@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceHero from '../../components/ServiceHero.astro';
+import PromptLibraryForm from '../../components/PromptLibraryForm.astro';
+import Icon from '../../components/Icon.astro';
+import { getHomeContent } from '../../content/home';
+import { getPromptLibraryContent } from '../../content/prompt-library';
+
+const currentLang = 'en';
+const homeContent = getHomeContent(currentLang);
+const promptLibrary = getPromptLibraryContent(currentLang);
+---
+
+<BaseLayout meta={promptLibrary.meta} nav={homeContent.nav} footer={homeContent.footer} currentLang={currentLang}>
+  <ServiceHero hero={promptLibrary.hero} />
+
+  <section class="pl-intro section">
+    <div class="container pl-intro-inner">
+      <h2>{promptLibrary.intro.heading}</h2>
+      <p>{promptLibrary.intro.body}</p>
+
+      <div class="industry-cards">
+        {
+          promptLibrary.industries.map((industry) => (
+            <div class="industry-card">
+              <div class="industry-card-icon">
+                <Icon name={industry.icon} />
+              </div>
+              <h3>{industry.label}</h3>
+              <p>{industry.description}</p>
+              <span class="industry-card-meta">
+                {industry.categoryCount} categories &middot; {industry.promptCount} prompts
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="pl-form section">
+    <div class="container">
+      <PromptLibraryForm form={promptLibrary.form} industries={promptLibrary.industries} lang={currentLang} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pl-intro-inner h2 {
+    margin: 0 0 12px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .pl-intro-inner > p {
+    margin: 0 0 32px;
+    max-width: 700px;
+    color: var(--color-gray-500);
+    line-height: 1.65;
+  }
+
+  .industry-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .industry-card {
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+  }
+
+  .industry-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--color-gray-900);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+  }
+
+  .industry-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+  }
+
+  .industry-card p {
+    margin: 0 0 14px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--color-gray-500);
+  }
+
+  .industry-card-meta {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-indigo-600);
+  }
+
+  .pl-form {
+    background: var(--color-gray-50, #f8fafc);
+  }
+
+  @media (max-width: 900px) {
+    .industry-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

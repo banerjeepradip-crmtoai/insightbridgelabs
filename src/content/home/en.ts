@@ -34,6 +34,7 @@ export const en: HomeContent = {
         children: [
           { label: 'Blog', href: '/resources/blog' },
           { label: 'Case Studies', href: '/resources/case-studies' },
+          { label: 'Prompt Library', href: '/resources/prompt-library' },
         ],
       },
       { label: 'Contact', href: '/contact' },
@@ -147,10 +148,13 @@ export const en: HomeContent = {
         links: [
           { label: 'Blog', href: '/resources/blog' },
           { label: 'Case Studies', href: '/resources/case-studies' },
+          { label: 'Prompt Library', href: '/resources/prompt-library' },
         ],
       },
     ],
     copyright: `© ${new Date().getFullYear()} InsightBridge Labs. All rights reserved.`,
     orgNumber: 'Org. Number: 559595-5419',
+    privacyLabel: 'Privacy Policy',
+    privacyHref: '/privacy',
   },
 };

@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceHero from '../components/ServiceHero.astro';
+import { getHomeContent } from '../content/home';
+import { getPrivacyContent } from '../content/privacy';
+
+const currentLang = 'en';
+const homeContent = getHomeContent(currentLang);
+const privacy = getPrivacyContent(currentLang);
+---
+
+<BaseLayout meta={privacy.meta} nav={homeContent.nav} footer={homeContent.footer} currentLang={currentLang}>
+  <ServiceHero hero={privacy.hero} />
+
+  <section class="privacy-body section">
+    <div class="container privacy-inner">
+      <p class="last-updated">Last updated: {privacy.lastUpdated}</p>
+      {
+        privacy.sections.map((section) => (
+          <div class="privacy-section">
+            <h2>{section.heading}</h2>
+            {section.body.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </div>
+        ))
+      }
+      <div class="privacy-section">
+        <h2>Contact us</h2>
+        <p>
+          For any privacy question or request, email us at
+          {' '}<a href={`mailto:${privacy.contactEmail}`}>{privacy.contactEmail}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy-inner {
+    max-width: 760px;
+  }
+
+  .last-updated {
+    font-size: 0.85rem;
+    color: var(--color-gray-400);
+    margin: 0 0 32px;
+  }
+
+  .privacy-section {
+    margin-bottom: 32px;
+  }
+
+  .privacy-section h2 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+    margin: 0 0 12px;
+  }
+
+  .privacy-section p {
+    font-size: 0.94rem;
+    line-height: 1.7;
+    color: var(--color-gray-500);
+    margin: 0 0 12px;
+  }
+
+  .privacy-section a {
+    color: var(--color-indigo-600);
+    font-weight: 600;
+  }
+</style>

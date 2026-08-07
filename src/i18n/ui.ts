@@ -35,6 +35,13 @@ export interface UiStrings {
   formSending: string;
   formSuccess: string;
   formError: string; // contains {email} placeholder
+  formIndustryLabel: string;
+  formIndustryHint: string;
+  formSubmitDownload: string;
+  formPreparingDownload: string;
+  formDownloadSuccess: string;
+  formDuplicateError: string;
+  formDownloadError: string; // contains {email} placeholder
 }
 
 const en: UiStrings = {
@@ -71,6 +78,13 @@ const en: UiStrings = {
   formSending: 'Sending…',
   formSuccess: "Thanks — your message is on its way. We'll get back to you soon.",
   formError: 'Something went wrong. Please email us directly at {email}.',
+  formIndustryLabel: 'Choose one industry',
+  formIndustryHint: 'You can download one industry library per registration.',
+  formSubmitDownload: 'Register & Download',
+  formPreparingDownload: 'Preparing your download…',
+  formDownloadSuccess: 'Success — your download should start automatically.',
+  formDuplicateError: "Looks like you've already registered and downloaded the library. Contact us if you need help.",
+  formDownloadError: 'Something went wrong preparing your download. Please try again or email us at {email}.',
 };
 
 const sv: UiStrings = {
@@ -107,6 +121,13 @@ const sv: UiStrings = {
   formSending: 'Skickar…',
   formSuccess: 'Tack — ditt meddelande är på väg. Vi återkommer snart.',
   formError: 'Något gick fel. Vänligen mejla oss direkt på {email}.',
+  formIndustryLabel: 'Välj en bransch',
+  formIndustryHint: 'Du kan ladda ner ett branschbibliotek per registrering.',
+  formSubmitDownload: 'Registrera & ladda ner',
+  formPreparingDownload: 'Förbereder din nedladdning…',
+  formDownloadSuccess: 'Klart — din nedladdning bör starta automatiskt.',
+  formDuplicateError: 'Det ser ut som att du redan har registrerat dig och laddat ner biblioteket. Kontakta oss om du behöver hjälp.',
+  formDownloadError: 'Något gick fel när vi förberedde din nedladdning. Försök igen eller mejla oss på {email}.',
 };
 
 const registry: Record<string, UiStrings> = { en, sv };

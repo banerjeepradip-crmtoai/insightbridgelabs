@@ -1,0 +1,23 @@
+name = "prompt-library-api"
+main = "src/index.js"
+compatibility_date = "2026-08-07"
+account_id = "4ecdc57a53090472ccb86fb56887ebf9"
+
+# Created by: wrangler d1 create prompt-library-registrations
+# Paste the database_id it prints below.
+[[d1_databases]]
+binding = "DB"
+database_name = "prompt-library-registrations"
+database_id = "82c4d7fd-9e30-4073-a7fc-1b3787e4754f"
+
+# Created by: wrangler r2 bucket create prompt-library-downloads
+[[r2_buckets]]
+binding = "DOWNLOADS"
+bucket_name = "prompt-library-downloads"
+
+# Uncomment once you've added a DNS route for api.insightbridgelabs.com
+# (see README.md). Until then, the worker is reachable at its
+# workers.dev URL, which is enough to launch.
+# routes = [
+#   { pattern = "api.insightbridgelabs.com/register", zone_name = "insightbridgelabs.com" },
+# ]

@@ -6,6 +6,9 @@ dist/
 # dependencies
 node_modules/
 
+# local wrangler dev state/cache (Miniflare D1/R2 simulation)
+.wrangler/
+
 # logs
 npm-debug.log*
 yarn-debug.log*

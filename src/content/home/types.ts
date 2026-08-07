@@ -58,5 +58,7 @@ export interface HomeContent {
     columns: { heading: string; links: { label: string; href: string }[] }[];
     copyright: string;
     orgNumber: string;
+    privacyLabel: string;
+    privacyHref: string;
   };
 }

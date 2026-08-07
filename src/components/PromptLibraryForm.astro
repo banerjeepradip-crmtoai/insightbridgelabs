@@ -1,0 +1,493 @@
+---
+import { countryDialCodes } from '../data/countryDialCodes';
+import { getUiStrings } from '../i18n/ui';
+import Icon from './Icon.astro';
+import type { PromptLibraryContent } from '../content/prompt-library/types';
+
+interface Props {
+  form: PromptLibraryContent['form'];
+  industries: PromptLibraryContent['industries'];
+  lang: string;
+}
+
+const { form, industries, lang } = Astro.props;
+const t = getUiStrings(lang);
+const supportEmail = 'banerjee.pradip@crmtoai.com';
+const privacyHref = lang === 'sv' ? '/sv/privacy' : '/privacy';
+const privacyLinkLabel = lang === 'sv' ? '(Integritetspolicy)' : '(Privacy Policy)';
+
+// Points at the deployed Cloudflare Worker that handles registration +
+// gated download. See cloudflare/prompt-library-worker/README.md.
+const WORKER_URL = 'https://prompt-library-api.banerjee-pradip.workers.dev/register';
+---
+
+<div class="prompt-library-form-card" id="prompt-library-form-card">
+  <h2>{form.heading}</h2>
+  <p class="form-intro">{form.body}</p>
+
+  <form id="prompt-library-form" data-support-email={supportEmail} data-worker-url={WORKER_URL}>
+    <fieldset class="industry-fieldset">
+      <legend>{form.industryLegend}</legend>
+      <div class="industry-options">
+        {
+          industries.map((industry, i) => (
+            <label class="industry-option">
+              <span class="industry-option-icon">
+                <Icon name={industry.icon} />
+              </span>
+              <span class="industry-option-body">
+                <span class="industry-option-label">{industry.label}</span>
+                <span class="industry-option-meta">{industry.promptCount} prompts</span>
+              </span>
+              <input
+                type="radio"
+                name="industry"
+                value={industry.id}
+                required
+                checked={i === 0}
+                class="industry-option-radio"
+              />
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+
+    <div class="field-row">
+      <label>
+        <span>{t.formName}</span>
+        <input type="text" name="name" required autocomplete="name" />
+      </label>
+      <label>
+        <span>{t.formEmail}</span>
+        <input type="email" name="email" required autocomplete="email" id="pl-field-email" />
+      </label>
+    </div>
+
+    <label>
+      <span id="pl-phone-label">{t.formPhoneOptional}</span>
+      <div class="phone-row">
+        <select name="phone_country" id="pl-field-phone-country" aria-label={t.formCountryCodeLabel}>
+          {
+            countryDialCodes.map((c) => (
+              <option value={c.dial} selected={c.iso === 'SE'}>
+                {c.dial} {c.name}
+              </option>
+            ))
+          }
+        </select>
+        <input type="tel" name="phone_number" id="pl-field-phone-number" autocomplete="tel" placeholder={t.formPhonePlaceholder} />
+      </div>
+      <span class="field-hint" id="pl-phone-hint">{t.formPhoneHintOptional}</span>
+    </label>
+
+    <label>
+      <span>{t.formCompanyOptional.replace(' (optional)', '').replace(' (valfritt)', '')}</span>
+      <input type="text" name="company" required autocomplete="organization" />
+    </label>
+
+    <label class="consent-label">
+      <input type="checkbox" name="consent" required />
+      <span>
+        {form.consentLabel}
+        {' '}<a href={privacyHref}>{privacyLinkLabel}</a>
+      </span>
+    </label>
+
+    <input type="text" name="_honey" class="honeypot" tabindex="-1" autocomplete="off" />
+
+    <button type="submit" class="btn btn-primary">
+      {form.submitLabel}
+    </button>
+    <p class="form-note">{form.disclaimer}</p>
+    <p class="form-status" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+<style>
+  .prompt-library-form-card {
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 36px;
+    max-width: 640px;
+  }
+
+  .prompt-library-form-card h2 {
+    margin: 0 0 8px;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .form-intro {
+    margin: 0 0 22px;
+    font-size: 0.92rem;
+    color: var(--color-gray-500);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  fieldset {
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  legend {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-600);
+    padding: 0 0 8px;
+  }
+
+  .industry-options {
+    display: grid;
+    gap: 10px;
+  }
+
+  .industry-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    cursor: pointer;
+  }
+
+  .industry-option:has(input:checked) {
+    border-color: var(--color-indigo-600);
+    background: var(--color-indigo-50, #eef2ff);
+  }
+
+  .industry-option-icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--color-gray-900);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .industry-option:has(input:checked) .industry-option-icon {
+    background: var(--color-indigo-600);
+  }
+
+  .industry-option-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .industry-option-label {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+  }
+
+  .industry-option-meta {
+    font-size: 0.78rem;
+    color: var(--color-gray-400);
+  }
+
+  .industry-option-radio {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    accent-color: var(--color-indigo-600);
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-600);
+  }
+
+  input,
+  select {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--color-gray-900);
+    padding: 10px 12px;
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: #fff;
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: var(--color-indigo-600);
+  }
+
+  .phone-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .phone-row select {
+    flex: 0 0 140px;
+    max-width: 140px;
+  }
+
+  .phone-row input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .field-hint {
+    font-size: 0.76rem;
+    font-weight: 500;
+    color: var(--color-gray-400);
+  }
+
+  #pl-phone-label.is-required::after {
+    content: ' *';
+    color: #b91c1c;
+  }
+
+  .consent-label {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--color-gray-500);
+  }
+
+  .consent-label a {
+    color: var(--color-indigo-600);
+    font-weight: 600;
+  }
+
+  .consent-label input {
+    margin-top: 2px;
+    width: auto;
+    padding: 0;
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  button {
+    align-self: flex-start;
+  }
+
+  button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .form-note {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-gray-400);
+  }
+
+  .form-status {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-height: 1.2em;
+  }
+
+  .form-status.is-success {
+    color: #15803d;
+  }
+
+  .form-status.is-error {
+    color: #b91c1c;
+  }
+
+  @media (max-width: 560px) {
+    .field-row {
+      grid-template-columns: 1fr;
+    }
+
+    .prompt-library-form-card {
+      padding: 26px 22px;
+    }
+  }
+</style>
+
+<script
+  define:vars={{
+    phoneOptionalLabel: t.formPhoneOptional,
+    phoneRequiredLabel: t.formPhoneRequired,
+    phoneHintOptional: t.formPhoneHintOptional,
+    phoneHintRequired: t.formPhoneHintRequired,
+    sendingText: t.formPreparingDownload,
+    successText: t.formDownloadSuccess,
+    duplicateErrorText: t.formDuplicateError,
+    errorTemplate: t.formDownloadError,
+  }}
+>
+  const GENERIC_EMAIL_DOMAINS = new Set([
+    'gmail.com',
+    'googlemail.com',
+    'yahoo.com',
+    'yahoo.co.uk',
+    'hotmail.com',
+    'outlook.com',
+    'live.com',
+    'msn.com',
+    'aol.com',
+    'icloud.com',
+    'me.com',
+    'mac.com',
+    'protonmail.com',
+    'proton.me',
+    'gmx.com',
+    'gmx.net',
+    'mail.com',
+    'yandex.com',
+    'yandex.ru',
+    'zoho.com',
+    'hey.com',
+  ]);
+
+  const form = document.getElementById('prompt-library-form');
+  const statusEl = form?.querySelector('.form-status');
+  const submitBtn = form?.querySelector('button[type="submit"]');
+  const emailField = document.getElementById('pl-field-email');
+  const phoneNumberField = document.getElementById('pl-field-phone-number');
+  const phoneLabel = document.getElementById('pl-phone-label');
+  const phoneHint = document.getElementById('pl-phone-hint');
+
+  function isGenericEmail(email) {
+    const domain = email.split('@')[1]?.toLowerCase().trim();
+    return !!domain && GENERIC_EMAIL_DOMAINS.has(domain);
+  }
+
+  function syncPhoneRequirement() {
+    if (!emailField || !phoneNumberField || !phoneLabel || !phoneHint) return;
+    const required = isGenericEmail(emailField.value);
+    phoneNumberField.required = required;
+    phoneLabel.textContent = required ? phoneRequiredLabel : phoneOptionalLabel;
+    phoneLabel.classList.toggle('is-required', required);
+    phoneHint.textContent = required ? phoneHintRequired : phoneHintOptional;
+  }
+
+  emailField?.addEventListener('input', syncPhoneRequirement);
+  emailField?.addEventListener('blur', syncPhoneRequirement);
+
+  function parseFilename(contentDisposition, fallback) {
+    if (!contentDisposition) return fallback;
+    const match = /filename="?([^";]+)"?/i.exec(contentDisposition);
+    return match?.[1] ?? fallback;
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!statusEl || !submitBtn || !form) return;
+
+    syncPhoneRequirement();
+    if (!form.reportValidity()) return;
+
+    const workerUrl = form.dataset.workerUrl ?? '';
+    const supportEmail = form.dataset.supportEmail ?? '';
+    const formData = new FormData(form);
+
+    // Honeypot: if filled, a bot filled it in — quietly bail without hitting the API.
+    if (String(formData.get('_honey') ?? '').trim()) {
+      return;
+    }
+
+    const phoneCountry = String(formData.get('phone_country') ?? '');
+    const phoneNumber = String(formData.get('phone_number') ?? '').trim();
+    const phone = phoneNumber ? `${phoneCountry} ${phoneNumber}` : '';
+
+    const payload = {
+      name: String(formData.get('name') ?? '').trim(),
+      email: String(formData.get('email') ?? '').trim(),
+      company: String(formData.get('company') ?? '').trim(),
+      phone,
+      industry: String(formData.get('industry') ?? ''),
+    };
+
+    submitBtn.disabled = true;
+    statusEl.textContent = sendingText;
+    statusEl.className = 'form-status';
+
+    try {
+      const response = await fetch(workerUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const filename = parseFilename(
+          response.headers.get('Content-Disposition'),
+          `${payload.industry}-prompt-library.zip`
+        );
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+
+        statusEl.textContent = successText;
+        statusEl.className = 'form-status is-success';
+        submitBtn.disabled = true;
+        submitBtn.textContent = successText;
+        return;
+      }
+
+      let errorCode = 'unknown';
+      try {
+        const body = await response.json();
+        errorCode = body?.error ?? 'unknown';
+      } catch {
+        // ignore parse failure, fall through to generic error
+      }
+
+      if (errorCode === 'duplicate') {
+        statusEl.textContent = duplicateErrorText;
+      } else if (errorCode === 'phone_required') {
+        statusEl.textContent = phoneHintRequired;
+      } else {
+        statusEl.textContent = errorTemplate.replace('{email}', supportEmail);
+      }
+      statusEl.className = 'form-status is-error';
+    } catch {
+      statusEl.textContent = errorTemplate.replace('{email}', supportEmail);
+      statusEl.className = 'form-status is-error';
+    } finally {
+      if (!statusEl.classList.contains('is-success')) {
+        submitBtn.disabled = false;
+      }
+    }
+  });
+</script>
