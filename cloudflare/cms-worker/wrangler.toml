@@ -1,0 +1,23 @@
+name = "cms-api"
+main = "src/index.js"
+compatibility_date = "2026-08-07"
+account_id = "4ecdc57a53090472ccb86fb56887ebf9"
+
+# Created by: wrangler d1 create cms-content
+# Paste the database_id it prints below.
+[[d1_databases]]
+binding = "DB"
+database_name = "cms-content"
+database_id = "87d96cfd-9672-4ff1-8de6-2df0278822d3"
+
+# Created by: wrangler r2 bucket create cms-images
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "cms-images"
+
+# Uncomment once you've added a DNS route for api.insightbridgelabs.com
+# (see README.md). Until then, the worker is reachable at its
+# workers.dev URL, which is enough to launch.
+# routes = [
+#   { pattern = "api.insightbridgelabs.com/cms/*", zone_name = "insightbridgelabs.com" },
+# ]

@@ -17,6 +17,7 @@ const t = getUiStrings(lang);
       {
         items.map((item) => (
           <article class="case-card">
+            {item.image && <img src={item.image} alt="" class="case-image" loading="lazy" />}
             <span class="case-category">{item.category}</span>
             <h2>{item.title}</h2>
 
@@ -59,6 +60,15 @@ const t = getUiStrings(lang);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-card);
     padding: 36px 40px;
+  }
+
+  .case-image {
+    width: calc(100% + 80px);
+    margin: -36px -40px 20px;
+    max-width: none;
+    height: 220px;
+    object-fit: cover;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 
   .case-category {
@@ -122,6 +132,12 @@ const t = getUiStrings(lang);
   @media (max-width: 700px) {
     .case-card {
       padding: 28px 24px;
+    }
+
+    .case-image {
+      width: calc(100% + 48px);
+      margin: -28px -24px 18px;
+      height: 180px;
     }
   }
 </style>

@@ -4,6 +4,7 @@ export interface BlogPost {
   excerpt: string;
   tags: string[];
   href: string;
+  image?: string;
 }
 
 export interface BlogContent {

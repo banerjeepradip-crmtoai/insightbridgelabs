@@ -14,39 +14,47 @@ export const sv: CaseStudiesContent = {
       'Det här är genomarbetade lösningsdesigner för att tillämpa AI i Salesforce — datamodellen, arkitekturen och skyddsräckena, inte bara säljpitchen. Det är mönster vi har designat och kan anpassa till er organisation, snarare än resultat från en specifik namngiven kund.',
   },
   items: [
+    // CMS:ITEMS:START
     {
-      category: 'Säljoptimering',
-      title: 'Leadpoängsättning och prioritering',
-      challenge:
-        'Säljteam lade tid på varje lead och affärsmöjlighet lika mycket, utan något datadrivet sätt att veta vilka som faktiskt var värda att prioritera — vilket skadade både konverteringsgrad och säljarnas produktivitet.',
-      solution:
-        'En automatiserad poängsättningspipeline i Salesforce: standardfält i CRM:et (leadkälla, bransch, företagsstorlek, senaste aktivitet, affärsstadium, prognoskategori med mera) matar en prediktiv modell — Einstein Discovery direkt, eller en extern modell via Apex-anrop — som poängsätter varje lead och affärsmöjlighet från 0–100, och skapar funktioner som dagar sedan senaste aktivitet och affärens ålder längs vägen.',
-      outcome:
-        'Säljarna får en prioriterad, dashboard-driven vy med en filtrerad lista över högprioriterade poster (poäng > 70), vilket förvandlar en magkänslobaserad process till en repeterbar, datadriven sådan.',
-      tags: ['Salesforce', 'Einstein Discovery', 'Prediktiv poängsättning', 'Apex'],
+      "category": "Sales Optimization",
+      "title": "Lead Scoring & Prioritization",
+      "challenge": "Sales teams were spending time on every lead and opportunity equally, with no data-driven way to know which ones were actually worth prioritizing — hurting both conversion rates and rep productivity.",
+      "solution": "An automated scoring pipeline inside Salesforce: standard CRM fields (lead source, industry, company size, engagement recency, deal stage, forecast category and more) feed a predictive model — Einstein Discovery natively, or an external model via Apex callout — that scores every lead and opportunity from 0–100, engineering features like days since last activity and opportunity age along the way.",
+      "outcome": "Reps get a prioritized, dashboard-driven view with a filtered list of high-priority records (score > 70), turning a gut-feel triage process into a repeatable, data-driven one.",
+      "tags": [
+        "Salesforce",
+        "Einstein Discovery",
+        "Predictive Scoring",
+        "Apex"
+      ]
     },
     {
-      category: 'Säljoptimering',
-      title: 'Prediktion av affärsutfall',
-      challenge:
-        'Att förutsäga vilka affärer som faktiskt skulle gå igenom byggde enbart på säljarnas intuition och pipeline-stadium, utan någon systematisk signal för var insatserna borde fokuseras för att förbättra vinstfrekvensen.',
-      solution:
-        'En binär klassificeringsmodell tränad på tre års historik av vunna/förlorade affärer med Salesforces inbyggda Einstein Prediction Builder — endast standardfält, ingen anpassad datapipeline krävs. Modellen ger en vinstpoäng för affären (0–100) och lyfter fram de främsta prediktiva faktorerna bakom varje poäng: engagemangsnivå, affärens storlek, tid till avslut och köpkraft.',
-      outcome:
-        'Säljledare får en tidig, kvantifierad signal om affärens hälsa, och säljare får vägledning om nästa bästa åtgärd istället för ett statiskt sannolikhetsfält.',
-      tags: ['Salesforce', 'Einstein Prediction Builder', 'Maskininlärning', 'Försäljningsprognoser'],
+      "category": "Sales Optimization",
+      "title": "Opportunity Win Prediction",
+      "challenge": "Forecasting which deals would actually close was based on rep intuition and pipeline stage alone, with no systematic signal for where to focus effort to improve win rate.",
+      "solution": "A binary classification model trained on three years of closed-won/closed-lost opportunity history using Salesforce's native Einstein Prediction Builder — standard fields only, no custom data pipeline required. The model outputs an Opportunity Win Score (0–100) and surfaces the top predictive factors behind each score: engagement level, deal size, time-to-close and buying power.",
+      "outcome": "Sales leaders get an early, quantified signal on deal health, and reps get next-best-action guidance instead of a static probability field.",
+      "tags": [
+        "Salesforce",
+        "Einstein Prediction Builder",
+        "Machine Learning",
+        "Sales Forecasting"
+      ]
     },
     {
-      category: 'Säljoptimering',
-      title: 'Dynamiska prisrekommendationer',
-      challenge:
-        'Säljare hade inget konsekvent sätt att veta hur stor rabatt de kunde erbjuda på en offertrad utan att antingen lämna marginal på bordet eller överrabattera för att avsluta en affär.',
-      solution:
-        'En prediktionstjänst, anropbar i realtid från offertraden, rekommenderar en rabatt eller målpris med hjälp av Einstein Discovery tränad på historiska avslutade affärer — med anpassade skyddsräcken (maximal rabatt per produktfamilj, minimigränser för marginal, konkurrentprisregler) som tillämpas tillsammans med modellen. Rekommendationer, säkerhetspoäng och resonemang visas direkt i en Lightning Web Component, med möjlighet för säljare att åsidosätta dem.',
-      outcome:
-        'Prisvägledning som skyddar marginalen samtidigt som säljarna får utrymme att avsluta affärer, där varje rekommendation är förklarbar snarare än en svart låda.',
-      tags: ['Salesforce', 'Einstein Discovery', 'Lightning Web Components', 'Prisstrategi'],
+      "category": "Sales Optimization",
+      "title": "Dynamic Pricing Recommendations",
+      "challenge": "Reps had no consistent way to know how much discount they could offer on a quote line item without either leaving margin on the table or over-discounting to close a deal.",
+      "solution": "A prediction service, callable in real time from the Quote Line Item, recommends a discount or target price using Einstein Discovery trained on historical closed deals — with custom guardrails (maximum discount per product family, minimum margin thresholds, competitor pricing rules) enforced alongside the model. Recommendations, confidence scores and reasoning surface directly in a Lightning Web Component, with reps able to override.",
+      "outcome": "Pricing guidance that protects margin while still giving reps room to close, with every recommendation explainable rather than a black box.",
+      "tags": [
+        "Salesforce",
+        "Einstein Discovery",
+        "Lightning Web Components",
+        "Pricing Strategy"
+      ]
     },
+    // CMS:ITEMS:END
   ],
   cta: {
     heading: 'Vill ni ha en liknande lösningsdesign för er organisation?',

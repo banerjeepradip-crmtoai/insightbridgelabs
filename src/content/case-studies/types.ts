@@ -5,6 +5,7 @@ export interface CaseStudyEntry {
   solution: string;
   outcome: string;
   tags: string[];
+  image?: string;
 }
 
 export interface CaseStudiesContent {

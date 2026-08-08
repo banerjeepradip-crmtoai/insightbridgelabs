@@ -9,9 +9,10 @@ interface Props {
   nav: HomeContent['nav'];
   footer: HomeContent['footer'];
   currentLang: string;
+  noindex?: boolean;
 }
 
-const { meta, nav, footer, currentLang } = Astro.props;
+const { meta, nav, footer, currentLang, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -22,6 +23,7 @@ const { meta, nav, footer, currentLang } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
   </head>
   <body>
     <Header nav={nav} currentLang={currentLang} />

@@ -1,0 +1,893 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHomeContent } from '../../content/home';
+
+const currentLang = 'en';
+const homeContent = getHomeContent(currentLang);
+
+// Points at the deployed Cloudflare Worker that handles CMS admin auth
+// and content. See cloudflare/cms-worker/README.md.
+const WORKER_URL = 'https://cms-api.banerjee-pradip.workers.dev';
+---
+
+<BaseLayout
+  meta={{ title: 'Update Content — InsightBridge Labs', description: 'Manage blog and case study content.' }}
+  nav={homeContent.nav}
+  footer={homeContent.footer}
+  currentLang={currentLang}
+  noindex
+>
+  <section class="admin-dashboard section">
+    <div class="container">
+      <p class="checking-status" id="checking-status">Checking session…</p>
+
+      <div id="dashboard" hidden>
+        <div class="dashboard-header">
+          <div>
+            <h1>Update Content</h1>
+            <p class="signed-in-as">Signed in as <strong id="admin-email"></strong></p>
+          </div>
+          <div class="header-actions">
+            <button type="button" id="add-new-btn" class="btn btn-primary">+ Add New</button>
+            <button type="button" id="sign-out-btn" class="btn btn-secondary">Sign Out</button>
+          </div>
+        </div>
+
+        <p class="dashboard-status" id="dashboard-status" role="status" aria-live="polite"></p>
+
+        <div class="content-list-block">
+          <h2>Blog Posts</h2>
+          <div class="content-table" id="blog-table"></div>
+        </div>
+
+        <div class="content-list-block">
+          <h2>Case Studies</h2>
+          <div class="content-table" id="case-table"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chooser: "Blog or Case Study?" -->
+    <div class="overlay" id="chooser-overlay">
+      <div class="overlay-card chooser-card">
+        <h2>What would you like to add?</h2>
+        <div class="chooser-options">
+          <button type="button" class="chooser-option" data-kind="blog">Blog Post</button>
+          <button type="button" class="chooser-option" data-kind="case-study">Case Study</button>
+        </div>
+        <button type="button" class="btn btn-secondary" id="chooser-cancel">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Blog post form -->
+    <div class="overlay" id="blog-overlay">
+      <div class="overlay-card">
+        <h2 id="blog-form-heading">Add Blog Post</h2>
+        <form id="blog-form">
+          <label>
+            <span>Subject / Title</span>
+            <input type="text" name="title" required maxlength="300" />
+          </label>
+          <label>
+            <span>Type</span>
+            <input type="text" name="type" placeholder="e.g. Article, LinkedIn Post, Whitepaper" />
+          </label>
+          <label>
+            <span>Description</span>
+            <textarea name="excerpt" rows="4" required maxlength="4000"></textarea>
+          </label>
+          <label>
+            <span>Link (optional)</span>
+            <input type="url" name="href" placeholder="https://…" />
+          </label>
+          <label>
+            <span>Image (optional)</span>
+            <input type="file" name="image" id="blog-image-input" accept="image/png,image/jpeg,image/webp,image/gif" />
+            <img class="image-preview" id="blog-image-preview" hidden alt="" />
+          </label>
+          <div class="tags-field">
+            <div class="tags-header">
+              <span>Keywords</span>
+              <button type="button" class="suggest-btn" data-kind="blog">Suggest keywords</button>
+            </div>
+            <div class="tags-list" id="blog-tags-list"></div>
+            <input type="text" class="tags-input" id="blog-tags-input" placeholder="Type a keyword, press Enter" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" id="blog-cancel">Cancel</button>
+          </div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Case study form -->
+    <div class="overlay" id="case-overlay">
+      <div class="overlay-card">
+        <h2 id="case-form-heading">Add Case Study</h2>
+        <form id="case-form">
+          <label>
+            <span>Subject / Title</span>
+            <input type="text" name="title" required maxlength="300" />
+          </label>
+          <label>
+            <span>Category</span>
+            <input type="text" name="category" placeholder="e.g. Sales Optimization" />
+          </label>
+          <label>
+            <span>Challenge</span>
+            <textarea name="challenge" rows="3" required maxlength="4000"></textarea>
+          </label>
+          <label>
+            <span>Solution</span>
+            <textarea name="solution" rows="3" required maxlength="4000"></textarea>
+          </label>
+          <label>
+            <span>Outcome</span>
+            <textarea name="outcome" rows="3" required maxlength="4000"></textarea>
+          </label>
+          <label>
+            <span>Image (optional)</span>
+            <input type="file" name="image" id="case-image-input" accept="image/png,image/jpeg,image/webp,image/gif" />
+            <img class="image-preview" id="case-image-preview" hidden alt="" />
+          </label>
+          <div class="tags-field">
+            <div class="tags-header">
+              <span>Keywords</span>
+              <button type="button" class="suggest-btn" data-kind="case-study">Suggest keywords</button>
+            </div>
+            <div class="tags-list" id="case-tags-list"></div>
+            <input type="text" class="tags-input" id="case-tags-input" placeholder="Type a keyword, press Enter" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" id="case-cancel">Cancel</button>
+          </div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .checking-status {
+    color: var(--color-gray-500);
+    font-size: 0.9rem;
+  }
+
+  .dashboard-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  .dashboard-header h1 {
+    margin: 0 0 4px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .signed-in-as {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-gray-500);
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .dashboard-status {
+    min-height: 1.4em;
+    margin: 14px 0 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #15803d;
+  }
+
+  .dashboard-status.is-error {
+    color: #b91c1c;
+  }
+
+  .content-list-block {
+    margin-top: 36px;
+  }
+
+  .content-list-block h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin: 0 0 14px;
+  }
+
+  .content-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .content-table th,
+  .content-table td {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--color-gray-100);
+    vertical-align: top;
+  }
+
+  .content-table th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-gray-400);
+    background: var(--color-gray-50);
+  }
+
+  .content-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .row-actions {
+    white-space: nowrap;
+  }
+
+  .link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 600;
+    color: var(--color-indigo-600);
+    cursor: pointer;
+    margin-right: 14px;
+  }
+
+  .link-btn.danger {
+    color: #b91c1c;
+  }
+
+  .empty-state {
+    color: var(--color-gray-400);
+    font-size: 0.9rem;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--color-gray-50);
+    color: var(--color-gray-600);
+    margin: 2px 4px 2px 0;
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 40px 20px;
+    z-index: 100;
+  }
+
+  .overlay.is-open {
+    display: flex;
+  }
+
+  .overlay-card {
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 32px;
+  }
+
+  .overlay-card h2 {
+    margin: 0 0 20px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .chooser-card {
+    max-width: 420px;
+    text-align: center;
+  }
+
+  .chooser-options {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .chooser-option {
+    flex: 1;
+    padding: 24px 16px;
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    cursor: pointer;
+  }
+
+  .chooser-option:hover {
+    border-color: var(--color-indigo-600);
+    color: var(--color-indigo-600);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-600);
+  }
+
+  input[type='text'],
+  input[type='url'],
+  input[type='email'],
+  input[type='password'],
+  textarea {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--color-gray-900);
+    padding: 10px 12px;
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    resize: vertical;
+    background: #fff;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--color-indigo-600);
+  }
+
+  .image-preview {
+    margin-top: 10px;
+    max-width: 100%;
+    max-height: 160px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+  }
+
+  .tags-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tags-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-600);
+  }
+
+  .suggest-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--color-indigo-600);
+    cursor: pointer;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 6px 4px 10px;
+    border-radius: 999px;
+    background: var(--color-gray-50);
+    color: var(--color-gray-600);
+  }
+
+  .tag-remove {
+    background: none;
+    border: none;
+    padding: 0 2px;
+    font-size: 0.9rem;
+    line-height: 1;
+    color: var(--color-gray-400);
+    cursor: pointer;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .form-status {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-height: 1.2em;
+  }
+
+  .form-status.is-error {
+    color: #b91c1c;
+  }
+</style>
+
+<script define:vars={{ WORKER_URL }}>
+  const STOPWORDS = new Set([
+    'the', 'a', 'an', 'and', 'or', 'but', 'of', 'to', 'in', 'on', 'for', 'with', 'is', 'are', 'was', 'were',
+    'be', 'by', 'as', 'from', 'that', 'this', 'it', 'its', 'into', 'your', 'you', 'we', 'our', 'their', 'has',
+    'have', 'had', 'not', 'no', 'can', 'will', 'would', 'should', 'could', 'than', 'then', 'so', 'about',
+    'over', 'how', 'what', 'when', 'where', 'which', 'who', 'whom', 'these', 'those', 'they', 'them', 'more',
+    'most', 'some', 'such', 'via', 'across', 'through', 'each', 'every', 'both', 'while', 'also', 'just',
+  ]);
+
+  function extractKeywords(texts, max) {
+    const combined = texts.filter(Boolean).join(' ');
+
+    const phraseMatches = combined.match(/\b([A-Z][a-zA-Z0-9]*(?:\s+[A-Z][a-zA-Z0-9]*){0,2})\b/g) || [];
+    const phraseFreq = new Map();
+    for (const raw of phraseMatches) {
+      const phrase = raw.trim();
+      if (!phrase || phrase.split(/\s+/).length > 3) continue;
+      phraseFreq.set(phrase, (phraseFreq.get(phrase) || 0) + 1);
+    }
+
+    const words = combined.toLowerCase().match(/[a-z]{4,}/g) || [];
+    const wordFreq = new Map();
+    for (const word of words) {
+      if (STOPWORDS.has(word)) continue;
+      wordFreq.set(word, (wordFreq.get(word) || 0) + 1);
+    }
+
+    const rankedPhrases = [...phraseFreq.entries()].sort((a, b) => b[1] - a[1]).map(([k]) => k);
+    const rankedWords = [...wordFreq.entries()]
+      .filter(([w]) => !rankedPhrases.some((p) => p.toLowerCase().includes(w)))
+      .sort((a, b) => b[1] - a[1])
+      .map(([k]) => k.charAt(0).toUpperCase() + k.slice(1));
+
+    const merged = [...rankedPhrases, ...rankedWords];
+    const unique = [];
+    for (const term of merged) {
+      if (!unique.some((u) => u.toLowerCase() === term.toLowerCase())) unique.push(term);
+      if (unique.length >= max) break;
+    }
+    return unique;
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  const checkingStatus = document.getElementById('checking-status');
+  const dashboard = document.getElementById('dashboard');
+  const adminEmailEl = document.getElementById('admin-email');
+  const dashboardStatus = document.getElementById('dashboard-status');
+  const addNewBtn = document.getElementById('add-new-btn');
+  const signOutBtn = document.getElementById('sign-out-btn');
+
+  const chooserOverlay = document.getElementById('chooser-overlay');
+  const chooserCancel = document.getElementById('chooser-cancel');
+
+  const blogOverlay = document.getElementById('blog-overlay');
+  const blogForm = document.getElementById('blog-form');
+  const blogFormHeading = document.getElementById('blog-form-heading');
+  const blogCancel = document.getElementById('blog-cancel');
+  const blogImageInput = document.getElementById('blog-image-input');
+  const blogImagePreview = document.getElementById('blog-image-preview');
+  const blogTagsList = document.getElementById('blog-tags-list');
+  const blogTagsInput = document.getElementById('blog-tags-input');
+  const blogTable = document.getElementById('blog-table');
+
+  const caseOverlay = document.getElementById('case-overlay');
+  const caseForm = document.getElementById('case-form');
+  const caseFormHeading = document.getElementById('case-form-heading');
+  const caseCancel = document.getElementById('case-cancel');
+  const caseImageInput = document.getElementById('case-image-input');
+  const caseImagePreview = document.getElementById('case-image-preview');
+  const caseTagsList = document.getElementById('case-tags-list');
+  const caseTagsInput = document.getElementById('case-tags-input');
+  const caseTable = document.getElementById('case-table');
+
+  let blogPosts = [];
+  let caseStudies = [];
+  let blogTags = [];
+  let caseTags = [];
+  let editingBlogId = null;
+  let editingCaseId = null;
+  let blogImageKey = null;
+  let caseImageKey = null;
+
+  function redirectToLogin() {
+    window.location.href = '/admin/login';
+  }
+
+  function showDashboardStatus(message, isError) {
+    dashboardStatus.textContent = message;
+    dashboardStatus.className = isError ? 'dashboard-status is-error' : 'dashboard-status';
+  }
+
+  async function apiFetch(path, options) {
+    return fetch(`${WORKER_URL}${path}`, { credentials: 'include', ...options });
+  }
+
+  function renderTagChips(kind) {
+    const list = kind === 'blog' ? blogTags : caseTags;
+    const container = kind === 'blog' ? blogTagsList : caseTagsList;
+    container.innerHTML = list
+      .map(
+        (tag, i) =>
+          `<span class="tag-chip">${escapeHtml(tag)}<button type="button" class="tag-remove" data-kind="${kind}" data-index="${i}" aria-label="Remove ${escapeHtml(tag)}">&times;</button></span>`
+      )
+      .join('');
+  }
+
+  function addTag(kind, value) {
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    const list = kind === 'blog' ? blogTags : caseTags;
+    if (!list.some((t) => t.toLowerCase() === trimmed.toLowerCase())) list.push(trimmed);
+    renderTagChips(kind);
+  }
+
+  blogTagsInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addTag('blog', blogTagsInput.value);
+      blogTagsInput.value = '';
+    }
+  });
+  caseTagsInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addTag('case', caseTagsInput.value);
+      caseTagsInput.value = '';
+    }
+  });
+
+  blogTagsList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tag-remove');
+    if (!btn) return;
+    blogTags.splice(Number(btn.dataset.index), 1);
+    renderTagChips('blog');
+  });
+  caseTagsList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.tag-remove');
+    if (!btn) return;
+    caseTags.splice(Number(btn.dataset.index), 1);
+    renderTagChips('case');
+  });
+
+  document.querySelectorAll('.suggest-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.kind === 'blog') {
+        extractKeywords([blogForm.title.value, blogForm.excerpt.value], 6).forEach((t) => addTag('blog', t));
+      } else {
+        extractKeywords(
+          [caseForm.title.value, caseForm.challenge.value, caseForm.solution.value, caseForm.outcome.value],
+          6
+        ).forEach((t) => addTag('case', t));
+      }
+    });
+  });
+
+  async function uploadImage(kind, file, previewEl) {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('kind', kind);
+    const res = await apiFetch('/admin/upload-image', { method: 'POST', body: formData });
+    if (!res.ok) throw new Error('upload_failed');
+    const data = await res.json();
+    previewEl.src = data.url;
+    previewEl.hidden = false;
+    return data.key;
+  }
+
+  blogImageInput.addEventListener('change', async () => {
+    const file = blogImageInput.files?.[0];
+    if (!file) return;
+    const statusEl = blogForm.querySelector('.form-status');
+    statusEl.textContent = 'Uploading image…';
+    statusEl.className = 'form-status';
+    try {
+      blogImageKey = await uploadImage('blog', file, blogImagePreview);
+      statusEl.textContent = '';
+    } catch {
+      statusEl.textContent = 'Image upload failed.';
+      statusEl.className = 'form-status is-error';
+    }
+  });
+
+  caseImageInput.addEventListener('change', async () => {
+    const file = caseImageInput.files?.[0];
+    if (!file) return;
+    const statusEl = caseForm.querySelector('.form-status');
+    statusEl.textContent = 'Uploading image…';
+    statusEl.className = 'form-status';
+    try {
+      caseImageKey = await uploadImage('case-study', file, caseImagePreview);
+      statusEl.textContent = '';
+    } catch {
+      statusEl.textContent = 'Image upload failed.';
+      statusEl.className = 'form-status is-error';
+    }
+  });
+
+  function openBlogForm(item) {
+    editingBlogId = item ? item.id : null;
+    blogFormHeading.textContent = item ? 'Edit Blog Post' : 'Add Blog Post';
+    blogForm.reset();
+    blogForm.querySelector('.form-status').textContent = '';
+    blogForm.title.value = item?.title ?? '';
+    blogForm.type.value = item?.type ?? 'Article';
+    blogForm.excerpt.value = item?.excerpt ?? '';
+    blogForm.href.value = item?.href ?? '';
+    blogTags = item ? [...item.tags] : [];
+    blogImageKey = item?.imageKey ?? null;
+    if (item?.image) {
+      blogImagePreview.src = item.image;
+      blogImagePreview.hidden = false;
+    } else {
+      blogImagePreview.hidden = true;
+      blogImagePreview.removeAttribute('src');
+    }
+    renderTagChips('blog');
+    blogOverlay.classList.add('is-open');
+  }
+
+  function closeBlogForm() {
+    blogOverlay.classList.remove('is-open');
+  }
+
+  function openCaseForm(item) {
+    editingCaseId = item ? item.id : null;
+    caseFormHeading.textContent = item ? 'Edit Case Study' : 'Add Case Study';
+    caseForm.reset();
+    caseForm.querySelector('.form-status').textContent = '';
+    caseForm.title.value = item?.title ?? '';
+    caseForm.category.value = item?.category ?? 'Case Study';
+    caseForm.challenge.value = item?.challenge ?? '';
+    caseForm.solution.value = item?.solution ?? '';
+    caseForm.outcome.value = item?.outcome ?? '';
+    caseTags = item ? [...item.tags] : [];
+    caseImageKey = item?.imageKey ?? null;
+    if (item?.image) {
+      caseImagePreview.src = item.image;
+      caseImagePreview.hidden = false;
+    } else {
+      caseImagePreview.hidden = true;
+      caseImagePreview.removeAttribute('src');
+    }
+    renderTagChips('case');
+    caseOverlay.classList.add('is-open');
+  }
+
+  function closeCaseForm() {
+    caseOverlay.classList.remove('is-open');
+  }
+
+  addNewBtn.addEventListener('click', () => {
+    chooserOverlay.classList.add('is-open');
+  });
+  chooserCancel.addEventListener('click', () => {
+    chooserOverlay.classList.remove('is-open');
+  });
+  document.querySelectorAll('.chooser-option').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      chooserOverlay.classList.remove('is-open');
+      if (btn.dataset.kind === 'blog') openBlogForm(null);
+      else openCaseForm(null);
+    });
+  });
+  blogCancel.addEventListener('click', closeBlogForm);
+  caseCancel.addEventListener('click', closeCaseForm);
+
+  function renderTable(container, items, kind) {
+    if (!items.length) {
+      container.innerHTML = '<p class="empty-state">No items yet.</p>';
+      return;
+    }
+    container.innerHTML = `
+      <table>
+        <thead><tr><th>Title</th><th>Tags</th><th></th></tr></thead>
+        <tbody>
+          ${items
+            .map(
+              (item) => `
+            <tr>
+              <td>${escapeHtml(item.title)}</td>
+              <td>${item.tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join('')}</td>
+              <td class="row-actions">
+                <button type="button" class="link-btn" data-action="edit" data-kind="${kind}" data-id="${item.id}">Edit</button>
+                <button type="button" class="link-btn danger" data-action="delete" data-kind="${kind}" data-id="${item.id}">Delete</button>
+              </td>
+            </tr>
+          `
+            )
+            .join('')}
+        </tbody>
+      </table>
+    `;
+  }
+
+  async function loadBlogPosts() {
+    const res = await apiFetch('/admin/posts');
+    if (res.status === 401) return redirectToLogin();
+    const data = await res.json();
+    blogPosts = data.items || [];
+    renderTable(blogTable, blogPosts, 'blog');
+  }
+
+  async function loadCaseStudies() {
+    const res = await apiFetch('/admin/case-studies');
+    if (res.status === 401) return redirectToLogin();
+    const data = await res.json();
+    caseStudies = data.items || [];
+    renderTable(caseTable, caseStudies, 'case-study');
+  }
+
+  async function deleteItem(kind, id) {
+    if (!window.confirm('Delete this item? This cannot be undone.')) return;
+    const path = kind === 'blog' ? `/admin/posts/${id}` : `/admin/case-studies/${id}`;
+    const res = await apiFetch(path, { method: 'DELETE' });
+    if (!res.ok) {
+      showDashboardStatus('Could not delete. Please try again.', true);
+      return;
+    }
+    showDashboardStatus('Deleted. The site will rebuild automatically in a minute or two.');
+    if (kind === 'blog') await loadBlogPosts();
+    else await loadCaseStudies();
+  }
+
+  blogTable.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const id = Number(btn.dataset.id);
+    if (btn.dataset.action === 'edit') openBlogForm(blogPosts.find((p) => p.id === id));
+    else deleteItem('blog', id);
+  });
+
+  caseTable.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    const id = Number(btn.dataset.id);
+    if (btn.dataset.action === 'edit') openCaseForm(caseStudies.find((c) => c.id === id));
+    else deleteItem('case-study', id);
+  });
+
+  blogForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const statusEl = blogForm.querySelector('.form-status');
+    const submitBtn = blogForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Saving…';
+    statusEl.className = 'form-status';
+
+    const payload = {
+      title: blogForm.title.value,
+      type: blogForm.type.value || 'Article',
+      excerpt: blogForm.excerpt.value,
+      href: blogForm.href.value,
+      tags: blogTags,
+      imageKey: blogImageKey,
+    };
+
+    try {
+      const res = await apiFetch(`/admin/posts${editingBlogId ? '/' + editingBlogId : ''}`, {
+        method: editingBlogId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('save_failed');
+      closeBlogForm();
+      showDashboardStatus('Saved. The site will rebuild automatically in a minute or two.');
+      await loadBlogPosts();
+    } catch {
+      statusEl.textContent = 'Could not save. Please try again.';
+      statusEl.className = 'form-status is-error';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  caseForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const statusEl = caseForm.querySelector('.form-status');
+    const submitBtn = caseForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Saving…';
+    statusEl.className = 'form-status';
+
+    const payload = {
+      title: caseForm.title.value,
+      category: caseForm.category.value || 'Case Study',
+      challenge: caseForm.challenge.value,
+      solution: caseForm.solution.value,
+      outcome: caseForm.outcome.value,
+      tags: caseTags,
+      imageKey: caseImageKey,
+    };
+
+    try {
+      const res = await apiFetch(`/admin/case-studies${editingCaseId ? '/' + editingCaseId : ''}`, {
+        method: editingCaseId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error('save_failed');
+      closeCaseForm();
+      showDashboardStatus('Saved. The site will rebuild automatically in a minute or two.');
+      await loadCaseStudies();
+    } catch {
+      statusEl.textContent = 'Could not save. Please try again.';
+      statusEl.className = 'form-status is-error';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  signOutBtn.addEventListener('click', async () => {
+    await apiFetch('/logout', { method: 'POST' });
+    redirectToLogin();
+  });
+
+  async function init() {
+    try {
+      const res = await apiFetch('/admin/session');
+      if (!res.ok) return redirectToLogin();
+      const data = await res.json();
+      adminEmailEl.textContent = data.email;
+      checkingStatus.hidden = true;
+      dashboard.hidden = false;
+      await Promise.all([loadBlogPosts(), loadCaseStudies()]);
+    } catch {
+      checkingStatus.textContent = 'Could not reach the server. Please refresh to try again.';
+    }
+  }
+
+  init();
+</script>

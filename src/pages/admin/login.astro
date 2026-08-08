@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getHomeContent } from '../../content/home';
+
+const currentLang = 'en';
+const homeContent = getHomeContent(currentLang);
+
+// Points at the deployed Cloudflare Worker that handles CMS admin auth
+// and content. See cloudflare/cms-worker/README.md.
+const WORKER_URL = 'https://cms-api.banerjee-pradip.workers.dev';
+---
+
+<BaseLayout
+  meta={{ title: 'Admin Login — InsightBridge Labs', description: 'Sign in to manage blog and case study content.' }}
+  nav={homeContent.nav}
+  footer={homeContent.footer}
+  currentLang={currentLang}
+  noindex
+>
+  <section class="admin-login section">
+    <div class="container">
+      <div class="login-card">
+        <h1>Update Content</h1>
+        <p class="login-intro">Sign in to add, edit or remove blog posts and case studies.</p>
+
+        <form id="login-form" data-worker-url={WORKER_URL}>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" required autocomplete="username" />
+          </label>
+          <label>
+            <span>Password</span>
+            <input type="password" name="password" required autocomplete="current-password" />
+          </label>
+          <button type="submit" class="btn btn-primary">Sign In</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .admin-login {
+    display: flex;
+    justify-content: center;
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--color-gray-100);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 36px;
+  }
+
+  .login-card h1 {
+    margin: 0 0 8px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .login-intro {
+    margin: 0 0 22px;
+    font-size: 0.9rem;
+    color: var(--color-gray-500);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-600);
+  }
+
+  input {
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--color-gray-900);
+    padding: 10px 12px;
+    border: 1.5px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: #fff;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--color-indigo-600);
+  }
+
+  button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .form-status {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    min-height: 1.2em;
+  }
+
+  .form-status.is-error {
+    color: #b91c1c;
+  }
+</style>
+
+<script>
+  const form = document.getElementById('login-form') as HTMLFormElement | null;
+  const statusEl = form?.querySelector('.form-status');
+  const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  const workerUrl = form?.dataset.workerUrl ?? '';
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!statusEl || !submitBtn || !form) return;
+
+    const formData = new FormData(form);
+    const email = String(formData.get('email') ?? '');
+    const password = String(formData.get('password') ?? '');
+
+    submitBtn.disabled = true;
+    statusEl.textContent = 'Signing in…';
+    statusEl.className = 'form-status';
+
+    try {
+      const response = await fetch(`${workerUrl}/login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.status === 429) {
+        statusEl.textContent = 'Too many failed attempts. Try again in 15 minutes.';
+        statusEl.className = 'form-status is-error';
+        return;
+      }
+
+      if (!response.ok) {
+        statusEl.textContent = 'Incorrect email or password.';
+        statusEl.className = 'form-status is-error';
+        return;
+      }
+
+      window.location.href = '/admin/';
+    } catch {
+      statusEl.textContent = 'Could not reach the server. Please try again.';
+      statusEl.className = 'form-status is-error';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
