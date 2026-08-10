@@ -89,7 +89,7 @@ export const en: HomeContent = {
         image: 'governance',
         title: 'AI Governance Platform',
         description: 'Ensure transparency, fairness, and compliance in every AI initiative.',
-        href: '/products/ai-governance-platform',
+        href: '/services/ai-governance',
       },
       {
         icon: 'nodes',
@@ -103,7 +103,7 @@ export const en: HomeContent = {
         image: 'solutions',
         title: 'AI Solutions',
         description: 'Pre-built and custom solutions that accelerate productivity and growth.',
-        href: '/products/ai-solutions',
+        href: '/products/regulatory-intelligence-platform',
       },
     ],
   },

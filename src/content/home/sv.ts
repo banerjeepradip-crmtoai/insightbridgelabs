@@ -89,7 +89,7 @@ export const sv: HomeContent = {
         image: 'governance',
         title: 'AI-styrningsplattform',
         description: 'Säkerställ transparens, rättvisa och regelefterlevnad i varje AI-initiativ.',
-        href: '/sv/products/ai-governance-platform',
+        href: '/sv/services/ai-governance',
       },
       {
         icon: 'nodes',
@@ -103,7 +103,7 @@ export const sv: HomeContent = {
         image: 'solutions',
         title: 'AI-lösningar',
         description: 'Färdiga och skräddarsydda lösningar som accelererar produktivitet och tillväxt.',
-        href: '/sv/products/ai-solutions',
+        href: '/sv/products/regulatory-intelligence-platform',
       },
     ],
   },
