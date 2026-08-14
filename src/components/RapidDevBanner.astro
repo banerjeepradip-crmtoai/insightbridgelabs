@@ -63,12 +63,15 @@ const { rapidDev } = Astro.props;
         <circle cx="260" cy="230" r="42" fill="url(#rd-core)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
         <path d="M260 208 L264 226 L282 230 L264 234 L260 252 L256 234 L238 230 L256 226 Z" fill="#fff" opacity="0.95" />
 
+        <rect x="219" y="307" width="82" height="22" rx="8" fill="rgba(8,10,32,0.65)" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+        <text x="260" y="322" text-anchor="middle" font-size="12" font-weight="700" fill="#f3f0ff" letter-spacing="0.02em">{rapidDev.diagram.hub}</text>
+
         {
           [
-            { x: 260, y: 80, path: '<path d="M9 8l-4 4 4 4" /><path d="M15 8l4 4-4 4" /><path d="M13 5l-2 14" />' },
-            { x: 410, y: 230, path: '<path d="M7 17a4 4 0 01-.5-7.97A5 5 0 0116.5 7H17a3.5 3.5 0 010 7h-.5" /><path d="M12 21v-7" /><path d="M9 16.5L12 13.5 15 16.5" />' },
-            { x: 260, y: 380, path: '<circle cx="9" cy="8" r="3" /><path d="M3 20a6 6 0 0112 0" /><circle cx="17" cy="9" r="2.5" /><path d="M14.5 20a5 5 0 016.5-4.8" />' },
-            { x: 110, y: 230, path: '<path d="M9 4a2.5 2.5 0 00-2.5 2.5v.6A2.5 2.5 0 004 9.5a2.5 2.5 0 001 4.7v.8A2.5 2.5 0 007.5 17.5H9V4z" /><path d="M15 4a2.5 2.5 0 012.5 2.5v.6A2.5 2.5 0 0120 9.5a2.5 2.5 0 01-1 4.7v.8a2.5 2.5 0 01-2.5 2.5H15V4z" /><path d="M9 4v13.5M15 4v13.5" />' },
+            { x: 260, y: 80, label: rapidDev.diagram.code, path: '<path d="M9 8l-4 4 4 4" /><path d="M15 8l4 4-4 4" /><path d="M13 5l-2 14" />' },
+            { x: 410, y: 230, label: rapidDev.diagram.cicd, path: '<path d="M7 17a4 4 0 01-.5-7.97A5 5 0 0116.5 7H17a3.5 3.5 0 010 7h-.5" /><path d="M12 21v-7" /><path d="M9 16.5L12 13.5 15 16.5" />' },
+            { x: 260, y: 380, label: rapidDev.diagram.enable, path: '<circle cx="9" cy="8" r="3" /><path d="M3 20a6 6 0 0112 0" /><circle cx="17" cy="9" r="2.5" /><path d="M14.5 20a5 5 0 016.5-4.8" />' },
+            { x: 110, y: 230, label: rapidDev.diagram.agents, path: '<path d="M9 4a2.5 2.5 0 00-2.5 2.5v.6A2.5 2.5 0 004 9.5a2.5 2.5 0 001 4.7v.8A2.5 2.5 0 007.5 17.5H9V4z" /><path d="M15 4a2.5 2.5 0 012.5 2.5v.6A2.5 2.5 0 0120 9.5a2.5 2.5 0 01-1 4.7v.8a2.5 2.5 0 01-2.5 2.5H15V4z" /><path d="M9 4v13.5M15 4v13.5" />' },
           ].map((node) => (
             <>
               <circle cx={node.x} cy={node.y} r="26" fill="url(#rd-halo)" opacity="0.35" />
@@ -82,6 +85,8 @@ const { rapidDev } = Astro.props;
                 stroke-linejoin="round"
                 set:html={node.path}
               />
+              <rect x={node.x - 41} y={node.y + 29} width="82" height="22" rx="8" fill="rgba(8,10,32,0.65)" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+              <text x={node.x} y={node.y + 44} text-anchor="middle" font-size="12" font-weight="600" fill="#d9dcf5" letter-spacing="0.02em">{node.label}</text>
             </>
           ))
         }

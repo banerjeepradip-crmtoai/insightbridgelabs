@@ -86,6 +86,13 @@ export const sv: HomeContent = {
     primaryCtaHref: '/sv/services/rapid-application-development',
     secondaryCta: 'Diskutera din idé',
     secondaryCtaHref: '/sv/contact#contact-form',
+    diagram: {
+      hub: 'Claude',
+      code: 'Kod',
+      agents: 'Agenter',
+      cicd: 'CI/CD',
+      enable: 'Drift',
+    },
   },
   about: {
     eyebrow: 'OM INSIGHTBRIDGE LABS',

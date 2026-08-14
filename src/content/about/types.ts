@@ -4,13 +4,6 @@ export interface ExpertiseArea {
   description: string;
 }
 
-export interface ExperienceEntry {
-  company: string;
-  role: string;
-  period: string;
-  points: string[];
-}
-
 export interface FeaturedProjectItem {
   icon: string;
   eyebrow: string;
@@ -46,7 +39,7 @@ export interface AboutContent {
   experience: {
     heading: string;
     eyebrow: string;
-    entries: ExperienceEntry[];
+    paragraphs: string[];
   };
   featuredProjects: {
     heading: string;

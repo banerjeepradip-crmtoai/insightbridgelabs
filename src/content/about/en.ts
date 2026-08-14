@@ -64,58 +64,9 @@ export const en: AboutContent = {
   experience: {
     eyebrow: 'TRACK RECORD',
     heading: 'Professional Experience',
-    entries: [
-      {
-        company: 'Ericsson AB, Stockholm',
-        role: 'Enterprise Solution Architect',
-        period: 'Aug 2022 – Present',
-        points: [
-          'Lead enterprise solution governance, architecture standards and AI-enabled platform modernization.',
-          'Designed AI-enabled Salesforce solutions using Agentforce, Einstein AI and Data Cloud.',
-          'Reduced quote cycle time by 70% and improved course delivery timelines by 45% through CRM automation.',
-        ],
-      },
-      {
-        company: 'Proact Group AB, Stockholm',
-        role: 'Salesforce System Owner',
-        period: 'May 2019 – Aug 2022',
-        points: [
-          'Owned enterprise Salesforce platform governance, scalability planning and transformation roadmap.',
-          'Led enterprise integration and automation programs connecting the CRM ecosystem with business-critical applications.',
-        ],
-      },
-      {
-        company: 'Capgemini, Stockholm',
-        role: 'Service Delivery Architect',
-        period: 'Sep 2016 – May 2019',
-        points: [
-          'Provided architecture guidance and governance standards across the CRM Center of Excellence.',
-          'Led solution scoping workshops, RFP/RFI responses and bid defense for large transformation programs.',
-        ],
-      },
-      {
-        company: 'DXC Technology',
-        role: 'Practice Manager',
-        period: 'Apr 2015 – Sep 2016',
-        points: [
-          'Led the Salesforce Practice, managing a portfolio of transformation programs and mentoring architects and consultants.',
-          'Partnered with sales teams to shape multi-million-dollar opportunities.',
-        ],
-      },
-      {
-        company: 'Deloitte, Malaysia & Singapore',
-        role: 'Senior Salesforce Solution Consultant',
-        period: 'Jul 2014 – Mar 2016',
-        points: ['Managed enterprise CRM workstreams and cross-functional delivery coordination across APAC engagements.'],
-      },
-      {
-        company: 'Multiple Organizations, Multiple Geographies',
-        role: 'Early IT Career',
-        period: '2000 – 2013',
-        points: [
-          'Held a variety of IT roles across different countries and industries, building the technical and delivery foundation for the enterprise architecture work that followed.',
-        ],
-      },
+    paragraphs: [
+      'Over more than two decades, I have progressed from hands-on IT delivery into enterprise-wide solution architecture. Most recently, as Enterprise Solution Architect at Ericsson AB, Stockholm (Aug 2022 – Present), I lead enterprise solution governance, architecture standards and AI-enabled platform modernization — designing AI-enabled Salesforce solutions on Agentforce, Einstein AI and Data Cloud that cut quote cycle time by 70% and improved course delivery timelines by 45% through CRM automation. Before that, as Salesforce System Owner at Proact Group AB, Stockholm (May 2019 – Aug 2022), I owned enterprise Salesforce platform governance, scalability planning and the transformation roadmap, and led integration and automation programs connecting the CRM ecosystem with business-critical applications.',
+      'That role was built on progressively senior delivery and architecture positions: as Service Delivery Architect at Capgemini, Stockholm (Sep 2016 – May 2019), I set architecture guidance and governance standards across the CRM Center of Excellence and led solution scoping workshops, RFP/RFI responses and bid defense for large transformation programs; as Practice Manager at DXC Technology (Apr 2015 – Sep 2016), I led the Salesforce Practice, managed a portfolio of transformation programs, mentored architects and consultants, and partnered with sales teams to shape multi-million-dollar opportunities; and as Senior Salesforce Solution Consultant at Deloitte, Malaysia & Singapore (Jul 2014 – Mar 2016), I managed enterprise CRM workstreams and cross-functional delivery coordination across APAC engagements. This built on an earlier IT career (2000 – 2013) spanning multiple organizations, countries and industries that laid the technical and delivery foundation for the enterprise architecture work that followed.',
     ],
   },
   featuredProjects: {

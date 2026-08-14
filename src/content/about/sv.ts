@@ -64,58 +64,9 @@ export const sv: AboutContent = {
   experience: {
     eyebrow: 'MERITER',
     heading: 'Yrkeserfarenhet',
-    entries: [
-      {
-        company: 'Ericsson AB, Stockholm',
-        role: 'Enterprise Solution Architect',
-        period: 'Aug 2022 – Nutid',
-        points: [
-          'Leder styrning av företagslösningar, arkitekturstandarder och AI-driven plattformsmodernisering.',
-          'Designade AI-drivna Salesforce-lösningar med Agentforce, Einstein AI och Data Cloud.',
-          'Minskade offertcykeltiden med 70 % och förbättrade leveranstiderna för kurser med 45 % genom CRM-automation.',
-        ],
-      },
-      {
-        company: 'Proact Group AB, Stockholm',
-        role: 'Salesforce System Owner',
-        period: 'Maj 2019 – Aug 2022',
-        points: [
-          'Ansvarade för styrning av Salesforce-plattformen, skalbarhetsplanering och transformationsfärdplan.',
-          'Ledde integrations- och automationsprogram som kopplade samman CRM-ekosystemet med verksamhetskritiska applikationer.',
-        ],
-      },
-      {
-        company: 'Capgemini, Stockholm',
-        role: 'Service Delivery Architect',
-        period: 'Sep 2016 – Maj 2019',
-        points: [
-          'Gav arkitekturvägledning och styrningsstandarder inom CRM Center of Excellence.',
-          'Ledde workshops för lösningsomfattning, RFP/RFI-svar och anbudsförsvar för stora transformationsprogram.',
-        ],
-      },
-      {
-        company: 'DXC Technology',
-        role: 'Practice Manager',
-        period: 'Apr 2015 – Sep 2016',
-        points: [
-          'Ledde Salesforce-praktiken, förvaltade en portfölj av transformationsprogram och handledde arkitekter och konsulter.',
-          'Samarbetade med säljteam för att forma affärsmöjligheter värda flera miljoner dollar.',
-        ],
-      },
-      {
-        company: 'Deloitte, Malaysia & Singapore',
-        role: 'Senior Salesforce Solution Consultant',
-        period: 'Jul 2014 – Mar 2016',
-        points: ['Ledde CRM-arbetsströmmar och tvärfunktionell leveranskoordinering i APAC-uppdrag.'],
-      },
-      {
-        company: 'Flera organisationer, flera geografiska platser',
-        role: 'Tidig IT-karriär',
-        period: '2000 – 2013',
-        points: [
-          'Innehade en rad IT-roller i olika länder och branscher, vilket byggde den tekniska och leveransmässiga grunden för det arkitekturarbete som följde.',
-        ],
-      },
+    paragraphs: [
+      'Under mer än två decennier har jag utvecklats från praktiskt IT-genomförande till företagsövergripande lösningsarkitektur. Senast, som Enterprise Solution Architect på Ericsson AB, Stockholm (aug 2022 – nutid), leder jag styrning av företagslösningar, arkitekturstandarder och AI-driven plattformsmodernisering — och har designat AI-drivna Salesforce-lösningar med Agentforce, Einstein AI och Data Cloud som minskade offertcykeltiden med 70 % och förbättrade leveranstiderna för kurser med 45 % genom CRM-automation. Dessförinnan, som Salesforce System Owner på Proact Group AB, Stockholm (maj 2019 – aug 2022), ansvarade jag för styrningen av Salesforce-plattformen, skalbarhetsplanering och transformationsfärdplanen, och ledde integrations- och automationsprogram som kopplade samman CRM-ekosystemet med verksamhetskritiska applikationer.',
+      'Den rollen byggde på successivt mer seniora leverans- och arkitekturroller: som Service Delivery Architect på Capgemini, Stockholm (sep 2016 – maj 2019) gav jag arkitekturvägledning och styrningsstandarder inom CRM Center of Excellence och ledde workshops för lösningsomfattning, RFP/RFI-svar och anbudsförsvar för stora transformationsprogram; som Practice Manager på DXC Technology (apr 2015 – sep 2016) ledde jag Salesforce-praktiken, förvaltade en portfölj av transformationsprogram, handledde arkitekter och konsulter, och samarbetade med säljteam för att forma affärsmöjligheter värda flera miljoner dollar; och som Senior Salesforce Solution Consultant på Deloitte, Malaysia och Singapore (jul 2014 – mar 2016) ledde jag CRM-arbetsströmmar och tvärfunktionell leveranskoordinering i APAC-uppdrag. Detta byggde på en tidigare IT-karriär (2000–2013) i flera organisationer, länder och branscher, som lade den tekniska och leveransmässiga grunden för det arkitekturarbete som följde.',
     ],
   },
   featuredProjects: {

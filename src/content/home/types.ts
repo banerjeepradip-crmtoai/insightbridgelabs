@@ -51,6 +51,13 @@ export interface HomeContent {
     primaryCtaHref: string;
     secondaryCta: string;
     secondaryCtaHref: string;
+    diagram: {
+      hub: string;
+      code: string;
+      agents: string;
+      cicd: string;
+      enable: string;
+    };
   };
   about: {
     eyebrow: string;

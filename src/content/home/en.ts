@@ -86,6 +86,13 @@ export const en: HomeContent = {
     primaryCtaHref: '/services/rapid-application-development',
     secondaryCta: 'Discuss Your Idea',
     secondaryCtaHref: '/contact#contact-form',
+    diagram: {
+      hub: 'Claude',
+      code: 'Code',
+      agents: 'Agents',
+      cicd: 'CI/CD',
+      enable: 'Enable',
+    },
   },
   about: {
     eyebrow: 'ABOUT INSIGHTBRIDGE LABS',

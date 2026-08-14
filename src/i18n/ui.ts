@@ -7,8 +7,6 @@ export interface UiStrings {
   caseChallenge: string;
   caseSolution: string;
   caseOutcome: string;
-  showExperience: string;
-  hideExperience: string;
   langSoon: string;
   languageLabel: string;
   bookACall: string;
@@ -50,8 +48,6 @@ const en: UiStrings = {
   caseChallenge: 'Challenge',
   caseSolution: 'Solution',
   caseOutcome: 'Outcome',
-  showExperience: 'Show Professional Experience',
-  hideExperience: 'Hide Professional Experience',
   langSoon: 'Soon',
   languageLabel: 'Language',
   bookACall: 'Book a call',
@@ -93,8 +89,6 @@ const sv: UiStrings = {
   caseChallenge: 'Utmaning',
   caseSolution: 'Lösning',
   caseOutcome: 'Resultat',
-  showExperience: 'Visa yrkeserfarenhet',
-  hideExperience: 'Dölj yrkeserfarenhet',
   langSoon: 'Snart',
   languageLabel: 'Språk',
   bookACall: 'Boka ett samtal',
