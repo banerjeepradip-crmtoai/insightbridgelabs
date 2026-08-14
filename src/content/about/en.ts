@@ -159,6 +159,10 @@ export const en: AboutContent = {
       'Proven ability to align business strategy, enterprise architecture and operational transformation.',
       'Experienced in driving cross-functional collaboration across business, architecture, delivery and vendor organizations.',
       'A strong balance of strategic leadership and technical credibility.',
+      'Enterprise Solution Architect experience across architecture, technology and end-to-end delivery — turning complex business requirements into practical, scalable applications, rapidly and responsibly.',
+      'Combines strategic thinking with hands-on development to accelerate value realisation, reduce development costs and improve productivity through AI-enabled automation.',
+      'Validates business needs early and designs for scale from the outset, so promising concepts can progress from focused prototype to operational solution.',
+      'Delivers in days or weeks rather than prolonged development cycles, while maintaining clear scope, predictable delivery and long-term maintainability.',
     ],
   },
   quickFacts: {

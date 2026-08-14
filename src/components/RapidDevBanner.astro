@@ -23,6 +23,74 @@ const { rapidDev } = Astro.props;
         <a href={rapidDev.secondaryCtaHref} class="btn btn-outline-light">{rapidDev.secondaryCta}</a>
       </div>
     </div>
+
+    <div class="rapid-dev-art" aria-hidden="true">
+      <svg viewBox="0 0 520 460" class="rapid-dev-svg">
+        <defs>
+          <pattern id="rd-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="1.4" fill="rgba(255,255,255,0.16)" />
+          </pattern>
+          <radialGradient id="rd-halo" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#9b7cf6" stop-opacity="0.55" />
+            <stop offset="100%" stop-color="#9b7cf6" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="rd-core" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6d7cf7" />
+            <stop offset="100%" stop-color="#9b7cf5" />
+          </linearGradient>
+        </defs>
+
+        <rect x="10" y="10" width="500" height="440" rx="28" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" />
+        <rect x="10" y="10" width="500" height="440" rx="28" fill="url(#rd-dots)" opacity="0.6" />
+
+        <circle cx="46" cy="46" r="5" fill="rgba(255,255,255,0.35)" />
+        <circle cx="66" cy="46" r="5" fill="rgba(255,255,255,0.35)" />
+        <circle cx="86" cy="46" r="5" fill="rgba(255,255,255,0.35)" />
+        <line x1="30" y1="74" x2="490" y2="74" stroke="rgba(255,255,255,0.12)" stroke-width="1" />
+
+        <g stroke="rgba(255,255,255,0.3)" stroke-width="1.6">
+          <line x1="260" y1="230" x2="260" y2="80" />
+          <line x1="260" y1="230" x2="410" y2="230" />
+          <line x1="260" y1="230" x2="260" y2="380" />
+          <line x1="260" y1="230" x2="110" y2="230" />
+        </g>
+
+        <g class="rd-orbit" style="transform-origin: 260px 230px;">
+          <circle cx="260" cy="230" r="58" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-dasharray="3 7" />
+        </g>
+
+        <circle cx="260" cy="230" r="64" fill="url(#rd-halo)" />
+        <circle cx="260" cy="230" r="42" fill="url(#rd-core)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" />
+        <path d="M260 208 L264 226 L282 230 L264 234 L260 252 L256 234 L238 230 L256 226 Z" fill="#fff" opacity="0.95" />
+
+        {
+          [
+            { x: 260, y: 80, path: '<path d="M9 8l-4 4 4 4" /><path d="M15 8l4 4-4 4" /><path d="M13 5l-2 14" />' },
+            { x: 410, y: 230, path: '<path d="M7 17a4 4 0 01-.5-7.97A5 5 0 0116.5 7H17a3.5 3.5 0 010 7h-.5" /><path d="M12 21v-7" /><path d="M9 16.5L12 13.5 15 16.5" />' },
+            { x: 260, y: 380, path: '<circle cx="9" cy="8" r="3" /><path d="M3 20a6 6 0 0112 0" /><circle cx="17" cy="9" r="2.5" /><path d="M14.5 20a5 5 0 016.5-4.8" />' },
+            { x: 110, y: 230, path: '<path d="M9 4a2.5 2.5 0 00-2.5 2.5v.6A2.5 2.5 0 004 9.5a2.5 2.5 0 001 4.7v.8A2.5 2.5 0 007.5 17.5H9V4z" /><path d="M15 4a2.5 2.5 0 012.5 2.5v.6A2.5 2.5 0 0120 9.5a2.5 2.5 0 01-1 4.7v.8a2.5 2.5 0 01-2.5 2.5H15V4z" /><path d="M9 4v13.5M15 4v13.5" />' },
+          ].map((node) => (
+            <>
+              <circle cx={node.x} cy={node.y} r="26" fill="url(#rd-halo)" opacity="0.35" />
+              <circle cx={node.x} cy={node.y} r="22" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" />
+              <g
+                transform={`translate(${node.x - 11} ${node.y - 11}) scale(0.92)`}
+                fill="none"
+                stroke="#ffffff"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                set:html={node.path}
+              />
+            </>
+          ))
+        }
+
+        <circle cx="452" cy="96" r="3" fill="rgba(255,255,255,0.4)" />
+        <circle cx="76" cy="352" r="2.5" fill="rgba(255,255,255,0.35)" />
+        <circle cx="430" cy="372" r="2" fill="rgba(255,255,255,0.3)" />
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -38,10 +106,53 @@ const { rapidDev } = Astro.props;
 
   .rapid-dev-inner {
     padding: 72px 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 40px;
+    align-items: center;
   }
 
   .rapid-dev-copy {
-    max-width: 720px;
+    max-width: 560px;
+  }
+
+  .rapid-dev-art {
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .rapid-dev-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .rd-orbit {
+    animation: rd-spin 22s linear infinite;
+  }
+
+  @keyframes rd-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rd-orbit {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .rapid-dev-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .rapid-dev-art {
+      max-width: 340px;
+      order: -1;
+    }
   }
 
   .rapid-dev-eyebrow {

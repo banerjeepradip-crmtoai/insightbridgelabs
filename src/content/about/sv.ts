@@ -159,6 +159,10 @@ export const sv: AboutContent = {
       'Bevisad förmåga att förena affärsstrategi, företagsarkitektur och verksamhetstransformation.',
       'Erfaren av att driva tvärfunktionellt samarbete mellan verksamhet, arkitektur, leverans och leverantörsorganisationer.',
       'En stark balans mellan strategiskt ledarskap och teknisk trovärdighet.',
+      'Erfarenhet som Enterprise Solution Architect inom arkitektur, teknik och leverans från start till mål — omvandlar komplexa affärskrav till praktiska, skalbara applikationer, snabbt och ansvarsfullt.',
+      'Kombinerar strategiskt tänkande med praktisk utveckling för att snabba på värdeskapandet, sänka utvecklingskostnaderna och förbättra produktiviteten genom AI-driven automation.',
+      'Validerar affärsbehov tidigt och designar för skalbarhet redan från start, så att lovande koncept kan gå från fokuserad prototyp till driftsatt lösning.',
+      'Levererar på dagar eller veckor istället för utdragna utvecklingscykler, med bibehållet tydligt scope, förutsägbar leverans och långsiktig underhållbarhet.',
     ],
   },
   quickFacts: {
