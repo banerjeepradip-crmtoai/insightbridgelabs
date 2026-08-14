@@ -18,6 +18,7 @@ export const sv: HomeContent = {
           { label: 'AI-strategi', href: '/sv/services/ai-strategy' },
           { label: 'AI-konsulting', href: '/sv/services/ai-consulting' },
           { label: 'CRM till AI', href: '/sv/services/crm-to-ai' },
+          { label: 'Snabb applikationsutveckling', href: '/sv/services/rapid-application-development' },
         ],
       },
       {
@@ -77,6 +78,15 @@ export const sv: HomeContent = {
       description: 'Transformera med kraften i Salesforce.',
     },
   ],
+  rapidDev: {
+    eyebrow: 'NYHET · AI-DRIVEN UTVECKLING',
+    heading: 'Från idé till fungerande app — på dagar, inte månader',
+    body: 'Vi bygger applikationer, AI-agenter och intelligenta assistenter från start till mål med Claude och modern AI-assisterad ingenjörskonst — arkitektur, kod, testning och CI/CD ingår.',
+    primaryCta: 'Utforska snabb applikationsutveckling',
+    primaryCtaHref: '/sv/services/rapid-application-development',
+    secondaryCta: 'Diskutera din idé',
+    secondaryCtaHref: '/sv/contact#contact-form',
+  },
   about: {
     eyebrow: 'OM INSIGHTBRIDGE LABS',
     heading: 'Din bro till AI-driven affärstransformation',
@@ -134,6 +144,7 @@ export const sv: HomeContent = {
           { label: 'AI-strategi', href: '/sv/services/ai-strategy' },
           { label: 'AI-konsulting', href: '/sv/services/ai-consulting' },
           { label: 'CRM till AI', href: '/sv/services/crm-to-ai' },
+          { label: 'Snabb applikationsutveckling', href: '/sv/services/rapid-application-development' },
         ],
       },
       {

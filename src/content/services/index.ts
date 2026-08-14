@@ -3,10 +3,12 @@ import { aiGovernance } from './ai-governance';
 import { aiStrategy } from './ai-strategy';
 import { aiConsulting } from './ai-consulting';
 import { crmToAi } from './crm-to-ai';
+import { rapidApplicationDevelopment } from './rapid-application-development';
 import { aiGovernance as aiGovernanceSv } from './sv/ai-governance';
 import { aiStrategy as aiStrategySv } from './sv/ai-strategy';
 import { aiConsulting as aiConsultingSv } from './sv/ai-consulting';
 import { crmToAi as crmToAiSv } from './sv/crm-to-ai';
+import { rapidApplicationDevelopment as rapidApplicationDevelopmentSv } from './sv/rapid-application-development';
 import { defaultLang } from '../../i18n/languages';
 
 // Add a new service by creating src/content/services/<slug>.ts (English) and
@@ -18,12 +20,14 @@ const registry: Record<string, Record<string, ServiceContent>> = {
     'ai-strategy': aiStrategy,
     'ai-consulting': aiConsulting,
     'crm-to-ai': crmToAi,
+    'rapid-application-development': rapidApplicationDevelopment,
   },
   sv: {
     'ai-governance': aiGovernanceSv,
     'ai-strategy': aiStrategySv,
     'ai-consulting': aiConsultingSv,
     'crm-to-ai': crmToAiSv,
+    'rapid-application-development': rapidApplicationDevelopmentSv,
   },
 };
 

@@ -18,6 +18,7 @@ export const en: HomeContent = {
           { label: 'AI Strategy', href: '/services/ai-strategy' },
           { label: 'AI Consulting', href: '/services/ai-consulting' },
           { label: 'CRM to AI', href: '/services/crm-to-ai' },
+          { label: 'Rapid Application Development', href: '/services/rapid-application-development' },
         ],
       },
       {
@@ -77,6 +78,15 @@ export const en: HomeContent = {
       description: 'Transform with the power of Salesforce.',
     },
   ],
+  rapidDev: {
+    eyebrow: 'NEW · AI-POWERED DEVELOPMENT',
+    heading: 'From Idea to Working App — in Days, Not Months',
+    body: 'We build applications, AI agents and intelligent assistants end to end using Claude and modern AI-assisted engineering — architecture, code, testing and CI/CD included.',
+    primaryCta: 'Explore Rapid Application Development',
+    primaryCtaHref: '/services/rapid-application-development',
+    secondaryCta: 'Discuss Your Idea',
+    secondaryCtaHref: '/contact#contact-form',
+  },
   about: {
     eyebrow: 'ABOUT INSIGHTBRIDGE LABS',
     heading: 'Your Bridge to AI-Powered Business Transformation',
@@ -134,6 +144,7 @@ export const en: HomeContent = {
           { label: 'AI Strategy', href: '/services/ai-strategy' },
           { label: 'AI Consulting', href: '/services/ai-consulting' },
           { label: 'CRM to AI', href: '/services/crm-to-ai' },
+          { label: 'Rapid Application Development', href: '/services/rapid-application-development' },
         ],
       },
       {

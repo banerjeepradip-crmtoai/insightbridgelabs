@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import Features from '../components/Features.astro';
+import RapidDevBanner from '../components/RapidDevBanner.astro';
 import About from '../components/About.astro';
 import Stats from '../components/Stats.astro';
 import { getHomeContent } from '../content/home';
@@ -13,6 +14,7 @@ const content = getHomeContent(currentLang);
 <BaseLayout meta={content.meta} nav={content.nav} footer={content.footer} currentLang={currentLang}>
   <Hero hero={content.hero} />
   <Features features={content.features} />
+  <RapidDevBanner rapidDev={content.rapidDev} />
   <About about={content.about} lang={currentLang} />
   <Stats stats={content.stats} />
 </BaseLayout>

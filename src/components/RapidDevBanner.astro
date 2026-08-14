@@ -1,0 +1,92 @@
+---
+import Icon from './Icon.astro';
+import type { HomeContent } from '../content/home/types';
+
+interface Props {
+  rapidDev: HomeContent['rapidDev'];
+}
+
+const { rapidDev } = Astro.props;
+---
+
+<section class="rapid-dev">
+  <div class="container rapid-dev-inner">
+    <div class="rapid-dev-copy">
+      <span class="rapid-dev-eyebrow">
+        <Icon name="code" />
+        {rapidDev.eyebrow}
+      </span>
+      <h2>{rapidDev.heading}</h2>
+      <p>{rapidDev.body}</p>
+      <div class="rapid-dev-actions">
+        <a href={rapidDev.primaryCtaHref} class="btn btn-primary">{rapidDev.primaryCta}</a>
+        <a href={rapidDev.secondaryCtaHref} class="btn btn-outline-light">{rapidDev.secondaryCta}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rapid-dev {
+    position: relative;
+    background: var(--color-navy-950);
+    background-image: radial-gradient(circle at 12% 20%, rgba(109, 124, 247, 0.35), transparent 45%),
+      radial-gradient(circle at 88% 80%, rgba(155, 124, 245, 0.3), transparent 50%);
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .rapid-dev-inner {
+    padding: 72px 24px;
+  }
+
+  .rapid-dev-copy {
+    max-width: 720px;
+  }
+
+  .rapid-dev-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c4c8e6;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+
+  .rapid-dev-eyebrow .icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .rapid-dev-copy h2 {
+    margin: 0 0 16px;
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.2;
+    background: var(--color-accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .rapid-dev-copy p {
+    margin: 0 0 30px;
+    max-width: 560px;
+    color: #c4c8e6;
+    line-height: 1.7;
+    font-size: 1.02rem;
+  }
+
+  .rapid-dev-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+</style>

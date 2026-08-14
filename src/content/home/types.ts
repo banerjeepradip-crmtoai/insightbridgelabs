@@ -43,6 +43,15 @@ export interface HomeContent {
     secondaryCtaHref: string;
   };
   features: FeatureItem[];
+  rapidDev: {
+    eyebrow: string;
+    heading: string;
+    body: string;
+    primaryCta: string;
+    primaryCtaHref: string;
+    secondaryCta: string;
+    secondaryCtaHref: string;
+  };
   about: {
     eyebrow: string;
     heading: string;
