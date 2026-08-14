@@ -1,0 +1,8 @@
+name = "se-proxy-insightbridgelabs"
+main = "cloudflare/se-proxy-worker.js"
+compatibility_date = "2026-08-04"
+
+routes = [
+  { pattern = "insightbridgelabs.se/*", zone_name = "insightbridgelabs.se" },
+  { pattern = "www.insightbridgelabs.se/*", zone_name = "insightbridgelabs.se" },
+]
