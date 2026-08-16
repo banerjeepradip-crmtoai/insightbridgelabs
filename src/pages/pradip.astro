@@ -50,18 +50,13 @@ const description =
           </g>
         </svg>
         <div class="hero-inner">
-          <div class="status-row">
-            <span class="status-dot"></span>
-            Open to consulting, advisory, product collaboration &amp; permanent architecture roles
-          </div>
           <div class="avatar-wrap">
             <img class="avatar" src="/images/pb.jpg" alt="Pradip Banerjee" width="112" height="112" />
           </div>
           <h1 class="name">Pradip Banerjee</h1>
           <p class="role">Enterprise Solution Architect &middot; Salesforce Architect<br />Enterprise AI &amp; AI Governance</p>
           <p class="pitch">
-            20 years of enterprise architecture, now building secure, governed AI — inside Salesforce, alongside it,
-            or entirely apart from it.
+            Open to <strong>Consulting</strong>, <strong>Advisory</strong>, <strong>Product Collaboration</strong> &amp; <strong>Permanent Architecture Roles</strong>.
           </p>
         </div>
       </div>
@@ -290,6 +285,11 @@ const description =
     margin-inline: auto;
   }
 
+  .pitch strong {
+    color: #fff;
+    font-weight: 700;
+  }
+
   /* ---------- BODY ---------- */
   .body {
     padding: 28px 28px 8px;
@@ -351,31 +351,6 @@ const description =
     height: 1px;
     background: var(--color-gray-200);
     margin: 0 0 28px;
-  }
-
-  .status-row {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.76rem;
-    font-weight: 600;
-    color: #eef0ff;
-    margin: 0 0 20px;
-    padding: 8px 14px;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 999px;
-    text-align: left;
-    max-width: 300px;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #22c55e;
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
-    flex: 0 0 8px;
   }
 
   /* ---------- CONTACT ---------- */
