@@ -50,6 +50,10 @@ const description =
           </g>
         </svg>
         <div class="hero-inner">
+          <div class="status-row">
+            <span class="status-dot"></span>
+            Open to consulting, advisory, product collaboration &amp; permanent architecture roles
+          </div>
           <div class="avatar-wrap">
             <img class="avatar" src="/images/pb.jpg" alt="Pradip Banerjee" width="112" height="112" />
           </div>
@@ -150,11 +154,6 @@ const description =
         </ul>
 
         <div class="divider"></div>
-
-        <div class="status-row">
-          <span class="status-dot"></span>
-          Open to consulting, advisory, product collaboration &amp; permanent architecture roles
-        </div>
       </div>
 
       <div class="contact">
@@ -355,16 +354,19 @@ const description =
   }
 
   .status-row {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
-    color: var(--color-gray-600);
-    margin: 0 0 28px;
-    padding: 10px 14px;
-    background: var(--color-gray-100);
-    border-radius: 10px;
+    color: #eef0ff;
+    margin: 0 0 20px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 999px;
+    text-align: left;
+    max-width: 300px;
   }
 
   .status-dot {
