@@ -84,6 +84,20 @@ export const en: BlogContent = {
       ],
       "href": "https://media.licdn.com/dms/document/media/v2/D561FAQFreLX1txsVfA/feedshare-document-url-metadata-scrapper-pdf/B56ZQ7Teg8HQA4-/0/1736161750963?e=1786233600&v=beta&t=b5Y_CIAlBkFRmsShBPiRq4ElqZ_av3imNRjftiHv2Y0"
     },
+    {
+      "type": "Linkedin Post",
+      "title": "Managing Hallucinations in Enterprise RAG Systems",
+      "excerpt": "LLM hallucinations can’t be eliminated — but they can be significantly reduced and managed. Enterprise RAG grounds AI responses in relevant, verified data through retrieval, citations and guardrails. Benchmarking for accuracy, citation quality and relevance is essential before production. Trusted AI comes from better retrieval, stronger grounding, continuous evaluation and monitoring.",
+      "tags": [
+        "Managing Hallucinations",
+        "Enterprise RAG Systems",
+        "LLM",
+        "Enterprise RAG",
+        "AI",
+        "Benchmarking"
+      ],
+      "href": "https://www.linkedin.com/feed/update/urn:li:activity:7491818378530316288"
+    },
     // CMS:ITEMS:END
   ],
   cta: {
