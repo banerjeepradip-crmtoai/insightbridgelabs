@@ -4,69 +4,181 @@ export const sv: AboutContent = {
   meta: {
     title: 'Om oss — InsightBridge Labs',
     description:
-      'InsightBridge Labs leds av Pradip Banerjee, en Enterprise AI Solution Architect med 20+ års erfarenhet av att designa AI-drivna CRM-plattformar på Salesforce och molnekosystem.',
+      'InsightBridge Labs leds av Pradip Banerjee, en senior ledare inom företagsteknik och transformation med 17+ års erfarenhet av att bygga broar mellan affärsstrategi, plattformar, data och AI.',
   },
   hero: {
     eyebrow: 'OM INSIGHTBRIDGE LABS',
     name: 'Pradip Banerjee',
-    role: 'Grundare & Principal AI Solution Architect',
+    role: 'Grundare & AI/Enterprise-arkitekt',
     location: 'Stockholm, Sverige',
     intro:
-      'Enterprise AI Solution Architect med 20+ års erfarenhet av att designa affärsplattformar och bygga AI-drivna lösningar på Salesforce och molnekosystem. InsightBridge Labs är där den erfarenheten blir en dedikerad verksamhet — vi hjälper organisationer att kombinera strukturerad företagsdata med stora språkmodeller, utan att förlora fokus på styrning, förklarbarhet och regelefterlevnad.',
+      'Bygger broar mellan affärsstrategi, plattformar, data och AI för att skapa mätbara affärsresultat. InsightBridge Labs är där 17+ års erfarenhet av företagsteknik och transformation blir en dedikerad AI-verksamhet — vi kombinerar strukturerad företagsdata med stora språkmodeller, utan att förlora fokus på styrning, förklarbarhet och regelefterlevnad.',
     linkedinLabel: 'Anslut på LinkedIn',
     linkedinHref: 'https://www.linkedin.com/in/pradipbanerjee1',
     email: 'banerjee.pradip@gmail.com',
   },
   bio: {
-    heading: 'Professionell profil',
+    heading: 'Värdeerbjudande som ledare',
     paragraphs: [
-      'Min expertis kombinerar djup Salesforce-arkitektur med moderna AI-teknologier, inklusive Agentic AI, Retrieval-Augmented Generation (RAG), semantisk sökning, vektordatabaser, kunskapshämtning för företag, AI-styrning och förklarbar AI.',
-      'Under de senaste åren har jag designat och levererat CRM- och digitala transformationslösningar inom telekom, tillverkning och IT-tjänster. På senare tid har jag byggt AI-plattformar för företag som integrerar Salesforce, OpenAI, Data Cloud, Snowflake, Databricks och molnbaserade backend-tjänster för att automatisera beslutsfattande, regelefterlevnadsbedömningar och intelligenta affärsprocesser.',
-      'Min praktiska erfarenhet spänner över hela AI-applikationens livscykel — från affärsanvändningsfallsmodellering och företagsdataarkitektur till semantisk sökning, promptteknik, AI-orkestrering, backend-API:er, molndistribution, integrationsdesign och produktionsklara företagsapplikationer. Jag specialiserar mig på att designa skalbara AI-lösningar som kombinerar strukturerad företagsdata med stora språkmodeller samtidigt som styrning, förklarbarhet, spårbarhet och regelefterlevnad upprätthålls.',
+      'Senior ledare inom företagsteknik och transformation med 17+ års erfarenhet av företagsarkitektur, CRM, digitala plattformar, data, integration och AI. Jag hjälper organisationer att omsätta komplexa affärsutmaningar till pragmatiska teknikstrategier och skalbara lösningar — från ledningens intention till arkitektur och genomförande.',
+      'Min styrka är förmågan att koppla samman etablerade företagsplattformar med det framväxande AI-native företaget: att förstå var AI skapar verkligt värde, hur företagsdata och system måste stödja det, och hur styrning, säkerhet och mänskligt ansvarstagande bör byggas in från början.',
+    ],
+    pillars: [
+      {
+        title: 'Verksamhet & transformation',
+        description: 'Omsätter affärsprioriteringar till transformationsfärdplaner, verksamhetsförbättringar och mätbara resultat.',
+      },
+      {
+        title: 'Arkitektur & plattformar',
+        description: 'Förenklar komplexa CRM-, data-, integrations- och molnlandskap samtidigt som återanvändning, skalbarhet och hållbarhet förbättras.',
+      },
+      {
+        title: 'AI & styrning',
+        description: 'Går från AI-experimenterande till styrd RAG, agentiska arbetsflöden och företagsanpassad AI-förmåga.',
+      },
     ],
   },
-  expertise: {
-    eyebrow: 'VAD JAG BIDRAR MED',
-    heading: 'Expertisområden',
+  enterpriseGap: {
+    eyebrow: 'VARFÖR DETTA ÄR VIKTIGT NU',
+    heading: 'Gapet jag hjälper till att stänga',
+    intro:
+      'Företag har investerat stort i CRM, ERP, moln och data, men många kämpar fortfarande med att omsätta dessa investeringar i enklare verksamhet och skalbar AI. Utmaningen handlar alltmer om kopplingen mellan affärsstrategi, processer, data, plattformar, AI och styrning.',
+    items: [
+      'AI-pilotprojekt utan tydlig väg till produktion, användning eller mätbar avkastning.',
+      'Fragmenterade plattformar och integrationer som ökar teknisk skuld och bromsar förändring.',
+      'Företagsdata och kunskap som finns, men som inte är tillräckligt tillgänglig, styrd eller AI-redo.',
+      'Agentisk AI som inför nya krav på behörigheter, orkestrering, observerbarhet, mänskligt godkännande och ansvarstagande.',
+      'Affärs- och teknikteam som arbetar med olika prioriteringar, språk och mått på framgång.',
+    ],
+  },
+  contributions: {
+    heading: 'Så här kan jag bidra',
     items: [
       {
-        icon: 'shield-check',
-        title: 'AI-styrning och regelefterlevnad',
-        description: 'Bedömer AI-användningsfall mot EU:s AI-förordning, GDPR, ISO 42001 och NIST AI RMF.',
+        number: '01',
+        title: 'Forma företagstransformation',
+        description:
+          'Kopplar samman strategiska prioriteringar med målarkitektur, investeringsval och en genomförbar färdplan. Fokuserar på förenkling, återanvändning och affärsresultat snarare än teknik för teknikens skull.',
       },
       {
-        icon: 'brain',
-        title: 'Agentic AI och RAG',
-        description: 'Retrieval-augmented generation, semantisk sökning och vektordatabaser för kunskapshämtning i företag.',
+        number: '02',
+        title: 'Bygga bron till företags-AI',
+        description:
+          'Identifierar högvärdiga AI-möjligheter och definierar arkitekturer som kombinerar företagsapplikationer, API:er, kunskap, RAG, modeller och styrda agentiska arbetsflöden.',
       },
       {
-        icon: 'cloud-upload',
-        title: 'Salesforce-arkitektur',
-        description: 'Agentforce, Einstein AI, Data Cloud, Apex och LWC i storskaliga CRM-plattformar.',
+        number: '03',
+        title: 'Modernisera kund- och kommersiella plattformar',
+        description:
+          'Använder djup CRM- och Salesforce-erfarenhet för att förbättra försäljnings-, service-, offert- och kundprocesser samtidigt som de kopplas samman med data- och AI-förmåga.',
       },
       {
-        icon: 'nodes',
-        title: 'Systemintegration',
-        description: 'Kopplar samman Salesforce med SAP, Snowflake, Databricks och molnbaserade backend-tjänster.',
+        number: '04',
+        title: 'Förbättra data- och AI-beredskap',
+        description:
+          'Fastställer hur operativ data, företagskunskap, semantisk sökning, vektorsökning och styrning ska samverka för att stödja tillförlitlig AI.',
       },
       {
-        icon: 'cloud',
-        title: 'Moln och DevOps',
-        description: 'AWS, Docker och CI/CD-pipelines för produktionsdistribution av AI-drivna applikationer.',
+        number: '05',
+        title: 'Styra AI utan att stoppa innovation',
+        description:
+          'Bygger in riskklassificering, integritet, mänsklig tillsyn, spårbarhet och ansvarsfulla AI-kontroller i lösnings- och plattformsarkitektur.',
       },
       {
-        icon: 'chart',
-        title: 'Data- och AI-ingenjörskonst',
-        description: 'Företagsdatamodellering, embeddings och kunskapsbasarkitektur.',
+        number: '06',
+        title: 'Leda strategi genom genomförande',
+        description:
+          'Arbetar tvärs över ledning, affärsansvariga, företagsarkitekter, produktchefer och utvecklingsteam för att omsätta strategi till leveransbara lösningar.',
       },
+    ],
+  },
+  impactStats: {
+    heading: 'Utvald affärspåverkan',
+    items: [
+      { value: '60–70 %', label: 'snabbare offertgenomloppstid', category: 'KOMMERSIELL TRANSFORMATION' },
+      { value: '40 %', label: 'förbättrad resursutnyttjning', category: 'OPERATIV EFFEKTIVITET' },
+      { value: '60 %', label: 'ökad leadkonvertering', category: 'FÖRSÄLJNINGSEFFEKTIVITET' },
+      { value: '40 %', label: 'förbättrad kundretention', category: 'KUNDRESULTAT' },
+      { value: '50 %', label: 'kortare svarstid för fältservice', category: 'SERVICETRANSFORMATION' },
+      { value: '5M$+', label: 'årliga besparingar levererade', category: 'AFFÄRSVÄRDE' },
     ],
   },
   experience: {
-    eyebrow: 'MERITER',
-    heading: 'Yrkeserfarenhet',
+    heading: 'Karriärgrund',
+    entries: [
+      {
+        company: 'InsightBridge Consulting AB',
+        role: 'Grundare & AI/Enterprise-arkitekt',
+        dates: '2026 – nutid',
+        description:
+          'Bygger företagsfokuserade lösningar och rådgivningserbjudanden inom AI-styrning, företags-RAG, agentiska arbetsflöden, CRM och data. Det pågående arbetet omsätter verkliga företagsutmaningar till fungerande lösningskoncept och arkitekturer.',
+        bullets: [
+          'Utvecklade RegIntel, ett koncept för AI-styrning i företag som täcker bedömning av AI-användningsfall, databeredskap och regelverk/kontrollramar.',
+          'Designade Tender Pilot för att kombinera intelligens om offentlig upphandling, AI-kvalificering och Salesforce-baserad affärsmöjlighetshantering.',
+          'Designade EnterpriseDealPilot, ett styrt agentiskt koncept för offert-till-avslut som kopplar samman AI-orkestrering, CRM-processer, verktyg och mänskliga godkännanden.',
+        ],
+      },
+      {
+        company: 'Ericsson',
+        role: 'Enterprise/Senior lösningsarkitekt',
+        dates: '2022 – 2026',
+        description:
+          'Ledde arkitektur och transformation över företagsplattformar, i samarbete med affärsintressenter, produktteam, arkitekter och utvecklingsteam för att förbättra kommersiella och operativa processer.',
+        bullets: [
+          'Kopplade samman affärskrav med skalbar lösningsarkitektur och företagsplattformsstrategi.',
+          'Arbetade tvärs över Salesforce, data, integration och AI-relaterade förmågor i komplexa företagsmiljöer.',
+          'Bidrog till mätbara processförbättringar, automation och affärsvärdesresultat.',
+        ],
+      },
+      {
+        company: 'Proact Group AB',
+        role: 'Produktägare',
+        dates: '2019 – 2022',
+        description:
+          'Ägde och vidareutvecklade affärsförmågor och digitala lösningar, med balans mellan intressenters behov, plattformshållbarhet och leveransprioriteringar.',
+        bullets: [
+          'Omsatte affärsbehov till prioriterade produkt- och teknikresultat.',
+          'Förbättrade affärsprocesser genom plattforms- och arbetsflödesutveckling.',
+        ],
+      },
+      {
+        company: 'Capgemini AB',
+        role: 'Leveransarkitekt',
+        dates: '2017 – 2019',
+        description:
+          'Levererade CRM- och transformationslösningar för företag, och kopplade samman kundkrav, arkitektur och genomförande.',
+        bullets: [
+          'Gav lösningsledarskap i komplexa kunduppdrag.',
+          'Byggde en stark grund inom företagsleverans, intressenthantering och Salesforce-arkitektur.',
+        ],
+      },
+    ],
+  },
+  leadershipDomains: {
+    heading: 'Centrala ledarskapsområden',
+    groups: [
+      {
+        title: 'Företagstransformation',
+        items: ['Företagsarkitektur', 'Digital transformation', 'Processoptimering', 'Teknikstrategi', 'Plattformsmodernisering'],
+      },
+      {
+        title: 'AI & data',
+        items: ['Generativ AI', 'Agentisk AI', 'RAG', 'Semantisk sökning', 'Vektordatabaser', 'Företagskunskap', 'AI-styrning'],
+      },
+      {
+        title: 'Kund & kommersiellt',
+        items: ['Salesforce', 'CRM', 'Försäljning', 'Service', 'Offert-till-order', 'Kundupplevelse', 'Arbetsflödesautomation'],
+      },
+      {
+        title: 'Ledarskap',
+        items: ['Engagemang med ledningsintressenter', 'Arkitekturstyrning', 'Produktledarskap', 'Tvärfunktionell leverans', 'Strategi-till-genomförande'],
+      },
+    ],
+  },
+  positioning: {
+    heading: 'Executive-positionering',
     paragraphs: [
-      'Under mer än två decennier har jag utvecklats från praktiskt IT-genomförande till företagsövergripande lösningsarkitektur. Senast, som Enterprise Solution Architect på Ericsson AB, Stockholm (aug 2022 – nutid), leder jag styrning av företagslösningar, arkitekturstandarder och AI-driven plattformsmodernisering — och har designat AI-drivna Salesforce-lösningar med Agentforce, Einstein AI och Data Cloud som minskade offertcykeltiden med 70 % och förbättrade leveranstiderna för kurser med 45 % genom CRM-automation. Dessförinnan, som Salesforce System Owner på Proact Group AB, Stockholm (maj 2019 – aug 2022), ansvarade jag för styrningen av Salesforce-plattformen, skalbarhetsplanering och transformationsfärdplanen, och ledde integrations- och automationsprogram som kopplade samman CRM-ekosystemet med verksamhetskritiska applikationer.',
-      'Den rollen byggde på successivt mer seniora leverans- och arkitekturroller: som Service Delivery Architect på Capgemini, Stockholm (sep 2016 – maj 2019) gav jag arkitekturvägledning och styrningsstandarder inom CRM Center of Excellence och ledde workshops för lösningsomfattning, RFP/RFI-svar och anbudsförsvar för stora transformationsprogram; som Practice Manager på DXC Technology (apr 2015 – sep 2016) ledde jag Salesforce-praktiken, förvaltade en portfölj av transformationsprogram, handledde arkitekter och konsulter, och samarbetade med säljteam för att forma affärsmöjligheter värda flera miljoner dollar; och som Senior Salesforce Solution Consultant på Deloitte, Malaysia och Singapore (jul 2014 – mar 2016) ledde jag CRM-arbetsströmmar och tvärfunktionell leveranskoordinering i APAC-uppdrag. Detta byggde på en tidigare IT-karriär (2000–2013) i flera organisationer, länder och branscher, som lade den tekniska och leveransmässiga grunden för det arkitekturarbete som följde.',
+      'Jag förenar erfarenheten av företagstransformation med möjligheterna i det AI-native företaget. Jag förstår hur stora organisationer fungerar, hur företagsplattformar och dataekosystem utvecklas, och var transformationsprogram tenderar att fastna. Mitt fokus är att hjälpa organisationer att förenkla, modernisera och använda AI ansvarsfullt för att förbättra beslut, produktivitet, kundupplevelse och affärsresultat.',
     ],
   },
   featuredProjects: {

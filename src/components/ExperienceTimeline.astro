@@ -10,10 +10,23 @@ const { experience } = Astro.props;
 
 <section class="experience section">
   <div class="container experience-inner">
-    <span class="eyebrow">{experience.eyebrow}</span>
     <h2>{experience.heading}</h2>
-    <div class="experience-text">
-      {experience.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+    <div class="timeline">
+      {
+        experience.entries.map((entry) => (
+          <div class="timeline-entry">
+            <div class="timeline-header">
+              <h3>{entry.company}</h3>
+              <span class="timeline-dates">{entry.dates}</span>
+            </div>
+            <p class="timeline-role">{entry.role}</p>
+            <p class="timeline-description">{entry.description}</p>
+            <ul class="timeline-bullets">
+              {entry.bullets.map((bullet) => <li>{bullet}</li>)}
+            </ul>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -24,19 +37,88 @@ const { experience } = Astro.props;
   }
 
   .experience-inner h2 {
-    margin: 0 0 24px;
+    margin: 0 0 40px;
     font-size: clamp(1.5rem, 2.4vw, 1.9rem);
     font-weight: 800;
     color: var(--color-gray-900);
   }
 
-  .experience-text p {
-    color: var(--color-gray-600);
-    line-height: 1.8;
-    margin: 0 0 18px;
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
   }
 
-  .experience-text p:last-child {
-    margin-bottom: 0;
+  .timeline-entry {
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--color-gray-100);
+  }
+
+  .timeline-entry:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .timeline-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .timeline-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .timeline-dates {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-gray-400);
+    white-space: nowrap;
+  }
+
+  .timeline-role {
+    margin: 4px 0 14px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--color-indigo-600);
+  }
+
+  .timeline-description {
+    margin: 0 0 14px;
+    color: var(--color-gray-600);
+    line-height: 1.75;
+  }
+
+  .timeline-bullets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .timeline-bullets li {
+    position: relative;
+    padding-left: 20px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-gray-600);
+  }
+
+  .timeline-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-gray-400);
   }
 </style>

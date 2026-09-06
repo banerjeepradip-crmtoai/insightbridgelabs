@@ -1,7 +1,31 @@
-export interface ExpertiseArea {
-  icon: string;
+export interface PillarItem {
   title: string;
   description: string;
+}
+
+export interface ContributionItem {
+  number: string;
+  title: string;
+  description: string;
+}
+
+export interface ImpactStatItem {
+  value: string;
+  label: string;
+  category: string;
+}
+
+export interface ExperienceEntry {
+  company: string;
+  role: string;
+  dates: string;
+  description: string;
+  bullets: string[];
+}
+
+export interface LeadershipGroup {
+  title: string;
+  items: string[];
 }
 
 export interface FeaturedProjectItem {
@@ -30,15 +54,32 @@ export interface AboutContent {
   bio: {
     heading: string;
     paragraphs: string[];
+    pillars: PillarItem[];
   };
-  expertise: {
-    heading: string;
+  enterpriseGap: {
     eyebrow: string;
-    items: ExpertiseArea[];
+    heading: string;
+    intro: string;
+    items: string[];
+  };
+  contributions: {
+    heading: string;
+    items: ContributionItem[];
+  };
+  impactStats: {
+    heading: string;
+    items: ImpactStatItem[];
   };
   experience: {
     heading: string;
-    eyebrow: string;
+    entries: ExperienceEntry[];
+  };
+  leadershipDomains: {
+    heading: string;
+    groups: LeadershipGroup[];
+  };
+  positioning: {
+    heading: string;
     paragraphs: string[];
   };
   featuredProjects: {

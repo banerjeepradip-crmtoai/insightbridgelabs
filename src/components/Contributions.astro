@@ -1,0 +1,76 @@
+---
+import type { AboutContent } from '../content/about/types';
+
+interface Props {
+  contributions: AboutContent['contributions'];
+}
+
+const { contributions } = Astro.props;
+---
+
+<section class="contributions section">
+  <div class="container">
+    <h2>{contributions.heading}</h2>
+    <div class="contributions-grid">
+      {
+        contributions.items.map((item) => (
+          <div class="contribution-card">
+            <span class="contribution-number">{item.number}</span>
+            <div>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .contributions h2 {
+    margin: 0 0 40px;
+    font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+    font-weight: 800;
+    color: var(--color-gray-900);
+  }
+
+  .contributions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px 40px;
+  }
+
+  .contribution-card {
+    display: flex;
+    gap: 18px;
+  }
+
+  .contribution-number {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-indigo-600);
+    padding-top: 2px;
+  }
+
+  .contribution-card h3 {
+    margin: 0 0 8px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--color-gray-900);
+  }
+
+  .contribution-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-gray-500);
+  }
+
+  @media (max-width: 700px) {
+    .contributions-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

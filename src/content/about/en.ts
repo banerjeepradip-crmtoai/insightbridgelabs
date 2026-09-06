@@ -4,69 +4,181 @@ export const en: AboutContent = {
   meta: {
     title: 'About Us — InsightBridge Labs',
     description:
-      'InsightBridge Labs is led by Pradip Banerjee, an Enterprise AI Solution Architect with 20+ years designing enterprise CRM and AI-enabled platforms on Salesforce and cloud ecosystems.',
+      'InsightBridge Labs is led by Pradip Banerjee, a senior enterprise technology and transformation leader with 17+ years bridging enterprise strategy, platforms, data and AI.',
   },
   hero: {
     eyebrow: 'ABOUT INSIGHTBRIDGE LABS',
     name: 'Pradip Banerjee',
-    role: 'Founder & Principal AI Solution Architect',
+    role: 'Founder & AI / Enterprise Architect',
     location: 'Stockholm, Sweden',
     intro:
-      'Enterprise AI Solution Architect with 20+ years designing enterprise business platforms and building AI-enabled solutions on Salesforce and cloud ecosystems. InsightBridge Labs is where that experience becomes a dedicated practice — helping organizations combine structured enterprise data with large language models, without losing sight of governance, explainability and compliance.',
+      'Bridging enterprise strategy, platforms, data and AI to create measurable business outcomes. InsightBridge Labs is where 17+ years of enterprise technology and transformation experience becomes a dedicated AI practice — combining structured enterprise data with large language models, without losing sight of governance, explainability and compliance.',
     linkedinLabel: 'Connect on LinkedIn',
     linkedinHref: 'https://www.linkedin.com/in/pradipbanerjee1',
     email: 'banerjee.pradip@gmail.com',
   },
   bio: {
-    heading: 'Executive Profile',
+    heading: 'Executive Value Proposition',
     paragraphs: [
-      'My expertise combines deep Salesforce architecture with modern AI technologies including Agentic AI, Retrieval-Augmented Generation (RAG), Semantic Search, Vector Databases, Enterprise Knowledge Retrieval, AI Governance, and Explainable AI.',
-      'Over the last several years I have designed and delivered enterprise CRM and digital transformation solutions across Telecommunications, Manufacturing and IT Services. More recently I have been building enterprise AI platforms that integrate Salesforce, OpenAI, Data Cloud, Snowflake, Databricks and cloud-native backend services to automate decision-making, compliance assessments and intelligent business processes.',
-      'My hands-on experience spans the complete AI application lifecycle — from business use case modelling and enterprise data architecture through semantic retrieval, prompt engineering, AI orchestration, backend APIs, cloud deployment, integration design and production-ready enterprise applications. I specialize in designing scalable AI solutions that combine structured enterprise data with large language models while maintaining governance, explainability, auditability and regulatory compliance.',
+      'Senior enterprise technology and transformation leader with 17+ years of experience across enterprise architecture, CRM, digital platforms, data, integration and AI. I help organisations translate complex business challenges into pragmatic technology strategies and scalable solutions — from executive intent through architecture and implementation.',
+      'My differentiator is the ability to connect established enterprise platforms with the emerging AI-native enterprise: understanding where AI creates real value, how enterprise data and systems must support it, and how governance, security and human accountability should be built in from the start.',
+    ],
+    pillars: [
+      {
+        title: 'Business & Transformation',
+        description: 'Translate business priorities into transformation roadmaps, operating improvements and measurable outcomes.',
+      },
+      {
+        title: 'Architecture & Platforms',
+        description: 'Simplify complex CRM, data, integration and cloud landscapes while improving reuse, scalability and sustainability.',
+      },
+      {
+        title: 'AI & Governance',
+        description: 'Move from AI experimentation toward governed RAG, agentic workflows and enterprise-ready AI capabilities.',
+      },
     ],
   },
-  expertise: {
-    eyebrow: 'WHAT I BRING',
-    heading: 'Areas of Expertise',
+  enterpriseGap: {
+    eyebrow: 'WHY THIS MATTERS NOW',
+    heading: 'The Enterprise Gap I Help Close',
+    intro:
+      'Enterprises have invested heavily in CRM, ERP, cloud and data, yet many still struggle to convert those investments into simpler operations and scalable AI. The challenge is increasingly the connection between business strategy, processes, data, platforms, AI and governance.',
+    items: [
+      'AI pilots without a clear route to production, adoption or measurable ROI.',
+      'Fragmented platforms and integrations that increase technical debt and slow change.',
+      'Enterprise data and knowledge that exist, but are not sufficiently accessible, governed or AI-ready.',
+      'Agentic AI introducing new requirements for permissions, orchestration, observability, human approval and accountability.',
+      'Business and technology teams operating with different priorities, language and measures of success.',
+    ],
+  },
+  contributions: {
+    heading: 'How I Can Contribute',
     items: [
       {
-        icon: 'shield-check',
-        title: 'AI Governance & Compliance',
-        description: 'Assessing enterprise AI use cases against the EU AI Act, GDPR, ISO 42001 and NIST AI RMF.',
+        number: '01',
+        title: 'Shape enterprise transformation',
+        description:
+          'Connect strategic priorities with target architecture, investment choices and an executable roadmap. Focus on simplification, reuse and business outcomes rather than technology for its own sake.',
       },
       {
-        icon: 'brain',
-        title: 'Agentic AI & RAG',
-        description: 'Retrieval-augmented generation, semantic search and vector databases for enterprise knowledge retrieval.',
+        number: '02',
+        title: 'Build the bridge to enterprise AI',
+        description:
+          'Identify high-value AI opportunities and define architectures that combine enterprise applications, APIs, knowledge, RAG, models and governed agentic workflows.',
       },
       {
-        icon: 'cloud-upload',
-        title: 'Salesforce Architecture',
-        description: 'Agentforce, Einstein AI, Data Cloud, Apex and LWC across large-scale enterprise CRM platforms.',
+        number: '03',
+        title: 'Modernise customer & commercial platforms',
+        description:
+          'Use deep CRM and Salesforce experience to improve sales, service, quoting and customer processes while connecting them with data and AI capabilities.',
       },
       {
-        icon: 'nodes',
-        title: 'Enterprise Integration',
-        description: 'Connecting Salesforce with SAP, Snowflake, Databricks and cloud-native backend services.',
+        number: '04',
+        title: 'Improve data & AI readiness',
+        description:
+          'Establish how operational data, enterprise knowledge, semantic retrieval, vector search and governance should work together to support reliable AI.',
       },
       {
-        icon: 'cloud',
-        title: 'Cloud & DevOps',
-        description: 'AWS, Docker and CI/CD pipelines for production deployment of AI-enabled applications.',
+        number: '05',
+        title: 'Govern AI without stopping innovation',
+        description:
+          'Embed risk classification, privacy, human oversight, traceability and responsible-AI controls into solution and platform architecture.',
       },
       {
-        icon: 'chart',
-        title: 'Data & AI Engineering',
-        description: 'Enterprise data modelling, embeddings and knowledge base architecture.',
+        number: '06',
+        title: 'Lead strategy through execution',
+        description:
+          'Work across executives, business leaders, enterprise architects, product managers and engineering teams to convert strategy into deliverable solutions.',
       },
+    ],
+  },
+  impactStats: {
+    heading: 'Selected Business Impact',
+    items: [
+      { value: '60-70%', label: 'faster quotation turnaround', category: 'COMMERCIAL TRANSFORMATION' },
+      { value: '40%', label: 'improvement in resource utilisation', category: 'OPERATIONAL EFFICIENCY' },
+      { value: '60%', label: 'increase in lead conversion', category: 'SALES EFFECTIVENESS' },
+      { value: '40%', label: 'improvement in retention', category: 'CUSTOMER OUTCOMES' },
+      { value: '50%', label: 'reduction in field-service response time', category: 'SERVICE TRANSFORMATION' },
+      { value: '$5M+', label: 'annual savings delivered', category: 'BUSINESS VALUE' },
     ],
   },
   experience: {
-    eyebrow: 'TRACK RECORD',
-    heading: 'Professional Experience',
+    heading: 'Career Foundation',
+    entries: [
+      {
+        company: 'InsightBridge Consulting AB',
+        role: 'Founder & AI / Enterprise Architect',
+        dates: '2026 – Present',
+        description:
+          'Building enterprise-focused solutions and advisory propositions around AI governance, enterprise RAG, agentic workflows, CRM and data. Current work translates real enterprise challenges into working solution concepts and architectures.',
+        bullets: [
+          'Developed RegIntel, an enterprise AI-governance concept covering AI use-case assessment, data readiness and regulatory/control frameworks.',
+          'Designed Tender Pilot to combine public procurement intelligence, AI qualification and Salesforce-based opportunity management.',
+          'Designed EnterpriseDealPilot, a governed agentic quote-to-close concept connecting AI orchestration, CRM processes, tools and human approvals.',
+        ],
+      },
+      {
+        company: 'Ericsson',
+        role: 'Enterprise / Senior Solution Architect',
+        dates: '2022 – 2026',
+        description:
+          'Led architecture and transformation across enterprise platforms, working with business stakeholders, product teams, architects and engineering teams to improve commercial and operational processes.',
+        bullets: [
+          'Connected business requirements with scalable solution architecture and enterprise platform strategy.',
+          'Worked across Salesforce, data, integration and AI-related capabilities in complex enterprise environments.',
+          'Contributed to measurable process improvements, automation and business-value outcomes.',
+        ],
+      },
+      {
+        company: 'Proact Group AB',
+        role: 'Product Owner',
+        dates: '2019 – 2022',
+        description:
+          'Owned and evolved business capabilities and digital solutions, balancing stakeholder needs, platform sustainability and delivery priorities.',
+        bullets: [
+          'Translated business needs into prioritised product and technology outcomes.',
+          'Improved business processes through platform and workflow development.',
+        ],
+      },
+      {
+        company: 'Capgemini AB',
+        role: 'Delivery Architect',
+        dates: '2017 – 2019',
+        description:
+          'Delivered enterprise CRM and transformation solutions, connecting client requirements, architecture and implementation.',
+        bullets: [
+          'Provided solution leadership across complex customer engagements.',
+          'Built a strong foundation in enterprise delivery, stakeholder management and Salesforce architecture.',
+        ],
+      },
+    ],
+  },
+  leadershipDomains: {
+    heading: 'Core Leadership Domains',
+    groups: [
+      {
+        title: 'Enterprise Transformation',
+        items: ['Enterprise architecture', 'Digital transformation', 'Process optimisation', 'Technology strategy', 'Platform modernisation'],
+      },
+      {
+        title: 'AI & Data',
+        items: ['Generative AI', 'Agentic AI', 'RAG', 'Semantic search', 'Vector databases', 'Enterprise knowledge', 'AI governance'],
+      },
+      {
+        title: 'Customer & Commercial',
+        items: ['Salesforce', 'CRM', 'Sales', 'Service', 'Quote-to-order', 'Customer experience', 'Workflow automation'],
+      },
+      {
+        title: 'Leadership',
+        items: ['Executive stakeholder engagement', 'Architecture governance', 'Product leadership', 'Cross-functional delivery', 'Strategy-to-execution'],
+      },
+    ],
+  },
+  positioning: {
+    heading: 'Executive Positioning',
     paragraphs: [
-      'Over more than two decades, I have progressed from hands-on IT delivery into enterprise-wide solution architecture. Most recently, as Enterprise Solution Architect at Ericsson AB, Stockholm (Aug 2022 – Present), I lead enterprise solution governance, architecture standards and AI-enabled platform modernization — designing AI-enabled Salesforce solutions on Agentforce, Einstein AI and Data Cloud that cut quote cycle time by 70% and improved course delivery timelines by 45% through CRM automation. Before that, as Salesforce System Owner at Proact Group AB, Stockholm (May 2019 – Aug 2022), I owned enterprise Salesforce platform governance, scalability planning and the transformation roadmap, and led integration and automation programs connecting the CRM ecosystem with business-critical applications.',
-      'That role was built on progressively senior delivery and architecture positions: as Service Delivery Architect at Capgemini, Stockholm (Sep 2016 – May 2019), I set architecture guidance and governance standards across the CRM Center of Excellence and led solution scoping workshops, RFP/RFI responses and bid defense for large transformation programs; as Practice Manager at DXC Technology (Apr 2015 – Sep 2016), I led the Salesforce Practice, managed a portfolio of transformation programs, mentored architects and consultants, and partnered with sales teams to shape multi-million-dollar opportunities; and as Senior Salesforce Solution Consultant at Deloitte, Malaysia & Singapore (Jul 2014 – Mar 2016), I managed enterprise CRM workstreams and cross-functional delivery coordination across APAC engagements. This built on an earlier IT career (2000 – 2013) spanning multiple organizations, countries and industries that laid the technical and delivery foundation for the enterprise architecture work that followed.',
+      'I bring the experience of enterprise transformation together with the possibilities of the AI-native enterprise. I understand how large organisations operate, how enterprise platforms and data ecosystems evolve, and where transformation programmes struggle. My focus is to help organisations simplify, modernise and use AI responsibly to improve decisions, productivity, customer experience and business performance.',
     ],
   },
   featuredProjects: {

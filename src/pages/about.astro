@@ -2,8 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AboutHero from '../components/AboutHero.astro';
 import ExecutiveProfile from '../components/ExecutiveProfile.astro';
-import ExpertiseGrid from '../components/ExpertiseGrid.astro';
+import EnterpriseGap from '../components/EnterpriseGap.astro';
+import Contributions from '../components/Contributions.astro';
+import ImpactStats from '../components/ImpactStats.astro';
 import ExperienceTimeline from '../components/ExperienceTimeline.astro';
+import LeadershipDomains from '../components/LeadershipDomains.astro';
+import TextSection from '../components/TextSection.astro';
 import FeaturedProject from '../components/FeaturedProject.astro';
 import Credentials from '../components/Credentials.astro';
 import Differentiators from '../components/Differentiators.astro';
@@ -19,8 +23,12 @@ const about = getAboutContent(currentLang);
 <BaseLayout meta={about.meta} nav={homeContent.nav} footer={homeContent.footer} currentLang={currentLang}>
   <AboutHero hero={about.hero} />
   <ExecutiveProfile bio={about.bio} />
-  <ExpertiseGrid expertise={about.expertise} />
+  <EnterpriseGap enterpriseGap={about.enterpriseGap} />
+  <Contributions contributions={about.contributions} />
+  <ImpactStats impactStats={about.impactStats} />
   <ExperienceTimeline experience={about.experience} />
+  <LeadershipDomains leadershipDomains={about.leadershipDomains} />
+  <TextSection heading={about.positioning.heading} paragraphs={about.positioning.paragraphs} />
   <FeaturedProject featuredProjects={about.featuredProjects} />
   <Differentiators differentiators={about.differentiators} background="white" />
   <Credentials credentials={about.credentials} quickFacts={about.quickFacts} />

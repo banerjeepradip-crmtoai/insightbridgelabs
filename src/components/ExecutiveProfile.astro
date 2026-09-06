@@ -14,12 +14,22 @@ const { bio } = Astro.props;
     <div class="profile-text">
       {bio.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
     </div>
+    <div class="pillar-grid">
+      {
+        bio.pillars.map((pillar) => (
+          <div class="pillar-card">
+            <span class="pillar-title">{pillar.title}</span>
+            <p>{pillar.description}</p>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <style>
   .profile-inner {
-    max-width: 820px;
+    max-width: 900px;
   }
 
   .profile-inner h2 {
@@ -37,5 +47,42 @@ const { bio } = Astro.props;
 
   .profile-text p:last-child {
     margin-bottom: 0;
+  }
+
+  .pillar-grid {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .pillar-card {
+    background: var(--color-gray-50);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-gray-100);
+    padding: 24px;
+  }
+
+  .pillar-title {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-indigo-600);
+    margin-bottom: 10px;
+  }
+
+  .pillar-card p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--color-gray-600);
+  }
+
+  @media (max-width: 700px) {
+    .pillar-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
