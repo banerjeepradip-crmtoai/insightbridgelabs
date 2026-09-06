@@ -9,25 +9,6 @@ export interface ContributionItem {
   description: string;
 }
 
-export interface ImpactStatItem {
-  value: string;
-  label: string;
-  category: string;
-}
-
-export interface ExperienceEntry {
-  company: string;
-  role: string;
-  dates: string;
-  description: string;
-  bullets: string[];
-}
-
-export interface LeadershipGroup {
-  title: string;
-  items: string[];
-}
-
 export interface FeaturedProjectItem {
   icon: string;
   eyebrow: string;
@@ -65,22 +46,6 @@ export interface AboutContent {
   contributions: {
     heading: string;
     items: ContributionItem[];
-  };
-  impactStats: {
-    heading: string;
-    items: ImpactStatItem[];
-  };
-  experience: {
-    heading: string;
-    entries: ExperienceEntry[];
-  };
-  leadershipDomains: {
-    heading: string;
-    groups: LeadershipGroup[];
-  };
-  positioning: {
-    heading: string;
-    paragraphs: string[];
   };
   featuredProjects: {
     heading: string;
