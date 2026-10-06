@@ -1,0 +1,6 @@
+---
+import template from "../../approved/services/crm-to-ai/index.html?raw";
+import { renderApproved } from "../../lib/approved-content";
+const html = renderApproved(template, "/services/crm-to-ai/");
+---
+<Fragment set:html={html} />

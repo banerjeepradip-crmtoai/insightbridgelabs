@@ -1,0 +1,6 @@
+---
+import template from "../../approved/services/rapid-application-development/index.html?raw";
+import { renderApproved } from "../../lib/approved-content";
+const html = renderApproved(template, "/services/rapid-application-development/");
+---
+<Fragment set:html={html} />

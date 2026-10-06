@@ -1,25 +1,6 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import ServiceHero from '../../components/ServiceHero.astro';
-import BlogList from '../../components/BlogList.astro';
-import CtaBand from '../../components/CtaBand.astro';
-import { getHomeContent } from '../../content/home';
-import { getBlogContent } from '../../content/blog';
-
-const currentLang = 'en';
-const homeContent = getHomeContent(currentLang);
-const blog = getBlogContent(currentLang);
+import template from "../../approved/resources/blog/index.html?raw";
+import { renderApproved } from "../../lib/approved-content";
+const html = renderApproved(template, "/resources/blog/");
 ---
-
-<BaseLayout meta={blog.meta} nav={homeContent.nav} footer={homeContent.footer} currentLang={currentLang}>
-  <ServiceHero hero={blog.hero} />
-  <BlogList items={blog.items} lang={currentLang} />
-  <CtaBand
-    heading={blog.cta.heading}
-    body={blog.cta.body}
-    primaryLabel={blog.cta.primaryLabel}
-    primaryHref={blog.cta.primaryHref}
-    secondaryLabel={blog.cta.secondaryLabel}
-    secondaryHref={blog.cta.secondaryHref}
-  />
-</BaseLayout>
+<Fragment set:html={html} />
