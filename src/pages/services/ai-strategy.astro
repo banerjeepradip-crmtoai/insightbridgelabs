@@ -1,0 +1,6 @@
+---
+import template from "../../approved/services/ai-strategy/index.html?raw";
+import { renderApproved } from "../../lib/approved-content";
+const html = renderApproved(template, "/services/ai-strategy/");
+---
+<Fragment set:html={html} />

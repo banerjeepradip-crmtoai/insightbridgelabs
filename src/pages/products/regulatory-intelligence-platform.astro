@@ -1,0 +1,6 @@
+---
+import template from "../../approved/products/regulatory-intelligence-platform/index.html?raw";
+import { renderApproved } from "../../lib/approved-content";
+const html = renderApproved(template, "/products/regulatory-intelligence-platform/");
+---
+<Fragment set:html={html} />
