@@ -5,6 +5,13 @@ Admin API behind the `/admin` pages on the main site — lets
 Studies without touching code. Separate from `prompt-library-worker/` and
 `se-proxy-worker.js` — its own Worker, D1 database and R2 bucket.
 
+Also serves `POST /contact/submit`, which the site's contact form (English
+and Swedish) posts to directly. It sends the email itself via Resend,
+replacing third-party form backends (FormSubmit, Web3Forms) after both
+turned out unreliable — FormSubmit's origin started returning HTTP 521, and
+a fresh Web3Forms access key was silently CORS-blocked pending their manual
+domain approval. See "Contact form setup" below.
+
 The live site stays fully static (GitHub Pages): this Worker is the source
 of truth for content, and `scripts/sync-cms-content.mjs` (repo root) reads
 it at build time to regenerate the `items` array in `src/content/blog/en.ts`
@@ -72,6 +79,22 @@ wrangler secret put GITHUB_TOKEN
 # value: a fine-grained GitHub PAT scoped ONLY to this repo
 # (banerjeepradip-crmtoai/insightbridgelabs) with "Actions: write" permission.
 # Used to trigger a rebuild (workflow_dispatch) after every content change.
+
+wrangler secret put RESEND_API_KEY
+# value: an API key from https://resend.com (free tier: 3,000 emails/month).
+# Used by POST /contact/submit to actually send the email.
+
+wrangler secret put CONTACT_TO_EMAIL
+# value: banerjee.pradip@crmtoai.com
+# Where contact-form submissions get delivered.
+
+wrangler secret put CONTACT_FROM_EMAIL
+# optional. Defaults to "InsightBridge Labs <onboarding@resend.dev>" (Resend's
+# shared sandbox sender, works immediately, lower deliverability/branding).
+# Once a sending domain is verified in Resend (DNS records added at Loopia,
+# same idea as the Google Search Console TXT record), set this to e.g.
+# "InsightBridge Labs <contact@insightbridgelabs.com>" for better inbox
+# placement and a branded From address.
 ```
 
 **6. Deploy the worker**
@@ -108,6 +131,28 @@ Then point `WORKER_URL` at `http://localhost:8787` in the admin pages and
 the site, so you can test the full login → create/edit/delete → rebuild
 flow before deploying.
 
+## Contact form setup
+
+This Worker is already deployed, so adding `/contact/submit` to an existing
+install needs one extra migration plus the three secrets above:
+
+```
+wrangler d1 execute cms-content --remote --file=./migrate-contact-rate-limit.sql
+wrangler secret put RESEND_API_KEY
+wrangler secret put CONTACT_TO_EMAIL
+wrangler deploy
+```
+
+Then point the frontend's `WORKER_URL`-style constant (the `fetch()` target
+in `src/components/ContactForm.astro` and `src/approved/contact/index.html`)
+at `https://cms-api.<your-subdomain>.workers.dev/contact/submit`.
+
+The endpoint rejects any `Origin` not in `ALLOWED_ORIGINS`, silently no-ops
+on a filled honeypot field (`botcheck`), and rate-limits to 5 submissions
+per IP per 30 minutes via `contact_rate_limit` — the same shape as
+`login_attempts`, just a separate table/window since login lockouts and
+contact-form abuse are different thresholds.
+
 ## Data model
 
 - `blog_posts`: type, title, excerpt, tags (JSON array), href, image_key.
@@ -115,6 +160,8 @@ flow before deploying.
   (JSON array), image_key.
 - `login_attempts`: per-IP failure counter, locks out for 15 minutes after
   5 failed logins.
+- `contact_rate_limit`: per-IP counter for `/contact/submit`, resets after
+  30 minutes, caps at 5 submissions.
 
 Query directly if needed:
 

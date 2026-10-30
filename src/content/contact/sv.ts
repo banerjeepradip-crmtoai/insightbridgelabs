@@ -15,7 +15,6 @@ export const sv: ContactContent = {
   form: {
     heading: 'Skicka ett meddelande',
     email: 'banerjee.pradip@crmtoai.com',
-    accessKey: '5cb5f559-e4af-455b-8595-56bf64f6d187',
     submitLabel: 'Skicka meddelande',
     disclaimer: 'Skickas direkt till vår inkorg — ingen e-postklient behövs.',
   },

@@ -28,3 +28,9 @@ CREATE TABLE login_attempts (
   count INTEGER NOT NULL DEFAULT 0,
   last_attempt TEXT NOT NULL
 );
+
+CREATE TABLE contact_rate_limit (
+  ip TEXT PRIMARY KEY,
+  count INTEGER NOT NULL DEFAULT 0,
+  last_attempt TEXT NOT NULL
+);

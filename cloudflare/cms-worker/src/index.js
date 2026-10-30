@@ -6,9 +6,11 @@
 // Image: POST /admin/upload-image, GET /images/:key
 // Public read (used by the build's sync script, no auth):
 //        GET /content/blog, GET /content/case-studies
+// Contact form (public, origin-gated, rate-limited, no auth):
+//        POST /contact/submit
 //
 // Storage:
-//   D1  (env.DB)      - blog_posts, case_studies, login_attempts
+//   D1  (env.DB)      - blog_posts, case_studies, login_attempts, contact_rate_limit
 //   R2  (env.IMAGES)  - uploaded images
 //
 // Single admin account, gated by env.ADMIN_EMAIL + env.ADMIN_PASSWORD_HASH
@@ -17,6 +19,14 @@
 // route also checks the Origin header against ALLOWED_ORIGINS as an
 // authorization gate (not just a CORS convenience) to close the
 // SameSite=None CSRF gap.
+//
+// /contact/submit sends email via Resend (env.RESEND_API_KEY), to
+// env.CONTACT_TO_EMAIL, replacing third-party form backends (FormSubmit,
+// Web3Forms) that proved unreliable: FormSubmit's origin started returning
+// HTTP 521, and a fresh Web3Forms access key was silently CORS-blocked
+// pending their manual domain approval. This keeps the whole path --
+// receiving the submission and sending the email -- inside infrastructure
+// already owned and deployed here.
 
 const ALLOWED_ORIGINS = new Set([
   'https://www.insightbridgelabs.com',
@@ -32,6 +42,8 @@ const LOGIN_LOCKOUT_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_MAX_ATTEMPTS = 5;
 const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const CONTACT_RATE_LIMIT_WINDOW_MS = 30 * 60 * 1000; // 30 min
+const CONTACT_RATE_LIMIT_MAX = 5;
 
 // ---------- generic helpers ----------
 
@@ -67,6 +79,10 @@ async function safeJson(request) {
 
 function str(v) {
   return typeof v === 'string' ? v.trim() : '';
+}
+
+function esc(v) {
+  return String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 function clamp(v, max) {
@@ -226,6 +242,27 @@ async function recordFailedAttempt(env, ip) {
 
 async function clearLoginAttempts(env, ip) {
   await env.DB.prepare('DELETE FROM login_attempts WHERE ip = ?').bind(ip).run();
+}
+
+// ---------- contact form rate limiting ----------
+
+async function isContactRateLimited(env, ip) {
+  const row = await env.DB.prepare('SELECT count, last_attempt FROM contact_rate_limit WHERE ip = ?').bind(ip).first();
+  if (!row) return false;
+  const withinWindow = Date.now() - new Date(row.last_attempt).getTime() < CONTACT_RATE_LIMIT_WINDOW_MS;
+  return row.count >= CONTACT_RATE_LIMIT_MAX && withinWindow;
+}
+
+async function recordContactAttempt(env, ip) {
+  const row = await env.DB.prepare('SELECT count, last_attempt FROM contact_rate_limit WHERE ip = ?').bind(ip).first();
+  const now = new Date().toISOString();
+  if (!row) {
+    await env.DB.prepare('INSERT INTO contact_rate_limit (ip, count, last_attempt) VALUES (?, 1, ?)').bind(ip, now).run();
+    return;
+  }
+  const withinWindow = Date.now() - new Date(row.last_attempt).getTime() < CONTACT_RATE_LIMIT_WINDOW_MS;
+  const newCount = withinWindow ? row.count + 1 : 1;
+  await env.DB.prepare('UPDATE contact_rate_limit SET count = ?, last_attempt = ? WHERE ip = ?').bind(newCount, now, ip).run();
 }
 
 // ---------- GitHub Actions rebuild trigger ----------
@@ -534,6 +571,79 @@ async function contentCaseStudies(env, origin, url) {
   return jsonResponse({ items }, 200, origin);
 }
 
+// ---------- contact form ----------
+
+async function handleContactSubmit(request, env, ctx, origin) {
+  if (!ALLOWED_ORIGINS.has(origin)) return jsonResponse({ error: 'forbidden_origin' }, 403, origin);
+
+  const body = await safeJson(request);
+  if (!body) return jsonResponse({ error: 'invalid' }, 400, origin);
+
+  // Honeypot: bots that fill this in get a fake success, no email is sent.
+  if (str(body.botcheck)) return jsonResponse({ ok: true }, 200, origin);
+
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (await isContactRateLimited(env, ip)) {
+    return jsonResponse({ error: 'rate_limited', message: 'Too many submissions. Please try again later.' }, 429, origin);
+  }
+
+  const name = clamp(str(body.name), 200);
+  const email = clamp(str(body.email), 320);
+  const message = clamp(str(body.message), 5000);
+  const phone = clamp(str(body.phone), 60);
+  const company = clamp(str(body.company), 200);
+  const topic = clamp(str(body.topic), 200);
+  const timeToContact = clamp(str(body.time_to_contact), 200);
+
+  if (!name || !message || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return jsonResponse({ error: 'invalid', message: 'Name, a valid email and a message are required.' }, 400, origin);
+  }
+
+  if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) {
+    console.error('Missing RESEND_API_KEY or CONTACT_TO_EMAIL secret');
+    return jsonResponse({ error: 'server_error' }, 500, origin);
+  }
+
+  await recordContactAttempt(env, ip);
+
+  const rows = [
+    ['Name', name],
+    ['Email', email],
+    ['Phone', phone || '—'],
+    ['Company', company || '—'],
+    ['Topic', topic || '—'],
+    ['Preferred time', timeToContact || '—'],
+    ['Message', message],
+  ];
+  const html = `<table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif">${rows
+    .map(
+      ([k, v]) =>
+        `<tr><td style="font-weight:bold;vertical-align:top;border-bottom:1px solid #eee">${esc(k)}</td><td style="border-bottom:1px solid #eee;white-space:pre-wrap">${esc(v)}</td></tr>`
+    )
+    .join('')}</table>`;
+
+  const from = env.CONTACT_FROM_EMAIL || 'InsightBridge Labs <onboarding@resend.dev>';
+
+  const resendRes = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from,
+      to: [env.CONTACT_TO_EMAIL],
+      reply_to: email,
+      subject: `New inquiry from ${name}`,
+      html,
+    }),
+  });
+
+  if (!resendRes.ok) {
+    console.error('Resend error', resendRes.status, await resendRes.text().catch(() => ''));
+    return jsonResponse({ error: 'send_failed' }, 502, origin);
+  }
+
+  return jsonResponse({ ok: true }, 200, origin);
+}
+
 // ---------- router ----------
 
 export default {
@@ -592,6 +702,8 @@ export default {
 
       if (pathname === '/content/blog' && method === 'GET') return contentBlog(env, origin, url);
       if (pathname === '/content/case-studies' && method === 'GET') return contentCaseStudies(env, origin, url);
+
+      if (pathname === '/contact/submit' && method === 'POST') return handleContactSubmit(request, env, ctx, origin);
 
       return jsonResponse({ error: 'not_found' }, 404, origin);
     } catch (err) {
