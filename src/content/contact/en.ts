@@ -15,6 +15,7 @@ export const en: ContactContent = {
   form: {
     heading: 'Send a Message',
     email: 'banerjee.pradip@crmtoai.com',
+    accessKey: '5cb5f559-e4af-455b-8595-56bf64f6d187',
     submitLabel: 'Send Message',
     disclaimer: "Sends straight to our inbox — no email client needed.",
   },

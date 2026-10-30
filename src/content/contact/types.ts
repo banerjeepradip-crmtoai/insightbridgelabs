@@ -12,6 +12,7 @@ export interface ContactContent {
   form: {
     heading: string;
     email: string;
+    accessKey: string;
     submitLabel: string;
     disclaimer: string;
   };
