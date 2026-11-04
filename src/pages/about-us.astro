@@ -1,0 +1,6 @@
+---
+import template from "../approved/about-us/index.html?raw";
+import { renderApproved } from "../lib/approved-content";
+const html = renderApproved(template, "/about-us/");
+---
+<Fragment set:html={html} />
