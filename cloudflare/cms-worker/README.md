@@ -6,11 +6,13 @@ Studies without touching code. Separate from `prompt-library-worker/` and
 `se-proxy-worker.js` — its own Worker, D1 database and R2 bucket.
 
 Also serves `POST /contact/submit`, which the site's contact form (English
-and Swedish) posts to directly. It sends the email itself via Resend,
-replacing third-party form backends (FormSubmit, Web3Forms) after both
-turned out unreliable — FormSubmit's origin started returning HTTP 521, and
-a fresh Web3Forms access key was silently CORS-blocked pending their manual
-domain approval. See "Contact form setup" below.
+and Swedish) posts to directly, and `POST /regintel/submit` for regintel.eu's
+enquiry form (a separate static GitHub Pages site, same owner). Both send the
+email themselves via Resend, replacing third-party form backends (FormSubmit,
+Web3Forms) after both turned out unreliable — FormSubmit's origin started
+returning HTTP 521, and a fresh Web3Forms access key was silently
+CORS-blocked pending their manual domain approval. See "Contact form setup"
+below.
 
 The live site stays fully static (GitHub Pages): this Worker is the source
 of truth for content, and `scripts/sync-cms-content.mjs` (repo root) reads
@@ -95,6 +97,13 @@ wrangler secret put CONTACT_FROM_EMAIL
 # same idea as the Google Search Console TXT record), set this to e.g.
 # "InsightBridge Labs <contact@insightbridgelabs.com>" for better inbox
 # placement and a branded From address.
+
+wrangler secret put REGINTEL_FROM_EMAIL
+# optional. Same idea as CONTACT_FROM_EMAIL, but for POST /regintel/submit,
+# kept as its own secret so insightbridgelabs.com and regintel.eu can each
+# get their own verified Resend sender later without affecting the other.
+# Defaults to "RegIntel <onboarding@resend.dev>" until regintel.eu's DNS
+# (at GoDaddy, not Loopia) is verified in Resend.
 ```
 
 **6. Deploy the worker**
@@ -152,6 +161,14 @@ on a filled honeypot field (`botcheck`), and rate-limits to 5 submissions
 per IP per 30 minutes via `contact_rate_limit` — the same shape as
 `login_attempts`, just a separate table/window since login lockouts and
 contact-form abuse are different thresholds.
+
+`POST /regintel/submit` is the same pattern for regintel.eu's "Request a
+conversation" form (a separate static site, `banerjeepradip-crmtoai/
+regintel-website`, deployed on its own GitHub Pages, not this repo). It
+shares `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `contact_rate_limit` with
+`/contact/submit`, but has its own `REGINTEL_FROM_EMAIL` so the two
+products' sender branding can be verified independently later. No extra
+migration needed beyond the one above.
 
 ## Data model
 

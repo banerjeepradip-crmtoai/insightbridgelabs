@@ -6,8 +6,9 @@
 // Image: POST /admin/upload-image, GET /images/:key
 // Public read (used by the build's sync script, no auth):
 //        GET /content/blog, GET /content/case-studies
-// Contact form (public, origin-gated, rate-limited, no auth):
-//        POST /contact/submit
+// Contact forms (public, origin-gated, rate-limited, no auth):
+//        POST /contact/submit    (insightbridgelabs.com / .se)
+//        POST /regintel/submit   (regintel.eu)
 //
 // Storage:
 //   D1  (env.DB)      - blog_posts, case_studies, login_attempts, contact_rate_limit
@@ -33,7 +34,10 @@ const ALLOWED_ORIGINS = new Set([
   'https://insightbridgelabs.com',
   'https://www.insightbridgelabs.se',
   'https://insightbridgelabs.se',
+  'https://www.regintel.eu',
+  'https://regintel.eu',
   'http://localhost:4321',
+  'http://localhost:8080',
 ]);
 
 const GITHUB_REPO = 'banerjeepradip-crmtoai/insightbridgelabs';
@@ -644,6 +648,77 @@ async function handleContactSubmit(request, env, ctx, origin) {
   return jsonResponse({ ok: true }, 200, origin);
 }
 
+// regintel.eu's "Request a conversation" form. Same delivery pattern as
+// handleContactSubmit (own product, same owner/account), but its own From
+// address env var so branding stays independent once each domain gets its
+// own verified Resend sender.
+async function handleRegintelSubmit(request, env, ctx, origin) {
+  if (!ALLOWED_ORIGINS.has(origin)) return jsonResponse({ error: 'forbidden_origin' }, 403, origin);
+
+  const body = await safeJson(request);
+  if (!body) return jsonResponse({ error: 'invalid' }, 400, origin);
+
+  // Honeypot: bots that fill this in get a fake success, no email is sent.
+  if (str(body.botcheck)) return jsonResponse({ ok: true }, 200, origin);
+
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  if (await isContactRateLimited(env, ip)) {
+    return jsonResponse({ error: 'rate_limited', message: 'Too many submissions. Please try again later.' }, 429, origin);
+  }
+
+  const name = clamp(str(body.name), 100);
+  const email = clamp(str(body.email), 320);
+  const company = clamp(str(body.company), 120);
+  const interest = clamp(str(body.interest), 120);
+  const message = clamp(str(body.message), 1200);
+
+  if (!name || !company || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return jsonResponse({ error: 'invalid', message: 'Name, company and a valid email are required.' }, 400, origin);
+  }
+
+  if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) {
+    console.error('Missing RESEND_API_KEY or CONTACT_TO_EMAIL secret');
+    return jsonResponse({ error: 'server_error' }, 500, origin);
+  }
+
+  await recordContactAttempt(env, ip);
+
+  const rows = [
+    ['Name', name],
+    ['Email', email],
+    ['Company', company],
+    ['Primary interest', interest || '—'],
+    ['Message', message || '—'],
+  ];
+  const html = `<table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif">${rows
+    .map(
+      ([k, v]) =>
+        `<tr><td style="font-weight:bold;vertical-align:top;border-bottom:1px solid #eee">${esc(k)}</td><td style="border-bottom:1px solid #eee;white-space:pre-wrap">${esc(v)}</td></tr>`
+    )
+    .join('')}</table>`;
+
+  const from = env.REGINTEL_FROM_EMAIL || 'RegIntel <onboarding@resend.dev>';
+
+  const resendRes = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from,
+      to: [env.CONTACT_TO_EMAIL],
+      reply_to: email,
+      subject: `RegIntel enquiry — ${company}`,
+      html,
+    }),
+  });
+
+  if (!resendRes.ok) {
+    console.error('Resend error (regintel)', resendRes.status, await resendRes.text().catch(() => ''));
+    return jsonResponse({ error: 'send_failed' }, 502, origin);
+  }
+
+  return jsonResponse({ ok: true }, 200, origin);
+}
+
 // ---------- router ----------
 
 export default {
@@ -704,6 +779,7 @@ export default {
       if (pathname === '/content/case-studies' && method === 'GET') return contentCaseStudies(env, origin, url);
 
       if (pathname === '/contact/submit' && method === 'POST') return handleContactSubmit(request, env, ctx, origin);
+      if (pathname === '/regintel/submit' && method === 'POST') return handleRegintelSubmit(request, env, ctx, origin);
 
       return jsonResponse({ error: 'not_found' }, 404, origin);
     } catch (err) {
