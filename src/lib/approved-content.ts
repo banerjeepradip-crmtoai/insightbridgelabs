@@ -1,5 +1,6 @@
 import { getBlogContent } from '../content/blog';
 import { getCaseStudiesContent } from '../content/case-studies';
+import { seoTags, headInfo } from './seo';
 
 const esc = (value: unknown) => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const safeUrl = (value: string) => /^(https?:\/\/|\/(?!\/))/.test(value) ? esc(value) : '#';
@@ -21,5 +22,6 @@ export function renderApproved(template: string, route: string) {
     const headlines = JSON.stringify(blog.items.map((p,i) => [p.title, `/resources/blog/#article-${i+1}`])).replace(/</g,'\\u003c');
     template = template.replace(/const items=\[[\s\S]*?\];let index=0;/, `const items=${headlines};let index=0;`);
   }
-  return template.replace('</head>', resourceStyle+'</head>');
+  const seo = seoTags({ route, lang: 'en', ...headInfo(template), includeCanonical: false });
+  return template.replace('</head>', seo+resourceStyle+'</head>');
 }

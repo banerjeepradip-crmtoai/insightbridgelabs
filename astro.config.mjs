@@ -10,7 +10,8 @@ export default defineConfig({
   site: 'https://www.insightbridgelabs.com',
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/admin/'),
+      // Leave out the admin area, the /about/ redirect and the noindex /pradip/ page.
+      filter: (page) => !/^\/(admin\/|about\/$|pradip\/$)/.test(new URL(page).pathname),
     }),
   ],
 });
